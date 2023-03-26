@@ -13,8 +13,10 @@ const User = {
       const queryString =
       'SELECT user.email_id, user.password, user.name, user.user_name, user.phone_number, user.address FROM bm_auction_system.user WHERE email_id=?;'
       db.execute(queryString, [id], (err, results, fields) => {
+
         if (err) throw err
-        cb(results)
+        
+        cb(err, results)
       })
     },
     selectOneByUsername: (username, cb) => {
@@ -36,8 +38,9 @@ const User = {
       const queryString =
         'INSERT INTO `bm_auction_system`.`user`(`email_id`, `password`, `name`, `user_name`, `phone_number`,`address`) VALUES (?,?,?,?,?,?);'
       db.execute(queryString, vals, (err, result) => {
+        console.log('result', result);
         if (err) throw err
-        cb(result)
+        cb(err, result)
       })
     },
     updateOne: (vals, id, cb) => {

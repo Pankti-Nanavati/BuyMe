@@ -12,6 +12,23 @@ CREATE TABLE `user` (
 );
 
 
+INSERT INTO `bm_auction_system`.`user`
+(`email_id`,
+`password`,
+`name`,
+`user_name`,
+`phone_number`,
+`address`) VALUES
+('vamsi.bulusu@rutgers.edu',
+'vamsi123',
+'Vamsi Krishna',
+'vamsi99',
+'9087206242',
+'285 George ST');
+
+
+
+
 
 
 
