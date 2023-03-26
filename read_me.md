@@ -5,10 +5,11 @@
 - Command to start server - npm run develop
 
 - API Documentation
-    * get - /api/login - login page
-    * post - /api/login - Home page
-    * get - /api/register -> register page
-    * post - /api/register -> login page
+    * GET - / - login page
+    * GET - /api/login - login page
+    * POST - /api/login - Home page
+    * GET - /api/register -> register page
+    * POST - /api/register -> login page
 
  
     

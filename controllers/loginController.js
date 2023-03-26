@@ -11,7 +11,14 @@ const loginView = (req, res) => {
     res.render("../views/static/login", {
     } );
 };
+
+const homepageView = (req, res) => {
+    res.render("../views/static/homepage.ejs", {
+    } );
+}
+
 module.exports =  {
     registerView,
-    loginView
+    loginView,
+    homepageView
 };
