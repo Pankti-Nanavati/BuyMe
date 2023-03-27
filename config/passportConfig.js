@@ -19,9 +19,6 @@ module.exports = passport => {
             passwordField: 'password',
         },
         (req, email_id, password, done) => {
-          console.log('**request', req); 
-          console.log('req.user', req.body);
-          console.log('req.user', req.user);
           if (!req.user && (!email_id === '' || password.length >= 5)) {
             User.getUserById(email_id, (err, user) => {
               console.log('userobj', user);
@@ -33,14 +30,21 @@ module.exports = passport => {
                   message: `No email_id found that matches ${email_id}`
                 })
               } else {
+            
+            bcrypt.compare(password, user.password, async (err, result) => {
+                  
+                  let hashp = await bcrypt.hash(password, 10);
 
-                bcrypt.compare(password, user.password, (err, result) => {
+                  console.log('Comparison', hashp, user.password);
+
                   if (err) {
+                    console.log('inside err');
                     done(err)
                   } else if (result) {
                     delete user.password
                     done(null, user)
                   } else {
+                    console.log('inside else ip');
                     done(null, false, { message: 'incorrect password' })
                   }
                 })

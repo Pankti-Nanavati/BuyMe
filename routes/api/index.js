@@ -10,20 +10,23 @@ router.get('/register', registerView);
 router.get('/login', loginView);
 
 // Todo 
-router.get('/logout', );
+router.get('/logout', (req, res) => {
+      req.logout(() => {
+        
+      });
+      return res.redirect('/');
+});
 
 router.get('/homepage', homepageView);
 
-router.post('/login', passport.authenticate('local'), (req, res) => {
-    if (res.status != 200) {
-        return res.redirect('login');
-    }
-    return res.redirect('homepage');
-});
+router.post('/login', passport.authenticate('local', {
+    successRedirect: "homepage",
+    failureRedirect: "login",
+}));
 
 
 router.post('/register', async (req, res) => {
-
+    console.log('password', req.body.password);
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
     const email_id = req.body.email_id;
     const name = req.body.name;
