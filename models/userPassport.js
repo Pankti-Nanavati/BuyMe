@@ -15,6 +15,7 @@ const UserPassport = {
     })
   },
   getUserById: (id, done) => {
+
     const queryString =
     'SELECT user.email_id, user.password, user.name, user.user_name, user.phone_number, user.address FROM bm_auction_system.user WHERE email_id=?;'
     db.execute(queryString, [id], (err, user) => {

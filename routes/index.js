@@ -1,11 +1,8 @@
 const express = require('express');
-const path = require('path');
-
 const router = express.Router();
-
 const apiRoutes = require('./api/index');
 
-// Default
+// Default Route
 router.get('/', (req, res) => {
     return res.redirect('/api/login');
 });
