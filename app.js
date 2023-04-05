@@ -1,5 +1,3 @@
-const dotenv = require('dotenv');
-
 const express =  require('express');
 
 const app = express();
@@ -8,58 +6,53 @@ const routes = require('./routes')
 
 const morgan = require('morgan');
 
-var cookieParser = require('cookie-parser');
-
 const passport = require('passport')
 
 const session = require('express-session')
 
 const sessionStore = require('./config/sessionStore');
 
-const connectFlash = require('connect-flash');
-
 require('./config/passportConfig')(passport)
 
-dotenv.config();
+require('dotenv').config()
 
 const PORT = process.env.PORT || 4000;
 
 // For Logging
 app.use(morgan('dev'))
 
-// Setting express to parse Json / Cookie data
+
+// Creating Session
+app.use(
+    session({
+      secret: process.env.SECRET_KEY,
+      store: sessionStore,
+      resave: false,
+      saveUninitialized: false,
+      cookie: {
+        maxAge: 3600000, // 3600000 1 hour in milliseconds. The expiration time of the cookie to set it as a persistent cookie.
+        sameSite: true
+      }
+    })
+);
+
+
+// parse Json data
 app.use(express.json());
-app.use(cookieParser());
 
-
-// // Maintaining Session
-// app.use(
-//     session({
-//       secret: process.env.SECRET_KEY,
-//       store: sessionStore,
-//       resave: false,
-//       saveUninitialized: false,
-//       cookie: {
-//         maxAge: 3600000, // 3600000 1 hour in milliseconds. The expiration time of the cookie to set it as a persistent cookie.
-//         sameSite: true
-//       }
-//     })
-//   );
-
-// Setting express to parse Form data
+// parse Form data
 app.use(express.urlencoded({ extended: true }));
 
-// Serving static Files
+// Serve static Files
 app.use(express.static(__dirname + '/views'));
 
-// Setting View Engine
+// Set View Engine
 app.set('view engine', 'ejs');
 
-// Initializing Passport
+// Initialize Passport
 app.use(passport.initialize());
-//app.use(passport.session());
 
-app.use(connectFlash());
+app.use(passport.session());
 
 // Setting Routes
 app.use(routes);

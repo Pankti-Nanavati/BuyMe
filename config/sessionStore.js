@@ -1,17 +1,18 @@
-const db = require('./db');
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
 
 const sessionOptions = {
-  host: process.env.DB_HOST, // Host name for database connection:
-  port: process.env.DB_PORT, // Port number for database connection:
-  user: process.env.DB_USER, // Database user:
-  password: process.env.DB_PW, // Password for the above database user:
-  database: process.env.DB_NAME, // Database name:,
-  clearExpired: true, // Whether or not to automatically check for and clear expired sessions:
-  checkExpirationInterval: 900000, // How frequently expired sessions will be cleared; milliseconds:
-  expiration: 7200000 // The maximum age of a valid session; 2 hours in milliseconds:
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
+  createDatabaseTable: true,
+  clearExpired: true,
+  checkExpirationInterval: 900000,
+  expiration: 7200000
 };
-const sessionStore = new MySQLStore(sessionOptions, db.promise);
+
+const sessionStore = new MySQLStore(sessionOptions);
 
 module.exports = sessionStore;

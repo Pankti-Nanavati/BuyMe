@@ -1,6 +1,7 @@
-const dotenv = require("dotenv");
+require("dotenv").config();
+
 const mysql = require("mysql2");
-dotenv.config();
+
 
 const DB_HOST = process.env.DB_HOST;
 const DB_USER = process.env.DB_USER;
@@ -25,7 +26,7 @@ db.connect(function(err){
       console.log(err)
   }
   else{
-      console.log('Connected')
+      console.log('MySQL connection succesful')
   }
 })
 
