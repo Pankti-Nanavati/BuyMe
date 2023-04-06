@@ -1,6 +1,4 @@
 const db = require('../config/db')
-
-console.log('dbc', db.query);
 const UserPassport = {
   getUserByUsernameWithPassword: (username, done) => {
     const queryString =

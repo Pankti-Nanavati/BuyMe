@@ -12,15 +12,15 @@ const User = {
     selectOneById: (id, cb) => {
       const queryString =
       'SELECT user.email_id, user.password, user.name, user.user_name, user.phone_number, user.address FROM bm_auction_system.user WHERE email_id=?;'
-      db.execute(queryString, [id], (err, results, fields) => {
+      db.execute(queryString, [id], (err, results) => {
         if (err) throw err
-        cb(err, results)
+        cb(results)
       })
     },
     selectOneByUsername: (username, cb) => {
       const queryString =
         'SELECT user.email_id, user.password, user.name, user.user_name, user.phone_number, user.address FROM bm_auction_system.user WHERE user_name=?;'
-      db.execute(queryString, [username], (err, results, fields) => {
+      db.execute(queryString, [username], (err, results) => {
         if (err) throw err
         cb(results)
       })
@@ -38,7 +38,7 @@ const User = {
       db.execute(queryString, vals, (err, result) => {
         console.log('result', result);
         if (err) throw err
-        cb(err, result)
+        cb(result)
       })
     },
     updateOne: (vals, id, cb) => {
