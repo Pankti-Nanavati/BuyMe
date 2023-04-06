@@ -12,17 +12,17 @@ const Product = {
     selectAllSubcategoriesByCategoryId: (id, cb) => {
       const queryString =
       'SELECT * from bm_auction_system.subcategory WHERE category_id=?;'
-      db.execute(queryString, [category_id], (err, results, fields) => {
+      db.execute(queryString, [id], (err, results) => {
         if (err) throw err
-        cb(err, results)
+        cb(results)
       })
     },
     selectAllProductsBySubcategoryId: (id, cb) => {
         const queryString =
         'SELECT product_id, product_name, brand, colour, size, price from bm_auction_system.product WHERE subcategory_id=?;'
-        db.execute(queryString, [subcategory_id], (err, results, fields) => {
+        db.execute(queryString, [id], (err, results) => {
           if (err) throw err
-          cb(err, results)
+          cb(results)
         })
     },
     filterProductsBySubcategoryId: (filters, cb) => {
@@ -39,15 +39,15 @@ const Product = {
         }
         const queryString =
         'SELECT product_id, product_name, brand, colour, size, price from bm_auction_system.product ?'
-        db.execute(queryString, [filter], (err, results, fields) => {
+        db.execute(queryString, [filter], (err, results) => {
         if (err) throw err
-        cb(err, results)
+        cb(results)
         })
     },
-    selectProductByProductID: (username, cb) => {
+    selectProductByProductID: (product_id, cb) => {
       const queryString =
         'SELECT product_id, product_name, brand, colour, size, price FROM bm_auction_system.product WHERE product_id=?;'
-      db.execute(queryString, [product_id], (err, results, fields) => {
+      db.execute(queryString, [product_id], (err, results) => {
         if (err) throw err
         cb(results)
       })
@@ -65,7 +65,7 @@ const Product = {
       db.execute(queryString, vals, (err, result) => {
         console.log('result', result);
         if (err) throw err
-        cb(err, result)
+        cb(result)
       })
     }
   }
