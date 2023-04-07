@@ -43,9 +43,9 @@ router.get('/category', search.categories);
 
 router.get('/category/:categoryId/subcategories', search.subCategories);
 
-router.get('/category/:categoryId/products', search.productsByCategoryId);
+router.get('/subcategory/:categoryId/products', search.productsByCategoryId);
 
-router.post('/category/:categoryId/products/filter', search.productsByFilter);
+router.post('/subcategory/:categoryId/products/filter', search.productsByFilter);
 
 router.get('/products', search.products);
 
