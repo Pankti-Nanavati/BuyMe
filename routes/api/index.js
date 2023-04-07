@@ -1,9 +1,9 @@
 const {loginView, registerView, homepageView, registerUser, logoutUser } = require('../../controllers/loginController');
-const search = require('../../controllers/searchController');
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
-
+const searchController = require('../../controllers/searchController');
+const auctionController = require('../../controllers/auctionController');
 
 
 /** 
@@ -18,18 +18,13 @@ const passport = require('passport');
  * */ 
  
 router.get('/register', registerView);
-
 router.get('/login', loginView);
-
 router.get('/logout', logoutUser);
-
 router.get('/homepage', homepageView);
-
 router.post('/login', passport.authenticate('local', {
     successRedirect: "homepage",
     failureRedirect: "login",
 }));
-
 router.post('/register', registerUser);
 
 
@@ -45,16 +40,11 @@ router.post('/register', registerUser);
  */
 
 router.get('/category', search.categories);
-
-router.get('/category/:categoryId/subcategories', search.subCategories);
-
-router.get('/subcategory/:categoryId/products', search.productsByCategoryId);
-
-router.post('/subcategory/:categoryId/products/filter', search.productsByFilter);
-
-router.get('/products', search.products);
-
-router.get('/product/:productId', search.productById);
+router.get('/category/:categoryId/subcategories', searchController.subCategories);
+router.get('/subcategory/:categoryId/products', searchController.productsByCategoryId);
+router.post('/subcategory/:categoryId/products/filter', searchController.productsByFilter);
+router.get('/products', searchController.products);
+router.get('/product/:productId', searchController.productById);
 
 
 
@@ -69,6 +59,14 @@ router.get('/product/:productId', search.productById);
  * POST - /placeBid/:productId
  * 
  */
+
+
+router.get('/auctionHistory/:userId', auctionController.auctionHistory);
+router.get('/bidHistory/:userId', auctionController.bidHistory);
+router.get('/auctions', auctionController.auctions);
+router.post('/createAuction', auctionController.createAuction);
+router.post('/placeBid/:productId', auctionController.placeBid);
+
 
 module.exports = router;
 
