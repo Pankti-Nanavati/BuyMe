@@ -1,22 +1,22 @@
-const {loginView, registerView, homepageView } = require('../../controllers/loginController');
-const User = require('../../models/User');
+const {loginView, registerView, homepageView, registerUser, logoutUser } = require('../../controllers/loginController');
+const search = require('../../controllers/searchController');
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
-const bcrypt = require('bcrypt');
 
+
+
+/** 
+ * 
+ * Login / Register / Logout API's
+ * 
+ * */ 
+ 
 router.get('/register', registerView);
 
 router.get('/login', loginView);
 
-// Todo 
-router.get('/logout', (req, res) => {
-    req.logout(() => {
-        
-    });
-    
-    return res.redirect('/');
-});
+router.get('/logout', logoutUser);
 
 router.get('/homepage', homepageView);
 
@@ -25,34 +25,31 @@ router.post('/login', passport.authenticate('local', {
     failureRedirect: "login",
 }));
 
+router.post('/register', registerUser);
 
-// Add try catch 
-router.post('/register', async (req, res) => {
-    console.log('password', req.body.password);
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    const email_id = req.body.email_id;
-    const name = req.body.name;
-    const address = req.body.address;
-    const phone_number = req.body.phone_number;
-    const user_name = req.body.user_name;
-    
-    User.selectOneById(email_id, (err, user) => {
-        if (err) {
-            console.log('error', err);
-            return err; // if err return err
-        } else if (user.length == 0) {
-            User.insertOne([email_id, hashedPassword, name, user_name, phone_number, address], (err, user) => {
-                if (err) {
-                    throw err;
-                }
-                else return res.redirect('login');
-            }); 
-        } else {
-            return res.redirect('register');
-        }
-    });  
-});
 
+/**
+ * Product Search API
+ * 
+ * GET /category -> Fetches All available categories
+ * GET /category/:id/subcategory -> Fetches all subcategories
+ * GET /subcategory/:sc_id -> Fetches products in subcategory (Add pagination)
+ * GET /product -> Fetch products (Add pagination)
+ * GET /product/:id -> Fetch product by ID
+ *  POST /:scId/product/filter -> Filter products by scId & filters
+ */
+
+router.get('/category', search.categories);
+
+router.get('/category/:categoryId/subcategories', search.subCategories);
+
+router.get('/subcategory/:categoryId/products', search.productsByCategoryId);
+
+router.post('/subcategory/:categoryId/products/filter', search.productsByFilter);
+
+router.get('/products', search.products);
+
+router.get('/product/:productId', search.productById);
 
 module.exports = router;
 
