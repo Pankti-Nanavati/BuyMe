@@ -10,32 +10,36 @@ const Auction = {
       throw err;
     }
   },
-  getAllAuctionsByUserId: async (userId) => {
+  getAllAuctionsByUserId: async (Id) => {
     try {
-      const queryString = 'SELECT * from bm_auction_system.auction WHERE seller_id=? OR winner_id=?;';
-      const [rows] = await db.execute(queryString, [userId, userId]);
+      const queryString = 'SELECT * from bm_auction_system.auction WHERE email_id=?;';
+      const [rows] = await db.execute(queryString, [Id]);
       return rows;
     } catch (err) {
       throw err;
     }
   },
-  getAllBidsByUserId: async (userId) => {
+  getAllBidsByUserId: async (Id) => {
     try {
-      const queryString = 'SELECT * from bm_auction_system.bid WHERE bidder_id=?;';
-      const [rows] = await db.execute(queryString, [userId]);
+      const queryString = 'SELECT * from bm_auction_system.bid WHERE email_id=?;';
+      const [rows] = await db.execute(queryString, [Id]);
       return rows;
     } catch (err) {
       throw err;
     }
   },
-  createAuction: async (productId, sellerId, startingBid) => {
+  createAuction: async (product_name, brand, colour, size, price, subcategoryId, end_time, increment_amount, minimum_price, initial_price) => {
     try {
-      const queryString = 'INSERT INTO `bm_auction_system`.`auction`(`product_id`, `seller_id`, `starting_bid`, `current_bid`, `end_time`, `winner_id`) VALUES (?, ?, ?, ?, NOW() + INTERVAL 1 WEEK, NULL);';
-      const [result] = await db.execute(queryString, [productId, sellerId, startingBid, startingBid]);
-      return result.insertId;
+      const queryString1 = 'INSERT INTO bm_auction_system.product (product_name, brand, colour, size, price, subcategory_id) VALUES (?,?,?,?,?,?);';
+      const [result1] = await db.execute(queryString1, [product_name, brand, colour, size, price, subcategoryId]);
+      productId= result1.insertId;
+      const queryString2 = 'INSERT INTO bm_auction_system.auction (email_id, product_id, end_time, start_time, increment_amount, minimum_price, initial_price) VALUES (?,?,?, CURRENT_TIMESTAMP,?,?,?);';
+      const [result2] = await db.execute(queryString2, [Id, productId, end_time, increment_amount, minimum_price, initial_price]);
+      return result2.insertId;
     } catch (err) {
       throw err;
     }
+
   },
   placeBid: async (productId, bidderId, amount) => {
     try {
@@ -59,14 +63,6 @@ const Auction = {
       if (result.affectedRows === 0) {
         throw new Error('Failed to place bid');
       }
-
-      const updateQueryString = 'UPDATE bm_auction_system.auction SET current_bid=?, winner_id=? WHERE product_id=? AND end_time > NOW();';
-      const [updateResult] = await db.execute(updateQueryString, [amount, bidderId, productId]);
-
-      if (updateResult.affectedRows === 0) {
-        throw new Error('Failed to update auction');
-      }
-
       return { currentBid: amount, endTime };
     } catch (err) {
       throw err;

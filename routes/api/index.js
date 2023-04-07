@@ -39,7 +39,7 @@ router.post('/register', registerUser);
  * POST /:scId/product/filter -> Filter products by scId & filters
  */
 
-router.get('/category', search.categories);
+router.get('/category', searchController.categories);
 router.get('/category/:categoryId/subcategories', searchController.subCategories);
 router.get('/subcategory/:categoryId/products', searchController.productsByCategoryId);
 router.post('/subcategory/:categoryId/products/filter', searchController.productsByFilter);
