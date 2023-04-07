@@ -1,73 +1,81 @@
 const db = require('../config/db');
 
 const Product = {
-    selectAllcategories: cb => {
-      const queryString =
-      'SELECT * FROM bm_auction_system.category;'
-      db.query(queryString, (err, results) => {
-        if (err) throw err
-        cb(results)
-      })
+    selectAllcategories: async () => {
+        try {
+            const queryString = 'SELECT * FROM bm_auction_system.category;';
+            const [rows] = await db.query(queryString);
+            return rows;
+        } catch (err) {
+            throw err;
+        }
     },
-    selectAllSubcategoriesByCategoryId: (id, cb) => {
-      const queryString =
-      'SELECT * from bm_auction_system.subcategory WHERE category_id=?;'
-      db.execute(queryString, [id], (err, results) => {
-        if (err) throw err
-        cb(results)
-      })
+    selectAllSubcategoriesByCategoryId: async (id) => {
+        try {
+            const queryString = 'SELECT * from bm_auction_system.subcategory WHERE category_id=?;';
+            const [rows] = await db.execute(queryString, [id]);
+            return rows;
+        } catch (err) {
+            throw err;
+        }
     },
-    selectAllProductsBySubcategoryId: (id, cb) => {
-        const queryString =
-        'SELECT product_id, product_name, brand, colour, size, price from bm_auction_system.product WHERE subcategory_id=?;'
-        db.execute(queryString, [id], (err, results) => {
-          if (err) throw err
-          cb(results)
-        })
+    selectAllProductsBySubcategoryId: async (id) => {
+        try {
+            const queryString = 'SELECT product_id, product_name, brand, colour, size, price from bm_auction_system.product WHERE subcategory_id=?;';
+            const [rows] = await db.execute(queryString, [id]);
+            return rows;
+        } catch (err) {
+            throw err;
+        }
     },
-    filterProductsBySubcategoryId: (filters, cb) => {
-        const filter = "WHERE "
-        for (let key in filters) {
-            if (filters[key].length != 0) {
-                if (filter == 'WHERE ') {
-                    filter = filter.concat(" ", key, "= ", filters[key]);
-                }
-                else {
-                    filter = filter.concat("AND ", key, "= ", filters[key]);
+    filterProductsBySubcategoryId: async (filters) => {
+        try {
+            let filter = 'WHERE ';
+            const values = [];
+            for (let key in filters) {
+                if (filters[key].length != 0) {
+                    if (filter === 'WHERE ') {
+                        filter = filter.concat(` ${key} = ?`);
+                    } else {
+                        filter = filter.concat(` AND ${key} = ?`);
+                    }
+                    values.push(filters[key]);
                 }
             }
+            const queryString = `SELECT product_id, product_name, brand, colour, size, price from bm_auction_system.product ${filter}`;
+            const [rows] = await db.execute(queryString, values);
+            return rows;
+        } catch (err) {
+            throw err;
         }
-        const queryString =
-        'SELECT product_id, product_name, brand, colour, size, price from bm_auction_system.product ?'
-        db.execute(queryString, [filter], (err, results) => {
-        if (err) throw err
-        cb(results)
-        })
     },
-    selectProductByProductID: (product_id, cb) => {
-      const queryString =
-        'SELECT product_id, product_name, brand, colour, size, price FROM bm_auction_system.product WHERE product_id=?;'
-      db.execute(queryString, [product_id], (err, results) => {
-        if (err) throw err
-        cb(results)
-      })
+    selectProductByProductID: async (product_id) => {
+        try {
+            const queryString = 'SELECT product_id, product_name, brand, colour, size, price FROM bm_auction_system.product WHERE product_id=?;';
+            const [rows] = await db.execute(queryString, [product_id]);
+            return rows[0];
+        } catch (err) {
+            throw err;
+        }
     },
-    deleteOne: (id, cb) => {
-      const queryString = 'DELETE FROM product WHERE product_id=?;'
-      db.execute(queryString, [id], (err, result) => {
-        if (err) throw err
-        cb(result)
-      })
+    deleteOne: async (id) => {
+        try {
+            const queryString = 'DELETE FROM product WHERE product_id=?;';
+            const [result] = await db.execute(queryString, [id]);
+            return result;
+        } catch (err) {
+            throw err;
+        }
     },
-    insertOne: (vals, cb) => {
-      const queryString =
-        'INSERT INTO `bm_auction_system`.`product`(`product_id`, `product_name`, `brand`, `colour`, `size`, `price`, `subcategory_id`) VALUES (?,?,?,?,?,?,?);'
-      db.execute(queryString, vals, (err, result) => {
-        console.log('result', result);
-        if (err) throw err
-        cb(result)
-      })
+    insertOne: async (vals) => {
+        try {
+            const queryString = 'INSERT INTO `bm_auction_system`.`product`(`product_id`, `product_name`, `brand`, `colour`, `size`, `price`, `subcategory_id`) VALUES (?,?,?,?,?,?,?);';
+            const [result] = await db.execute(queryString, vals);
+            return result;
+        } catch (err) {
+            throw err;
+        }
     }
-  }
+};
 
-module.exports = Product
+module.exports = Product;
