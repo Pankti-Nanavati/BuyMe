@@ -35,8 +35,8 @@ const auctionController = {
 
   createAuction: async (req, res) => {
     try {
-      const { productId, sellerId, startingBid } = req.body;
-      const result = await Auction.createAuction(productId, sellerId, startingBid);
+      const { email_id, product_name, brand, colour, size, price, subcategoryId, end_time, increment_amount, minimum_price, initial_price } = req.body;
+      const result = await Auction.createAuction(email_id, product_name, brand, colour, size, price, subcategoryId, end_time, increment_amount, minimum_price, initial_price);
       return res.json(result);
     } catch (err) {
       console.error(err);

@@ -28,13 +28,13 @@ const Auction = {
       throw err;
     }
   },
-  createAuction: async (product_name, brand, colour, size, price, subcategoryId, end_time, increment_amount, minimum_price, initial_price) => {
+  createAuction: async (email_id, product_name, brand, colour, size, price, subcategoryId, end_time, increment_amount, minimum_price, initial_price) => {
     try {
       const queryString1 = 'INSERT INTO bm_auction_system.product (product_name, brand, colour, size, price, subcategory_id) VALUES (?,?,?,?,?,?);';
       const [result1] = await db.execute(queryString1, [product_name, brand, colour, size, price, subcategoryId]);
       productId= result1.insertId;
       const queryString2 = 'INSERT INTO bm_auction_system.auction (email_id, product_id, end_time, start_time, increment_amount, minimum_price, initial_price) VALUES (?,?,?, CURRENT_TIMESTAMP,?,?,?);';
-      const [result2] = await db.execute(queryString2, [Id, productId, end_time, increment_amount, minimum_price, initial_price]);
+      const [result2] = await db.execute(queryString2, [email_id, productId, end_time, increment_amount, minimum_price, initial_price]);
       return result2.insertId;
     } catch (err) {
       throw err;
