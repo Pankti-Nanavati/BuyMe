@@ -112,3 +112,44 @@ Create Table autobid (
   FOREIGN KEY (`email_id`) REFERENCES user (`email_id`), 
   FOREIGN KEY (`auction_id`) REFERENCES `auction` (`auction_id`)
 );
+
+Create Table alert (
+  `alert_id` int(10) NOT NULL AUTO_INCREMENT,
+  `product_name` varchar(25) NOT NULL,
+  `colour` varchar(25),
+  `size` varchar(25),
+  `email_id` varchar(45) NOT NULL,
+  `send_notification_flag` Boolean DEFAULT 0,
+  PRIMARY KEY (`alert_id`), 
+  FOREIGN KEY (`email_id`) REFERENCES user (`email_id`), 
+  FOREIGN KEY (`product_name`) REFERENCES `product` (`product_name`)
+)
+
+Create Table admin (
+  `email_id` varchar(45) NOT NULL,
+  `password` varchar(65) DEFAULT NULL,
+  PRIMARY KEY (`email_id`)
+)
+
+CREATE TABLE `customer_rep` (
+  `email_id` varchar(45) NOT NULL,
+  `password` varchar(65) DEFAULT NULL,
+  `name` varchar(50) DEFAULT NULL,
+  `user_name` varchar(50) DEFAULT NULL,
+  `phone_number` tinytext,
+  `emp_id` int(10) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`email_id`)
+);
+
+Create Table `user_queries` (
+  `query_id` int(10) NOT NULL AUTO_INCREMENT,
+  `user_email_id` varchar(45) NOT NULL,
+  `custRep_email_id` varchar(45) NOT NULL,
+  `query` LONGTEXT,
+  `query_type` ENUM('Reset Password', 'Delete a Bid', 'Delete an Auction'),
+  `resolved_flag` Boolean DEFAULT 0,
+  PRIMARY KEY (`email_id`)
+  FOREIGN KEY (`user_email_id`) REFERENCES user (`email_id`), 
+  FOREIGN KEY (`custRep_email_id`) REFERENCES `customer_rep` (`email_id`)
+)
+
