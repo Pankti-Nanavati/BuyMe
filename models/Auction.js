@@ -41,24 +41,34 @@ const Auction = {
     }
 
   },
-  placeBid: async (productId, bidderId, amount) => {
+  createAutobid: async (email_id, auction_id, increment_amount, upper_limit) => {
     try {
-      const auctionQueryString = 'SELECT current_bid, end_time FROM bm_auction_system.auction WHERE product_id=? AND end_time > NOW()';
+      const queryString = 'INSERT INTO bm_auction_system.autobid (email_id, auction_id, increment, upper_limit) VALUES (?,?,?,?);';
+      const [result] = await db.execute(queryString, [email_id, auction_id, increment_amount, upper_limit]);
+      return result.insertId;
+    } catch (err) {
+      throw err;
+    }
+  },
+  placeBid: async (productId, auction_id, email_id, amount) => {
+    try {
+      const currentBidQuery=  'select amount from bm_auction_system.bid where bidding_timestamp IN (select MAX(bidding_timestamp) from bid where email_id = ? and auction_id = ?);'
+      const [bidRows] = await db.execute(currentBidQuery, [email_id, auction_id]);
+      const auctionQueryString = 'SELECT auction_id FROM bm_auction_system.auction WHERE product_id = ? and end_time > NOW();';
       const [auctionRows] = await db.execute(auctionQueryString, [productId]);
 
       if (auctionRows.length === 0) {
         throw new Error('Auction not found or has ended');
       }
 
-      const currentBid = auctionRows[0].current_bid;
-      const endTime = auctionRows[0].end_time;
+      const currentBid = bidRows[0].amount;
 
       if (amount <= currentBid) {
         throw new Error('Bid amount must be greater than current bid');
       }
 
-      const queryString = 'INSERT INTO `bm_auction_system`.`bid`(`product_id`, `bidder_id`, `amount`) VALUES (?, ?, ?);';
-      const [result] = await db.execute(queryString, [productId, bidderId, amount]);
+      const queryString = 'INSERT INTO `bm_auction_system`.`bid`(`email_id`, `auction_id`, `amount`) VALUES (?, ?, ?);';
+      const [result] = await db.execute(queryString, [email_id, auction_id, amount]);
 
       if (result.affectedRows === 0) {
         throw new Error('Failed to place bid');

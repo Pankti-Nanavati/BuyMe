@@ -35,6 +35,29 @@ const User = {
       throw new Error('Cannot query user by username');
     }
   },
+  setAlertForProductName: async (product_id, colour,size, email_id) => {
+    try {
+      const fetchProductName = "Select product_name from bm_auction_system`.`product` where product_id = ?"
+      const [productrows] = await db.execute(fetchProductName, [product_id]);
+      const productName = productrows[0].product_name;
+      const queryString = 'Insert into `bm_auction_system`.`alert` (`product_name`, `colour`, `size`, `email_id`) Values (?,?,?,?);'
+      const [result] = await db.execute(queryString, [product_name, colour,size, email_id]);
+      return result;
+    } catch (err) {
+      console.error(err);
+      throw new Error('Failed to set alert');
+    }
+  },
+  fetchAlertForUser: async (product_name, colour,size, email_id) => {
+    const queryString = 'Select product_name, colour, size from bm_auction_system.alert where email_id = ? ;'
+    try {
+      const [result] = await db.execute(queryString, [email_id]);
+      return result;
+    } catch (err) {
+      console.error(err);
+      throw new Error('Failed to fetch alerts');
+    }
+  },
   deleteOne: async (id) => {
     const queryString = 'DELETE FROM users WHERE email_id=?;';
     try {
