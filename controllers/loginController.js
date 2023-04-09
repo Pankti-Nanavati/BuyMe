@@ -1,78 +1,80 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 
-const registerUser = async (req, res) => {
+
+const loginController = {
+
+    login: async (req, res) => {
+        if (req.user) {
+            return res.redirect('homepage');
+        }
+        else {
+            return res.redirect('login');
+        }
+    },
+
+    registerUser: async (req, res) => {
     
-    try {
-        const hashedPassword = await bcrypt.hash(req.body.password, 10);
-        const email_id = req.body.email_id;
-        const name = req.body.name;
-        const address = req.body.address;
-        const phone_number = req.body.phone_number;
-        const user_name = req.body.user_name;
-        
-        const values = [email_id, hashedPassword, name, user_name, phone_number, address];
-        
-        // Check if user with the given email already exists
-        User.selectOneById(email_id, (err, result) => {
-            if (err) {
-                console.error(err);
-                return res.status(500).send('Internal Server Error');
-            }
+        try {
+            const hashedPassword = await bcrypt.hash(req.body.password, 10);
+            const email_id = req.body.email_id;
+            const name = req.body.name;
+            const address = req.body.address;
+            const phone_number = req.body.phone_number;
+            const user_name = req.body.user_name;
             
-            if (result) {
-                return res.redirect('register');
-            }
+            const values = [email_id, hashedPassword, name, user_name, phone_number, address];
             
-            User.insertOne(values, (err, result) => {
+            // Check if user with the given email already exists
+            User.selectOneById(email_id, (err, result) => {
                 if (err) {
                     console.error(err);
                     return res.status(500).send('Internal Server Error');
                 }
                 
-                return res.redirect('/');
+                if (result) {
+                    return res.redirect('register');
+                }
+                
+                User.insertOne(values, (err, result) => {
+                    if (err) {
+                        console.error(err);
+                        return res.status(500).send('Internal Server Error');
+                    }
+                    
+                    return res.redirect('/');
+                });
             });
-        });
-    } catch (err) {
-        console.error(err);
-        return res.status(500).send('Internal Server Error');
-    }
-};
-
-const logoutUser = (req, res) => {
-    req.logout();
-    req.session.destroy((err) => {
-        if (err) {
-            console.log(err);
+        } catch (err) {
+            console.error(err);
+            return res.status(500).send('Internal Server Error');
         }
-        res.redirect('/');
-    });
+    },
+
+    logoutUser: (req, res) => {
+        req.logout();
+        req.session.destroy((err) => {
+            if (err) {
+                console.log(err);
+            }
+            res.redirect('/');
+        });
+    },
+
+    registerView: (req, res) => {
+        res.render("../views/static/register", {
+        });
+    },
+
+    loginView:  (req, res) => {
+        res.render("../views/static/login", {
+        });
+    },
+
+    homepageView: (req, res) => {
+        res.render("../views/static/homepage.ejs", {
+        });
+    },    
 };
 
-// For Register Page
-const registerView = (req, res) => {
-    res.render("../views/static/register", {
-    } );
-};
-
-// For Login Page
-const loginView = (req, res) => {
-    res.render("../views/static/login", {
-    } );
-};
-
-// For Home Page
-const homepageView = (req, res) => {
-    res.render("../views/static/homepage.ejs", {
-    } );
-}
-
-
-
-module.exports =  {
-    registerView,
-    loginView,
-    homepageView,
-    registerUser,
-    logoutUser,
-};
+module.exports = loginController;

@@ -17,7 +17,6 @@ const User = {
       'SELECT user.email_id, user.password, user.name, user.user_name, user.phone_number, user.address FROM bm_auction_system.user WHERE email_id=?;';
     try {
       const [rows] = await db.execute(queryString, [id]);
-      console.log('SelectOneById', rows);
       return rows && rows.length ? rows[0] : null;
     } catch (err) {
       console.error(err);

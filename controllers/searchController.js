@@ -1,6 +1,6 @@
 const Product = require('../models/Product');
 
-const search = {
+const searchController = {
     categories: async (req, res) => {
         try {
           const result = await Product.selectAllcategories();
@@ -72,4 +72,4 @@ const search = {
       },
 };
 
-module.exports = search;
+module.exports = searchController;

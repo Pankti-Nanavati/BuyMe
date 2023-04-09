@@ -2,29 +2,65 @@ const {loginView, registerView, homepageView, registerUser, logoutUser } = requi
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
+
+const loginController = require('../../controllers/loginController')
 const searchController = require('../../controllers/searchController');
 const auctionController = require('../../controllers/auctionController');
+const adminController = require('../../controllers/adminController');
+const customerRepController = require('../../controllers/customerRepController');
+
+/**
+ * 
+ * Admin API's 
+ * 
+ * GET /admin/login - Fetch login page
+ * POST /admin/login - Redirect to admin Homepage / Dashboard
+ * GET /admin/logout - Flush session and redirect to login page
+ * POST /admin/create/cr - To create a Customer Rep | body - {}
+ */
+
+router.get('/admin/login', adminController.loginView);
+router.post('/admin/login', adminController.login);
+router.get('/admin/logout', adminController.logout);
+router.post('/admin/create/cr', adminController.createCR);
+
+
+
+/**
+ * 
+ * Customer Representative API's
+ * 
+ * GET /customerRep/login  - Fetch Login Page
+ * POST /customerRep/login - Redirect to Customer Rep Dashboard
+ * GET /customerRep/logout - Flush session and redirect to login page
+ * GET /customerRep/queries - Fetch list of User Queries
+ * POST /customerRep/queries/resolve - Resolve Query 
+ */
+
+router.get('/customerRep/login', customerRepController.loginView);
+router.post('/customerRep/login', customerRepController.login);
+router.get('customerRep/logout', customerRepController.logout);
+router.get('/customerRep/queries', customerRepController.queries);
+router.post('/customerRep/queries/resolve', customerRepController.resolveQueries);
+
 
 
 /** 
  * 
- * Login / Register / Logout API's
+ * User Login / Register / Logout API's
  * 
  * GET  /register -> Fetches Register page
  * GET  /login    -> Fetches Login page
- * GET  /logout   -> Clears session & Redirects to login page
- * POST /register -> Creates a new user & redirects to login page
- * POST /login    -> Fetches Homepage
+ * GET  /logout   -> Clears session & Redirects to login page 
+ * POST /register -> Creates a new user & redirects to login page 
+ * POST /login    -> Fetches Homepage 
  * */ 
  
-router.get('/register', registerView);
-router.get('/login', loginView);
-router.get('/logout', logoutUser);
-router.get('/homepage', homepageView);
-router.post('/login', passport.authenticate('local', {
-    successRedirect: "homepage",
-    failureRedirect: "login",
-}));
+router.get('/register', loginController.registerView);
+router.get('/login', loginController.loginView);
+router.get('/logout', loginController.logoutUser);
+router.get('/homepage', loginController.homepageView);
+router.post('/login', passport.authenticate('user'), loginController.login);
 router.post('/register', registerUser);
 
 
@@ -32,11 +68,11 @@ router.post('/register', registerUser);
  * Product Search API
  * 
  * GET /category -> Fetches All available categories
- * GET /category/:id/subcategory -> Fetches all subcategories
- * GET /subcategory/:sc_id -> Fetches products in subcategory (Add pagination)
+ * GET /category/:id/subcategory -> Fetches all subcategories | categoryId
+ * GET /subcategory/:sc_id -> Fetches products in subcategory (Add pagination) | subcategoryId
  * GET /product -> Fetch products (Add pagination)
- * GET /product/:id -> Fetch product by ID
- * POST /:scId/product/filter -> Filter products by scId & filters
+ * GET /product/:id -> Fetch product by ID | productId
+ * POST /:scId/product/filter -> Filter products by scId & filters | subcategoryId
  */
 
 router.get('/category', searchController.categories);
@@ -55,8 +91,8 @@ router.get('/product/:productId', searchController.productById);
  * GET - /bidHistory - get all past bids for userId 
  * GET - /auctionHistory - get all past auctions of userId
  * GET - /auctions - get active auctions             
- * POST - /createAuction     
- * POST - /placeBid/:productId
+ * POST - /createAuction - create auction |  {}     
+ * POST - /placeBid/:productId - place Bid in an auctionId | productId
  * 
  */
 
