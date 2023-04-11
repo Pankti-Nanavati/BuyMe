@@ -161,6 +161,20 @@ CREATE TABLE `customer_rep` (
   PRIMARY KEY (`email_id`)
 );
 
+create table `sales` (
+  `sale_id` int(100) NOT NULL AUTO_INCREMENT,
+  `buyer_email_id` varchar(45) NOT NULL,
+  `seller_email_id` varchar(45) NOT NULL,
+  `auction_id` int(5) NOT NULL,
+  `product_id` int(2) NOT NULL,
+  `amount` float(10),
+  `sale_timestamp` TIMESTAMP,
+  PRIMARY KEY (`sale_id`),
+  FOREIGN KEY (`buyer_email_id`) REFERENCES user (`email_id`), 
+  FOREIGN KEY (`seller_email_id`) REFERENCES user (`email_id`), 
+  FOREIGN KEY (`auction_id`) REFERENCES `auction` (`auction_id`),
+  FOREIGN KEY (`product_id`) REFERENCES `product`(`product_id`)
+);
 
 Create Table `user_queries` (
   `query_id` int(10) NOT NULL AUTO_INCREMENT,
@@ -168,10 +182,11 @@ Create Table `user_queries` (
   `custRep_email_id` varchar(45) NOT NULL,
   `query` LONGTEXT,
   `query_type` ENUM('Reset Password', 'Delete a Bid', 'Delete an Auction'),
+  `value` varchar(70);
   `resolved_flag` Boolean DEFAULT 0,
   PRIMARY KEY (`email_id`)
   FOREIGN KEY (`user_email_id`) REFERENCES user (`email_id`), 
   FOREIGN KEY (`custRep_email_id`) REFERENCES `customer_rep` (`email_id`)
-)
+);
 
 

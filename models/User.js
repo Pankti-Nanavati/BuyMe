@@ -57,6 +57,16 @@ const User = {
       throw new Error('Failed to fetch alerts');
     }
   },
+  fetchAuctionForUser: async (email_id) => {
+    const queryString = 'Select P.product_name, A.end_time, A.initial_price from bm_auction_system.auction A Join bm_auction_system.product P on product_id where email_id = ?;'
+    try {
+      const [result] = await db.execute(queryString, [email_id]);
+      return result;
+    } catch (err) {
+      console.error(err);
+      throw new Error('Failed to fetch users auctions');
+    }
+  },
   deleteOne: async (id) => {
     const queryString = 'DELETE FROM users WHERE email_id=?;';
     try {
@@ -89,6 +99,20 @@ const User = {
       throw new Error('Failed to update user');
     }
   },
+  raiseQuery: async () => {
+    try {
+      const getCustomerReps = 'Select * from `bm_auction_system`.`customer_rep`;'
+      const [result] = await db.execute(queryString);
+      const n = len(result)
+      const queryString = 
+    'Insert into `bm_auction_system`.`query` (user_email_id, custRep_email_id, query, query_type, value) Values (?,?,?,?,?);'
+      const [result] = await db.execute(queryString, vals);
+      return result;
+    } catch (err) {
+      console.error(err);
+      throw new Error('Failed to update user');
+    }
+  }
 };
 
 module.exports = User;

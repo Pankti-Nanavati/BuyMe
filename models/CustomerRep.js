@@ -35,6 +35,17 @@ const CR = {
       throw new Error('Cannot query customer representative by username');
     }
   },
+  fetchQueries: async (customerRep_email) => {
+    const queryString = 
+    'SELECT user_email_id, query, query_type, value where custRep_email = ? and resolved_flag = 0;'
+    try {
+      const [rows] = await db.execute(queryString, [customerRep_email]);
+      return rows;
+  } catch (err) {
+      console.error(err);
+      throw new Error('Unable to fetch queries for particular customer representative');
+  }
+  },
   deleteBidById: async (Id) => {
     const queryString = 'Delete from bm_auction_system.bid where bid_id = ?;';
     try {
@@ -55,16 +66,26 @@ const CR = {
         throw new Error('Unable to delete auction by auction_id');
     }
   },
-  changePasswordById: async (Id, new_password) => {
+  changePasswordById: async (email, new_password) => {
     const queryString = 'Update bm_auction_system.user Set password = ? where email_id = ?;';
     try {
-        const [rows] = await db.execute(queryString, [new_password, Id]);
+        const [rows] = await db.execute(queryString, [new_password, email]);
         return rows;
     } catch (err) {
         console.error(err);
         throw new Error('Unable to change user password');
     }
   },
+  resolveQuery: async (query_id) => {
+    const queryString = 'Update bm_auction_system.query Set resolve_flag = 1 where query_id = ?;';
+    try {
+        const [rows] = await db.execute(queryString, [query_id]);
+        return rows;
+    } catch (err) {
+        console.error(err);
+        throw new Error('Unable to resolve query');
+    }
+  }
 };
 
 module.exports = CR;
