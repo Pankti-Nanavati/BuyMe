@@ -13,6 +13,8 @@ CREATE TABLE `user` (
 truncate user;
 select * from user;
 
+drop table user;
+
 ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '';
 
 CREATE USER 'buyme-user'@'localhost' IDENTIFIED BY 'buyme';
@@ -75,6 +77,27 @@ INSERT INTO `bm_auction_system`.`product`
 VALUES
 ("PUMA Smash V2 Sneakers", "PUMA", "white", 5, 50, 1);
 
+INSERT INTO `bm_auction_system`.`product`
+(`product_name`,
+`brand`,
+`colour`,
+`size`,
+`price`,
+`subcategory_id`)
+VALUES
+("PUMA Smash V2 Sneakers", "PUMA", "white", 6, 50, 1);
+
+
+INSERT INTO `bm_auction_system`.`product`
+(`product_name`,
+`brand`,
+`colour`,
+`size`,
+`price`,
+`subcategory_id`)
+VALUES
+("PUMA Smash V2 Sneakers", "PUMA", "white", 7, 50, 1);
+
 
 CREATE TABLE `auction` (
   `auction_id` int(5) NOT NULL AUTO_INCREMENT,
@@ -115,21 +138,19 @@ Create Table autobid (
 
 Create Table alert (
   `alert_id` int(10) NOT NULL AUTO_INCREMENT,
-  `product_name` varchar(25) NOT NULL,
   `colour` varchar(25),
   `size` varchar(25),
   `email_id` varchar(45) NOT NULL,
   `send_notification_flag` Boolean DEFAULT 0,
+  `product_name` varchar(25) NOT NULL, 
   PRIMARY KEY (`alert_id`), 
-  FOREIGN KEY (`email_id`) REFERENCES user (`email_id`), 
-  FOREIGN KEY (`product_name`) REFERENCES `product` (`product_name`)
-)
+  FOREIGN KEY (`email_id`) REFERENCES user (`email_id`));
 
 Create Table admin (
   `email_id` varchar(45) NOT NULL,
   `password` varchar(65) DEFAULT NULL,
   PRIMARY KEY (`email_id`)
-)
+);
 
 CREATE TABLE `customer_rep` (
   `email_id` varchar(45) NOT NULL,
@@ -137,9 +158,9 @@ CREATE TABLE `customer_rep` (
   `name` varchar(50) DEFAULT NULL,
   `user_name` varchar(50) DEFAULT NULL,
   `phone_number` tinytext,
-  `emp_id` int(10) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`email_id`)
 );
+
 
 Create Table `user_queries` (
   `query_id` int(10) NOT NULL AUTO_INCREMENT,
@@ -152,4 +173,5 @@ Create Table `user_queries` (
   FOREIGN KEY (`user_email_id`) REFERENCES user (`email_id`), 
   FOREIGN KEY (`custRep_email_id`) REFERENCES `customer_rep` (`email_id`)
 )
+
 
