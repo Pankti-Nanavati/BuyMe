@@ -1,6 +1,16 @@
 const Product = require('../models/Product');
 
 const searchController = {
+
+    productView: async(req, res) => {
+
+        const product = await Product.selectProductByProductID(req.query.productId);
+        const data = {
+          product: product,
+        };
+        return res.render("../views/static/product", data);
+    },
+
     categories: async (req, res) => {
         try {
           const result = await Product.selectAllcategories();
@@ -64,6 +74,7 @@ const searchController = {
         try {
           const productId = req.params.productId;
           const result = await Product.selectProductByProductID(productId);
+
           return res.json(result);
         } catch (err) {
           console.error(err);

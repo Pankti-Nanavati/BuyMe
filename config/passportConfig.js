@@ -46,6 +46,7 @@ module.exports = passport => {
           try {
             const user = await User.selectOneById(email_id);
             if (!user) {
+              console.log()
               return done(null, false, {
                 message: `No email_id found that matches ${email_id}`
               });
@@ -62,6 +63,7 @@ module.exports = passport => {
             done(err, null);
           }
         } else if (req.user) {
+          console.log('Authenticated via session', req.user);
           done(null, req.user);
         } else {
           return done(null, false, {

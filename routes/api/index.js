@@ -64,6 +64,10 @@ router.post('/login', passport.authenticate('user'), loginController.login);
 router.post('/register', registerUser);
 
 
+
+
+
+
 /**
  * Product Search API
  * 
@@ -81,6 +85,9 @@ router.get('/subcategory/:categoryId/products', searchController.productsByCateg
 router.post('/subcategory/:categoryId/products/filter', searchController.productsByFilter);
 router.get('/products', searchController.products);
 router.get('/product/:productId', searchController.productById);
+router.get('/product', searchController.productView);
+
+
 
 
 
@@ -102,6 +109,7 @@ router.get('/bidHistory/:userId', auctionController.bidHistory);
 router.get('/auctions', auctionController.auctions);
 router.post('/createAuction', auctionController.createAuction);
 router.post('/placeBid/:productId', auctionController.placeBid);
+router.get('/sell', auctionController.sell);
 
 
 module.exports = router;

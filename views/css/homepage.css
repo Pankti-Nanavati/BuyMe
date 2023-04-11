@@ -1,0 +1,29 @@
+
+  .navbar-nav .nav-link:hover {
+    background-color: transparent !important;
+  }
+  .product {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 20px auto;
+    max-width: 1200px;
+    padding: 20px;
+    border: 1px solid #ccc;
+  }
+  .product-image {
+    margin-right: 20px;
+  }
+  
+  .product-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .product-description {
+    margin-bottom: 20px;
+  }
+  .product-image img {
+    width: 250px; /* Replace with desired width */
+    height: auto;
+  }

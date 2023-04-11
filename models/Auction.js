@@ -30,6 +30,7 @@ const Auction = {
   },
   createAuction: async (email_id, product_name, brand, colour, size, price, subcategoryId, end_time, increment_amount, minimum_price, initial_price) => {
     try {
+      console.log(email_id, product_name, brand, colour, size, price, subcategoryId, end_time, increment_amount, minimum_price, initial_price);
       const queryString1 = 'INSERT INTO bm_auction_system.product (product_name, brand, colour, size, price, subcategory_id) VALUES (?,?,?,?,?,?);';
       const [result1] = await db.execute(queryString1, [product_name, brand, colour, size, price, subcategoryId]);
       productId= result1.insertId;

@@ -1,6 +1,11 @@
 const Auction = require('../models/Auction');
 
 const auctionController = {
+
+  sell: async(req, res) => {
+    return res.render('../views/static/sell');
+  },
+
   bidHistory: async (req, res) => {
     try {
       const userId = req.query.userId;
@@ -35,7 +40,8 @@ const auctionController = {
 
   createAuction: async (req, res) => {
     try {
-      const { email_id, product_name, brand, colour, size, price, subcategoryId, end_time, increment_amount, minimum_price, initial_price } = req.body;
+      const email_id = req.session.passport.user.id;
+      const {product_name, brand, colour, size, price, subcategoryId, end_time, increment_amount, minimum_price, initial_price } = req.body;
       const result = await Auction.createAuction(email_id, product_name, brand, colour, size, price, subcategoryId, end_time, increment_amount, minimum_price, initial_price);
       return res.json(result);
     } catch (err) {

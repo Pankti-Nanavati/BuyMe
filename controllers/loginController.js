@@ -12,7 +12,7 @@ const loginController = {
             return res.redirect('login');
         }
     },
-
+    
     registerUser: async (req, res) => {
     
         try {
@@ -24,32 +24,22 @@ const loginController = {
             const user_name = req.body.user_name;
             
             const values = [email_id, hashedPassword, name, user_name, phone_number, address];
-            
             // Check if user with the given email already exists
-            User.selectOneById(email_id, (err, result) => {
-                if (err) {
-                    console.error(err);
-                    return res.status(500).send('Internal Server Error');
-                }
-                
-                if (result) {
-                    return res.redirect('register');
-                }
-                
-                User.insertOne(values, (err, result) => {
-                    if (err) {
-                        console.error(err);
-                        return res.status(500).send('Internal Server Error');
-                    }
-                    
-                    return res.redirect('/');
-                });
-            });
+            const existingUser = await User.selectOneById(email_id);
+            
+            if (existingUser) {
+                return res.redirect('register');
+            }
+            
+            await User.insertOne(values);
+            return res.redirect('/');
+            
         } catch (err) {
             console.error(err);
             return res.status(500).send('Internal Server Error');
         }
     },
+
 
     logoutUser: (req, res) => {
         req.logout();
