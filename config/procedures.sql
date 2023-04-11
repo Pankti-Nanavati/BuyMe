@@ -38,7 +38,7 @@ DELIMITER ;
 -- entry into sales table, finding winner procedure
 DROP PROCEDURE IF EXISTS `bm_auction_system.sp_sale`;
 DELIMITER $$
-CREATE PROCEDURE `bm_auction_system.sp_sale`(IN `buyer_email_id` varchar, IN `seller_email_id` varchar, IN `cur_product_id` INT, IN `amount` FLOAT)
+CREATE PROCEDURE `bm_auction_system.sp_sale`(IN `buyer_email_id` varchar, IN `seller_email_id` varchar, IN `cur_product_id` INT, IN `cur_auction_id`, IN `amount` FLOAT)
 BEGIN
     DECLARE done INT DEFAULT FALSE;
     DECLARE `email` VARCHAR(255);

@@ -47,7 +47,7 @@ const User = {
       throw new Error('Failed to set alert');
     }
   },
-  fetchAlertForUser: async (product_name, colour,size, email_id) => {
+  fetchAlertForUser: async (email_id) => {
     const queryString = 'Select product_name, colour, size from bm_auction_system.alert where email_id = ? ;'
     try {
       const [result] = await db.execute(queryString, [email_id]);
@@ -99,18 +99,52 @@ const User = {
       throw new Error('Failed to update user');
     }
   },
-  raiseQuery: async () => {
+  raiseQuery: async (email_id, query, query_type, val) => {
     try {
-      const getCustomerReps = 'Select * from `bm_auction_system`.`customer_rep`;'
-      const [result] = await db.execute(queryString);
-      const n = len(result)
+      const getCustomerReps = 'Select email_id from `bm_auction_system`.`customer_rep`;'
+      const [custReps] = await db.execute(queryString);
+      const n = custReps.length
+      const index = Math.floor(Math.random() * n)
+      const custRep_email = custReps[index].email_id;
       const queryString = 
     'Insert into `bm_auction_system`.`query` (user_email_id, custRep_email_id, query, query_type, value) Values (?,?,?,?,?);'
-      const [result] = await db.execute(queryString, vals);
+      const [result] = await db.execute(queryString, [email_id, custRep_email, query, query_type, val]);
       return result;
     } catch (err) {
       console.error(err);
-      throw new Error('Failed to update user');
+      throw new Error('Failed to raise query');
+    }
+  },
+  fetchHistoryBidsForUser: async (email_id) => {
+    try {
+      const queryString = 
+    'Select P.product_name, B.bidding_timestamp, B.amount from `bm_auction_system`.`bid` B Join `bm_auction_system`.`auction` A on `bid_id` Join `bm_auction_system`.`product` P on `product_id` where email_id = ?;'
+      const [result] = await db.execute(queryString, [email_id]);
+      return result;
+    } catch (err) {
+      console.error(err);
+      throw new Error('Failed to fetch bid history');
+    }
+  },
+  fetchHistoryAuctionsForUser: async (email_id) => {
+    try {
+      const queryString = 
+    'Select P.product_name, P.brand, P.colour, P.size from `bm_auction_system`.`auction` A Join `bm_auction_system`.`product` P on `product_id` where email_id = ?;'
+      const [result] = await db.execute(queryString, [email_id]);
+      return result;
+    } catch (err) {
+      console.error(err);
+      throw new Error('Failed to fetch auction history');
+    }
+  },
+  fetchSalesForUser: async (email_id) => {
+    const queryString = 'Select P.product_name, P.colour, P.size S.amount from bm_auction_system.sales S join bm_auction_system.product P on product_id where email_id = ? ;'
+    try {
+      const [result] = await db.execute(queryString, [email_id]);
+      return result;
+    } catch (err) {
+      console.error(err);
+      throw new Error('Failed to fetch sales');
     }
   }
 };

@@ -62,6 +62,7 @@ CREATE TABLE `product` (
   `colour` varchar(25),
   `size` varchar(25),
   `price` float(10) NOT NULL,
+  `description` LONGTEXT,
   `subcategory_id` int(2) NOT NULL,
   PRIMARY KEY (`product_id`),
   FOREIGN KEY (`subcategory_id`) REFERENCES `subcategory`(`subcategory_id`)
