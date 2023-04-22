@@ -40,6 +40,11 @@ const loginController = {
         }
     },
 
+    getProfile: async (req, res) => {  
+        const id = req.session.passport.user.id;
+        const user = await User.selectOneById(id);
+        return res.render('../views/static/profile.ejs', user);
+    },
 
     logoutUser: (req, res) => {
         req.logout();
@@ -57,14 +62,44 @@ const loginController = {
     },
 
     loginView:  (req, res) => {
-        res.render("../views/static/login", {
+        if (req.session.passport){
+            return res.redirect('homepage');
+        }
+        else return res.render("../views/static/login", {
         });
     },
 
     homepageView: (req, res) => {
-        res.render("../views/static/homepage.ejs", {
-        });
+        const data = {user_name: req.session.passport.user.user_name};  
+        res.render("../views/static/homepage", data);
     },    
+
+    fetchAlert: async (req, res) => {
+        try{
+            const alerts = await User.fetchAlertForUser(req.session.passport.user.id);
+            const data = {user_name: req.session.passport.user.user_name, alerts: alerts};
+            return res.json(data);
+        }
+        catch (err){
+            return res.status(500).send('Internal Server Error');
+        }
+
+    },
+
+    setAlert: async (req, res) => {
+        try{
+            const productId = req.body.productId;
+            const color = req.body.color;
+            const size = req.body.size;
+            const email_id = req.session.passport.user.id;
+            const result = await User.setAlertForProductName(productId, color, size, email_id);
+            return res.json(result);
+        } catch (err) {
+            console.log(err);
+            return res.status(500).send('Internal Server Error');
+        }
+    }
+
 };
 
 module.exports = loginController;

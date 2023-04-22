@@ -27,3 +27,42 @@
     width: 250px; /* Replace with desired width */
     height: auto;
   }
+
+  main {
+    margin-top: 50px; /* adjust the spacing as needed */
+    text-align: center;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 50%;
+    
+  }
+  
+  th, td {
+    text-align: left;
+    padding: 8px;
+  }
+  
+  th {
+    background-color: #f2f2f2;
+  }
+  
+  tfoot td {
+    font-weight: bold;
+  }
+  .hidden {
+    display: none;
+  }
+
+  .dropdown-item {
+    font-size: 14px;
+    color: #333;
+    background-color: #fff;
+  }
+  
+  .dropdown-item:hover {
+    background-color: #f2f2f2;
+  }
+  
+  

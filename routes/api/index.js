@@ -1,4 +1,3 @@
-const {loginView, registerView, homepageView, registerUser, logoutUser } = require('../../controllers/loginController');
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
@@ -23,6 +22,7 @@ router.get('/admin/login', adminController.loginView);
 router.post('/admin/login', adminController.login);
 router.get('/admin/logout', adminController.logout);
 router.post('/admin/create/cr', adminController.createCR);
+router.post('/admin/create/report', adminController.createCR);
 
 
 
@@ -59,9 +59,14 @@ router.post('/customerRep/queries/resolve', customerRepController.resolveQueries
 router.get('/register', loginController.registerView);
 router.get('/login', loginController.loginView);
 router.get('/logout', loginController.logoutUser);
+router.get('/profile', loginController.getProfile);
 router.get('/homepage', loginController.homepageView);
 router.post('/login', passport.authenticate('user'), loginController.login);
-router.post('/register', registerUser);
+router.post('/register', loginController.registerUser);
+router.get('/alert', loginController.fetchAlert);
+router.post('/alert', loginController.setAlert);
+
+
 
 
 
@@ -104,8 +109,8 @@ router.get('/product', searchController.productView);
  */
 
 
-router.get('/auctionHistory/:userId', auctionController.auctionHistory);
-router.get('/bidHistory/:userId', auctionController.bidHistory);
+router.get('/auctionHistory', auctionController.auctionHistory);
+router.get('/bidHistory', auctionController.bidHistory);
 router.get('/auctions', auctionController.auctions);
 router.post('/createAuction', auctionController.createAuction);
 router.post('/placeBid/:productId', auctionController.placeBid);

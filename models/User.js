@@ -13,6 +13,7 @@ const User = {
     }
   },
   selectOneById: async (id) => {
+    console.log('UserId', id);
     const queryString =
       'SELECT user.email_id, user.password, user.name, user.user_name, user.phone_number, user.address FROM bm_auction_system.user WHERE email_id=?;';
     try {
@@ -34,13 +35,13 @@ const User = {
       throw new Error('Cannot query user by username');
     }
   },
-  setAlertForProductName: async (product_id, colour,size, email_id) => {
+  setAlertForProductName: async (product_id, colour, size, email_id) => {
     try {
-      const fetchProductName = "Select product_name from bm_auction_system`.`product` where product_id = ?"
+      const fetchProductName = "SELECT `product`.`product_name`FROM `bm_auction_system`.`product` where product_id = ?;"
       const [productrows] = await db.execute(fetchProductName, [product_id]);
       const productName = productrows[0].product_name;
       const queryString = 'Insert into `bm_auction_system`.`alert` (`product_name`, `colour`, `size`, `email_id`) Values (?,?,?,?);'
-      const [result] = await db.execute(queryString, [product_name, colour,size, email_id]);
+      const [result] = await db.execute(queryString, [productName, colour,size, email_id]);
       return result;
     } catch (err) {
       console.error(err);
@@ -48,9 +49,10 @@ const User = {
     }
   },
   fetchAlertForUser: async (email_id) => {
-    const queryString = 'Select product_name, colour, size from bm_auction_system.alert where email_id = ? ;'
+    const queryString = 'Select product_name, colour, size from bm_auction_system.alert where email_id=?;'
     try {
       const [result] = await db.execute(queryString, [email_id]);
+      console.log(result);
       return result;
     } catch (err) {
       console.error(err);
@@ -102,7 +104,7 @@ const User = {
   raiseQuery: async (email_id, query, query_type, val) => {
     try {
       const getCustomerReps = 'Select email_id from `bm_auction_system`.`customer_rep`;'
-      const [custReps] = await db.execute(queryString);
+      const [custReps] = await db.execute(getCustomerReps);
       const n = custReps.length
       const index = Math.floor(Math.random() * n)
       const custRep_email = custReps[index].email_id;

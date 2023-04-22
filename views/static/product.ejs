@@ -89,18 +89,19 @@
         <div class="alertmodal-content">
           <span class="close" onclick="closeModal()">&times;</span>
           <h3>Set Alert</h3>
-          <form>
+          <form id="alert-form">
             <label for="color">Color:</label>
             <input type="text" id="color" name="color"><br><br>
             <label for="size">Size:</label>
             <input type="text" id="size" name="size" style="margin-left:10px"><br><br>
-            <button type="submit" >Submit</button>
+            <button type="submit" id="submit-btn">Submit</button>
           </form>
         </div>
       </div>
-
+      
 
   <script>// Get the modal
+  
     var modal = document.getElementById("bid-modal");
     
     // Get the button that opens the modal
@@ -134,4 +135,27 @@
   function closeModal() {
     document.getElementById("alert-modal").style.display = "none";
   }
+
+
+  const form = document.getElementById('alert-form');
+  const submitBtn = document.getElementById('submit-btn');
+
+  submitBtn.addEventListener('click', (event) => {
+    event.preventDefault(); // Prevents the form from submitting normally
+
+    const color = document.getElementById('color').value;
+    const size = document.getElementById('size').value;
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('productId');
+    console.log(color, size, productId);
+    // Make an API request to the server with the color and size data
+    fetch('/api/alert', {
+      method: 'POST',
+      body: JSON.stringify({ color, size, productId }),
+      headers: { 'Content-Type': 'application/json' }
+    })
+    .then(response => response.json())
+    .then(data => window.location.href = '/api/product?productId=' + productId)
+    .catch(error => console.error(error));
+  });
     </script>

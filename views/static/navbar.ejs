@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="../css/homepage.css">
+  <!-- <script src="homepage.js"></script> -->
+  <!-- Required CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Required JavaScript -->
+  <script src="../scripts/jquery.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+  
+  
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/api/homepage">Hi <%= user_name %></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="/api/sell">Sell</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" onclick="populateDropdown()" data-bs-toggle="dropdown" aria-expanded="false">
+              Alert
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown" id="dropdown-menu">
+              <!-- Dropdown items will be dynamically generated here -->
+            </div>
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" href="#">Notification</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Cart</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/api/profile">Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/api/logout">Logout</a>
+          </li>
+        </ul>
+      </div>       
+    </div>
+  </nav>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="salesReport.css">
+<!-- Required CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+<!-- Required JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+  <%- include('navbar') %>
+      
+  
+    <div class="container text-center pt-5 mt-8">
+      <div class="row">
+        <div class="col-md-12">
+          <h2>Name</h2>
+          <p><%= name %></p>
+        </div>
+        <div class="col-md-12">
+          <h2>Username</h2>
+          <p><%= user_name %></p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <h2>Email</h2>
+          <p><%= email_id %></p>
+        </div>
+        <div class="col-md-12">
+          <h2>Phone Number</h2>
+          <p><%= phone_number %></p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <h2>Address</h2>
+          <p><%= address%></p>
+        </div>
+      </div>
+    </div>
+      
+
+    <div class="d-grid col-4 mx-auto my-5">
+      <button type="button" onclick="fetchBids()" class="btn btn-primary btn-lg" >Bid History</button>
+  </div>
+  <table id="bidTable" class="hidden">
+    <thead>
+      <tr>
+        <th>Product Name</th>
+        <th>Time</th>
+        <th>Price</th>
+      </tr>
+    </thead>
+    <tbody id="bidTableBody">
+    </tbody>
+  </table>
+
+
+
+  <div class="d-grid col-4 mx-auto my-5">
+    <button type="button" class="btn btn-primary btn-lg" onclick="fetchAuctions()"> Auction History</button>
+</div>
+<table id="auctionTable" class="hidden">
+  <thead>
+    <tr>
+      <th>Product Name</th>
+      <th>Brand</th>
+      <th>Color</th>
+      <th>Size</th>
+    </tr>
+  </thead>
+  <tbody id="auctionTableBody">
+  </tbody>
+</table>
+
+<div class="d-grid col-4 mx-auto my-5">
+    <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#resetPasswordModal"> Reset Password</button>
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="resetPasswordModal" tabindex="-1" aria-labelledby="resetPasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="resetPasswordModalLabel">Reset Password</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="newPasswordInput" class="form-label">Enter New Password</label>
+              <input type="password" class="form-control" id="newPasswordInput">
+            </div>
+            <div class="mb-3">
+              <label for="confirmPasswordInput" class="form-label">Confirm Password</label>
+              <input type="password" class="form-control" id="confirmPasswordInput">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
+<script>
+    const auctionTableBody = document.querySelector('#auctionTableBody');
+    const bidTableBody = document.querySelector('#bidTableBody');
+    const auctionTable = document.querySelector('#auctionTable');
+    const bidTable = document.querySelector('#bidTable');
+    function fetchBids() {
+    fetch(`/api/bidHistory`)
+    .then(response => response.json())
+    .then(data => {
+      console.log(data)
+      // Clear previous table data
+      auctionTableBody.innerHTML = '';
+      if (data.length === 0) {
+      auctionTableBody.innerHTML = `<tr><td colspan="4">No Auction history</td></tr>`;
+    } else {
+      data.forEach(auction => {
+        const row = auctionTableBody.insertRow();
+        row.innerHTML = `
+          <td>${auction.product_name}</td>
+          <td>${auction.brand}</td>
+          <td>${auction.color}</td>
+          <td>${auction.size}</td>
+        `;
+        auctionTable.classList.remove('hidden');
+    });
+}
+});}
+
+function fetchAuctions() {
+fetch(`/api/auctionHistory`)
+    .then(response => response.json())
+    .then(data => {
+      // Clear previous table data
+      bidTableBody.innerHTML = '';
+      if (data.length === 0) {
+      bidTableBody.innerHTML = `<tr><td colspan="3">No Bid history</td></tr>`;
+    } else {
+      console.log('auction data', data);
+      data.forEach(bid => {
+        const row = bidTableBody.insertRow();
+        row.innerHTML = `
+          <td>${bid.product_name}</td>
+          <td>${bid.time}</td>
+          <td>${bid.initial_price}</td>
+        `;
+        bidTable.classList.remove('hidden');
+    });
+}
+});
+}
+</script>

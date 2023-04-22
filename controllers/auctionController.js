@@ -8,7 +8,7 @@ const auctionController = {
 
   bidHistory: async (req, res) => {
     try {
-      const userId = req.query.userId;
+      const userId = req.session.passport.user.id;
       const result = await Auction.getAllBidsByUserId(userId);
       return res.json(result);
     } catch (err) {
@@ -19,7 +19,7 @@ const auctionController = {
 
   auctionHistory: async (req, res) => {
     try {
-      const userId = req.query.userId;
+      const userId = req.session.passport.user.id;
       const result = await Auction.getAllAuctionsByUserId(userId);
       return res.json(result);
     } catch (err) {

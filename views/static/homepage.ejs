@@ -7,39 +7,13 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
   
   <!-- Required JavaScript -->
-  <script src="https://cdn.jsdelivr.net/jquery/3.6.0/jquery.min.js"></script>
+  <script src="../scripts/jquery.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+  
   
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">Hi Pankti Nanavati!</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" href="/api/sell">Sell</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Alert</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Notification</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Cart</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/api/logout">Logout</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-  
+  <%- include('navbar') %>
   
   <div class="d-flex justify-content-center mt-3">
     <div class="dropdown me-2">
@@ -56,12 +30,25 @@
   </div>
   
   
+  
   <div class="container mt-3">
     <div id="productList">
-      
     </div>
   </div>
   
+  <table id="auctionTable" class="hidden">
+    <thead>
+      <tr>
+        <th>Product Name</th>
+        <th>End Time</th>
+        <th>Price</th>
+      </tr>
+    </thead>
+    <tbody id="auctionTableBody">
+    </tbody>
+  </table>
+  
+  <!-- <table id="auction-table"></table> -->
 </body>
 </html>
 <script>
@@ -119,4 +106,53 @@
                   }
                 });
               });
-            </script>
+              
+             
+              // Make API call
+              fetch('/api/auctions')
+              .then(response => response.json())
+              .then(data => {
+                console.log('Auction', data);
+                // Parse response data
+                const auctions = data;
+                
+                // Create table element
+                const table = document.getElementById('auction-table');
+                  auctionTableBody.innerHTML='';
+                  
+                  auctions.forEach(auction=>{
+                    const row= auctionTableBody.insertRow();
+                    row.innerHTML = `
+                    <td>${auction.product_id}</td>
+                    <td>${auction.end_time}</td>
+                    <td>${auction.initial_price}</td>`;
+                    auctionTable.classList.remove('hidden');
+                  })
+                })
+                .catch(error => {
+                  console.error(error);
+                });
+                
+
+                //Alert dropdown
+                async function populateDropdown() {
+                  let dropdownMenu = document.getElementById('dropdown-menu');
+                  dropdownMenu.innerHTML = '';
+                  
+                  try {
+                    // Make an API call to retrieve the data for the dropdown items
+                    let response = await fetch('/api/alert');
+                    let alerts = await response.json();
+                    
+                    // Populate the dropdown menu with items from the alerts object
+                    for (let i = 0; i < alerts.length; i++) {
+                      let dropdownItem = document.createElement('a');
+                      dropdownItem.classList.add('dropdown-item');
+                      dropdownItem.innerText = alerts[i].product_name;
+                      dropdownMenu.appendChild(dropdownItem);
+                    }
+                  } catch (error) {
+                    console.error(error);
+                  }
+                }
+              </script>
