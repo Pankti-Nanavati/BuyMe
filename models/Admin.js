@@ -55,6 +55,24 @@ const Admin = {
       console.error(err);
       throw new Error('Failed to update customer_rep');
     }
+  },
+  `sale_id` int(100) NOT NULL AUTO_INCREMENT,
+  `buyer_email_id` varchar(45) NOT NULL,
+  `seller_email_id` varchar(45) NOT NULL,
+  `auction_id` int(5) NOT NULL,
+  `product_id` int(2) NOT NULL,
+  `amount` float(10),
+  `sale_timestamp` TIMESTAMP,
+  
+  getSalesReport: async (date1, date2) => {
+    const queryString = 'Select * from sales WHERE sale_timestamp <= ? and sale_timestamp >= ?;';
+    try{
+      const [result] = await db.execute(queryString, [date2, date1]);
+      return result;
+    } catch (err) {
+      console.error(err);
+      throw new Error('Failed to fetch sales belonging to the given range');
+    }
   }
 };
 

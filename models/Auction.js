@@ -3,7 +3,7 @@ const db = require('../config/db');
 const Auction = {
   getActiveAuctions: async () => {
     try {
-      const queryString = 'SELECT * FROM bm_auction_system.auction WHERE end_time > NOW();';
+      const queryString = 'SELECT p.product_name, a.initial_price, a.end_time FROM bm_auction_system.auction join bm_auction.product p on product_id WHERE end_time > NOW();';
       const [rows] = await db.query(queryString);
       return rows;
     } catch (err) {
