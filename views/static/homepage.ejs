@@ -29,8 +29,6 @@
     <button type="button" class="btn btn-primary ms-2" id="submit-button">Submit</button>
   </div>
   
-  
-  
   <div class="container mt-3">
     <div id="productList">
     </div>
@@ -48,7 +46,7 @@
     </tbody>
   </table>
   
-  <!-- <table id="auction-table"></table> -->
+
 </body>
 </html>
 <script>
@@ -119,7 +117,6 @@
                 // Create table element
                 const table = document.getElementById('auction-table');
                   auctionTableBody.innerHTML='';
-                  
                   auctions.forEach(auction=>{
                     const row= auctionTableBody.insertRow();
                     row.innerHTML = `
@@ -134,25 +131,5 @@
                 });
                 
 
-                //Alert dropdown
-                async function populateDropdown() {
-                  let dropdownMenu = document.getElementById('dropdown-menu');
-                  dropdownMenu.innerHTML = '';
-                  
-                  try {
-                    // Make an API call to retrieve the data for the dropdown items
-                    let response = await fetch('/api/alert');
-                    let alerts = await response.json();
-                    
-                    // Populate the dropdown menu with items from the alerts object
-                    for (let i = 0; i < alerts.length; i++) {
-                      let dropdownItem = document.createElement('a');
-                      dropdownItem.classList.add('dropdown-item');
-                      dropdownItem.innerText = alerts[i].product_name;
-                      dropdownMenu.appendChild(dropdownItem);
-                    }
-                  } catch (error) {
-                    console.error(error);
-                  }
-                }
+                
               </script>

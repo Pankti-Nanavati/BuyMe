@@ -42,26 +42,16 @@
       
 
     <div class="d-grid col-4 mx-auto my-5">
-      <button type="button" onclick="fetchBids()" class="btn btn-primary btn-lg" >Bid History</button>
+      <button type="button" onclick="fetchBids()" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#bidModal">Bid History</button>
   </div>
-  <table id="bidTable" class="hidden">
-    <thead>
-      <tr>
-        <th>Product Name</th>
-        <th>Time</th>
-        <th>Price</th>
-      </tr>
-    </thead>
-    <tbody id="bidTableBody">
-    </tbody>
-  </table>
+
 
 
 
   <div class="d-grid col-4 mx-auto my-5">
-    <button type="button" class="btn btn-primary btn-lg" onclick="fetchAuctions()"> Auction History</button>
+    <button type="button" class="btn btn-primary btn-lg" onclick="fetchAuctions()" data-bs-toggle="modal" data-bs-target="#auctionModal"> Auction History</button>
 </div>
-<table id="auctionTable" class="hidden">
+<!-- <table id="auctionTable" class="hidden">
   <thead>
     <tr>
       <th>Product Name</th>
@@ -72,10 +62,69 @@
   </thead>
   <tbody id="auctionTableBody">
   </tbody>
-</table>
+</table> -->
 
 <div class="d-grid col-4 mx-auto my-5">
     <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#resetPasswordModal"> Reset Password</button>
+</div>
+
+
+<div class="modal fade" id="bidModal" tabindex="-1" aria-labelledby="bidLabel" onclick="fetchBids(); bidModal.show()" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="auctionLabel">Bid History</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table id="bidTable" class="hidden">
+            <thead>
+              <tr>
+                <th>Product Name</th>
+                <th>Time</th>
+                <th>Price</th>
+              </tr>
+            </thead>
+            <tbody id="bidTableBody">
+            </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="modal fade" id="auctionModal" tabindex="-1" aria-labelledby="auctionLabel" onclick="fetchAuctions(); auctionModal.show()" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="auctionLabel">Auction History</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table id="auctionTable" class="hidden">
+          <thead>
+            <tr>
+              <th>Product Name</th>
+              <th>Brand</th>
+              <th>Color</th>
+              <th>Size</th>
+            </tr>
+          </thead>
+          <tbody id="auctionTableBody">
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 
@@ -98,11 +147,15 @@
               <label for="confirmPasswordInput" class="form-label">Confirm Password</label>
               <input type="password" class="form-control" id="confirmPasswordInput">
             </div>
+            <div class="mb-3">
+              <label for="reasonInput" class="form-label">Reason</label>
+              <input type="text" class="form-control" id="reasonInput">
+            </div>
           </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Submit</button>
+          <button type="button" class="btn btn-primary" id="submit-btn">Submit</button>
         </div>
       </div>
     </div>
@@ -115,8 +168,8 @@
     const bidTableBody = document.querySelector('#bidTableBody');
     const auctionTable = document.querySelector('#auctionTable');
     const bidTable = document.querySelector('#bidTable');
-    function fetchBids() {
-    fetch(`/api/bidHistory`)
+    function fetchAuctions() {
+    fetch(`/api/auctionHistory`)
     .then(response => response.json())
     .then(data => {
       console.log(data)
@@ -138,16 +191,20 @@
 }
 });}
 
-function fetchAuctions() {
-fetch(`/api/auctionHistory`)
+function fetchBids() {
+fetch(`/api/bidHistory`)
     .then(response => response.json())
     .then(data => {
       // Clear previous table data
       bidTableBody.innerHTML = '';
-      if (data.length === 0) {
-      bidTableBody.innerHTML = `<tr><td colspan="3">No Bid history</td></tr>`;
+      
+      if (data.length == 0) {
+        console.log(data.length);
+        const row = bidTableBody.insertRow();
+        row.innerHTML = `<tr><td colspan="3">No Bid history</td></tr>`;
+        bidTable.classList.remove('hidden');
+      // bidTableBody.innerHTML = `<tr><td colspan="3">No Bid history</td></tr>`;
     } else {
-      console.log('auction data', data);
       data.forEach(bid => {
         const row = bidTableBody.insertRow();
         row.innerHTML = `
@@ -160,4 +217,23 @@ fetch(`/api/auctionHistory`)
 }
 });
 }
+
+
+const submitBtn = document.getElementById('submit-btn');
+  submitBtn.addEventListener('click', (event) => {
+    event.preventDefault(); // Prevents the form from submitting normally
+
+    const value= document.getElementById('confirmPasswordInput').value;
+    const query = document.getElementById('reasonInput').value;
+    const queryType='Reset Password';
+    // Make an API request to the server with the color and size data
+    fetch('/api/raiseQuery', {
+      method: 'POST',
+      body: JSON.stringify({ query, queryType, value }),
+      headers: { 'Content-Type': 'application/json' }
+    })
+    .then(response => response.json())
+    .then(data => window.location.href = '/api/profile')
+    .catch(error => console.error(error));
+});
 </script>

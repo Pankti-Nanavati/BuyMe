@@ -25,14 +25,17 @@
           <li class="nav-item">
             <a class="nav-link" href="/api/sell">Sell</a>
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" onclick="populateDropdown()" data-bs-toggle="dropdown" aria-expanded="false">
+          <li class="nav-item">
+            <a class="nav-link" id="open-modal">Alert</a>
+          </li>
+          <!-- <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Alert
             </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown" id="dropdown-menu">
-              <!-- Dropdown items will be dynamically generated here -->
-            </div>
-          </li>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown"> -->
+              <!-- The dropdown items will be dynamically populated here -->
+            <!-- </ul>
+          </li> -->
           
           <li class="nav-item">
             <a class="nav-link" href="#">Notification</a>
@@ -50,5 +53,47 @@
       </div>       
     </div>
   </nav>
+
+
+
+  <div class="modal fade" id="alert-modal" tabindex="-1" role="dialog" aria-labelledby="alert-modal-label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered " role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="alert-modal-label">Alerts</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" style="width: auto">
+          <div id="alert-container"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
 </body>
 </html>
+<script>
+// function openAlertModal() {
+//   $.get("/api/alert", function(data) {
+//     console.log(data);
+//     var alerts = data.alerts;
+//     var alertContainer = $("#alert-container");
+//     alertContainer.empty();
+//     for (var i = 0; i < alerts.length; i++) {
+//       var alert = alerts[i];
+//       var alertDiv = $("<div>");
+//       alertDiv.addClass("alert");
+//       alertDiv.addClass("alert-info");
+//       alertDiv.text(alert.product_name + " - " + alert.colour + " - " + alert.size);
+//       alertContainer.append(alertDiv);
+//     }
+//   });
+//   $("#alert-modal").modal("show");
+// }
+
+// $(document).ready(function() {
+//   $("#open-modal").click(openAlertModal);
+// });
+</script>

@@ -62,6 +62,7 @@ router.get('/logout', loginController.logoutUser);
 router.get('/profile', loginController.getProfile);
 router.get('/homepage', loginController.homepageView);
 router.post('/login', passport.authenticate('user'), loginController.login);
+router.post('/raiseQuery', loginController.raiseQuery);
 router.post('/register', loginController.registerUser);
 router.get('/alert', loginController.fetchAlert);
 router.post('/alert', loginController.setAlert);

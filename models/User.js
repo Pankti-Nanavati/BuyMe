@@ -13,7 +13,6 @@ const User = {
     }
   },
   selectOneById: async (id) => {
-    console.log('UserId', id);
     const queryString =
       'SELECT user.email_id, user.password, user.name, user.user_name, user.phone_number, user.address FROM bm_auction_system.user WHERE email_id=?;';
     try {
@@ -52,7 +51,6 @@ const User = {
     const queryString = 'Select product_name, colour, size from bm_auction_system.alert where email_id=?;'
     try {
       const [result] = await db.execute(queryString, [email_id]);
-      console.log(result);
       return result;
     } catch (err) {
       console.error(err);
@@ -105,11 +103,12 @@ const User = {
     try {
       const getCustomerReps = 'Select email_id from `bm_auction_system`.`customer_rep`;'
       const [custReps] = await db.execute(getCustomerReps);
-      const n = custReps.length
-      const index = Math.floor(Math.random() * n)
+      const n = custReps.length;
+      const index = Math.floor(Math.random() * n)%n;
+      console.log(custReps);
       const custRep_email = custReps[index].email_id;
       const queryString = 
-    'Insert into `bm_auction_system`.`query` (user_email_id, custRep_email_id, query, query_type, value) Values (?,?,?,?,?);'
+    'Insert into `bm_auction_system`.`user_queries` (user_email_id, custRep_email_id, query, query_type, value) Values (?,?,?,?,?);'
       const [result] = await db.execute(queryString, [email_id, custRep_email, query, query_type, val]);
       return result;
     } catch (err) {

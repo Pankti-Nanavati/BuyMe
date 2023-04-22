@@ -7,6 +7,7 @@ const searchController = {
         const product = await Product.selectProductByProductID(req.query.productId);
         const data = {
           product: product,
+          user_name: req.session.passport.user.user_name,
         };
         return res.render("../views/static/product", data);
     },

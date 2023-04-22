@@ -3,7 +3,8 @@ const Auction = require('../models/Auction');
 const auctionController = {
 
   sell: async(req, res) => {
-    return res.render('../views/static/sell');
+    const data = {user_name: req.session.passport.user.user_name}
+    return res.render('../views/static/sell', data);
   },
 
   bidHistory: async (req, res) => {

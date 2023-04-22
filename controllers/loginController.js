@@ -86,6 +86,25 @@ const loginController = {
 
     },
 
+    raiseQuery: async(req, res) => {
+        try{
+            console.log(req.body)
+            const query = req.body.query;
+            const queryType = req.body.queryType;
+            const id = req.session.passport.user.id;
+            let hashedPassword, value = req.body.value;
+            if (queryType == 'Reset Password') {
+                hashedPassword = await bcrypt.hash(req.body.value, 10);
+                value = hashedPassword;
+            }
+            const result = await User.raiseQuery(id, query, queryType, value);
+            return res.json(result);
+        }
+        catch (err){
+            return res.status(500).send('Internal Server Error');
+        }
+    },
+
     setAlert: async (req, res) => {
         try{
             const productId = req.body.productId;
