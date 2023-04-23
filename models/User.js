@@ -119,7 +119,7 @@ const User = {
   fetchHistoryBidsForUser: async (email_id) => {
     try {
       const queryString = 
-    'Select P.product_name, B.bidding_timestamp, B.amount from `bm_auction_system`.`bid` B Join `bm_auction_system`.`auction` A on `bid_id` Join `bm_auction_system`.`product` P on `product_id` where email_id = ?;'
+    'Select P.product_name, B.bidding_timestamp, B.amount, B.bid_id from `bm_auction_system`.`bid` B Join `bm_auction_system`.`auction` A on `bid_id` Join `bm_auction_system`.`product` P on `product_id` where email_id = ?;'
       const [result] = await db.execute(queryString, [email_id]);
       return result;
     } catch (err) {
@@ -130,7 +130,7 @@ const User = {
   fetchHistoryAuctionsForUser: async (email_id) => {
     try {
       const queryString = 
-    'Select P.product_name, P.brand, P.colour, P.size from `bm_auction_system`.`auction` A Join `bm_auction_system`.`product` P on `product_id` where email_id = ?;'
+    'Select P.product_name, P.brand, P.colour, P.size, A.initial_price, A.end_time, A.auction_id from `bm_auction_system`.`auction` A Join `bm_auction_system`.`product` P on `product_id` where email_id = ?;'
       const [result] = await db.execute(queryString, [email_id]);
       return result;
     } catch (err) {
