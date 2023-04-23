@@ -19,3 +19,9 @@ table {
   .hidden {
     display: none;
   }
+  .ahidden {
+    display: none;
+  }
+  .bhidden {
+    display: none;
+  }

@@ -34,18 +34,20 @@
     </div>
   </div>
   
-  <table id="auctionTable" class="hidden">
+  <div id="hiddenclass" class="hidden">
+  <h3 style="text-align: center; margin-bottom: 60px; margin-top: 50px;">Ongoing Auctions</h3>
+  <table id="auctionTable" class="centered-table">
     <thead>
       <tr>
-        <th>Product Name</th>
-        <th>End Time</th>
-        <th>Price</th>
+        <th style="text-align: center;">Product Name</th>
+        <th style="text-align: center;">End Time</th>
+        <th style="text-align: center;">Price</th>
       </tr>
     </thead>
     <tbody id="auctionTableBody">
     </tbody>
   </table>
-  
+</div>
 
 </body>
 </html>
@@ -109,21 +111,20 @@
               // Make API call
               fetch('/api/auctions')
               .then(response => response.json())
-              .then(data => {
-                console.log('Auction', data);
+              .then(data => {    
                 // Parse response data
                 const auctions = data;
-                
                 // Create table element
                 const table = document.getElementById('auction-table');
                   auctionTableBody.innerHTML='';
                   auctions.forEach(auction=>{
                     const row= auctionTableBody.insertRow();
                     row.innerHTML = `
-                    <td>${auction.product_id}</td>
+                    <td>${auction.product_name}</td>
                     <td>${auction.end_time}</td>
                     <td>${auction.initial_price}</td>`;
-                    auctionTable.classList.remove('hidden');
+                    var table = document.getElementById("hiddenclass");
+                    table.classList.remove("hidden");
                   })
                 })
                 .catch(error => {

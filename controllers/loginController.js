@@ -131,7 +131,7 @@ const loginController = {
 
     bidHistory: async (req, res) => {
         try{
-            const email_id = req.session.passport.user.id;
+            const email_id = req.session.passport.user.id;  
             const result = await User.fetchHistoryBidsForUser(email_id);
             return res.json(result);
         } catch (err) {

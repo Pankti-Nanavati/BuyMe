@@ -33,15 +33,18 @@
     text-align: center;
   }
 
+  
+
   table {
     border-collapse: collapse;
     width: 50%;
-    
+    margin: auto;
   }
   
   th, td {
-    text-align: left;
+    text-align: center;
     padding: 8px;
+    border: 1px solid black; /* add border to cells */
   }
   
   th {
@@ -51,18 +54,16 @@
   tfoot td {
     font-weight: bold;
   }
+  
   .hidden {
     display: none;
   }
-
-  .dropdown-item {
-    font-size: 14px;
-    color: #333;
-    background-color: #fff;
+  
+  .heading-container {
+    text-align: center;
   }
   
-  .dropdown-item:hover {
-    background-color: #f2f2f2;
+  .heading {
+    margin: 0;
   }
-  
   

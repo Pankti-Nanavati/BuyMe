@@ -77,6 +77,12 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
+        <!-- <div id="bidTable" class="bhidden">
+          <p> No Bid History</p>
+        </div> -->
+        <div id="nobids">
+          
+        </div>
         <table id="bidTable" class="hidden">
             <thead>
               <tr>
@@ -107,6 +113,12 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
+        <!-- <div id="auctionTable" class="ahidden">
+          <p> No Auction History</p>
+        </div> -->
+        <div id="noauction">
+          
+        </div>
         <table id="auctionTable" class="hidden">
           <thead>
             <tr>
@@ -114,6 +126,8 @@
               <th>Brand</th>
               <th>Color</th>
               <th>Size</th>
+              <th>Price</th>
+              <th>End Time</th>
             </tr>
           </thead>
           <tbody id="auctionTableBody">
@@ -168,25 +182,30 @@
     const bidTableBody = document.querySelector('#bidTableBody');
     const auctionTable = document.querySelector('#auctionTable');
     const bidTable = document.querySelector('#bidTable');
+
     function fetchAuctions() {
     fetch(`/api/auctionHistory`)
     .then(response => response.json())
     .then(data => {
-      console.log(data)
+     
       // Clear previous table data
       auctionTableBody.innerHTML = '';
       if (data.length === 0) {
-      auctionTableBody.innerHTML = `<tr><td colspan="4">No Auction history</td></tr>`;
+        document.getElementById("noauction").innerHTML = "No Auction history";
     } else {
+      console.log(data);
       data.forEach(auction => {
         const row = auctionTableBody.insertRow();
         row.innerHTML = `
           <td>${auction.product_name}</td>
           <td>${auction.brand}</td>
-          <td>${auction.color}</td>
+          <td>${auction.colour}</td>
           <td>${auction.size}</td>
+          <td>${auction.initial_price}</td>
+          <td>${auction.end_time}</td>
         `;
-        auctionTable.classList.remove('hidden');
+        var table = document.getElementById("auctionTable");
+        table.classList.remove("hidden");
     });
 }
 });}
@@ -197,13 +216,9 @@ fetch(`/api/bidHistory`)
     .then(data => {
       // Clear previous table data
       bidTableBody.innerHTML = '';
-      
-      if (data.length == 0) {
-        console.log(data.length);
-        const row = bidTableBody.insertRow();
-        row.innerHTML = `<tr><td colspan="3">No Bid history</td></tr>`;
-        bidTable.classList.remove('hidden');
-      // bidTableBody.innerHTML = `<tr><td colspan="3">No Bid history</td></tr>`;
+      console.log(data);
+      if (data.length === 0) {
+        document.getElementById("nobid").innerHTML = `<p>No Bid history</p>`;
     } else {
       data.forEach(bid => {
         const row = bidTableBody.insertRow();
