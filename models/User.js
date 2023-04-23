@@ -99,7 +99,7 @@ const User = {
       throw new Error('Failed to update user');
     }
   },
-  raiseQuery: async (email_id, query, query_type, val) => {
+  raiseQuery: async (email_id, query_type, val) => {
     try {
       const getCustomerReps = 'Select email_id from `bm_auction_system`.`customer_rep`;'
       const [custReps] = await db.execute(getCustomerReps);
@@ -108,8 +108,8 @@ const User = {
       console.log(custReps);
       const custRep_email = custReps[index].email_id;
       const queryString = 
-    'Insert into `bm_auction_system`.`user_queries` (user_email_id, custRep_email_id, query, query_type, value) Values (?,?,?,?,?);'
-      const [result] = await db.execute(queryString, [email_id, custRep_email, query, query_type, val]);
+    'Insert into `bm_auction_system`.`user_queries` (user_email_id, custRep_email_id, query_type, value) Values (?,?,?,?);'
+      const [result] = await db.execute(queryString, [email_id, custRep_email, query_type, val]);
       return result;
     } catch (err) {
       console.error(err);
@@ -119,7 +119,7 @@ const User = {
   fetchHistoryBidsForUser: async (email_id) => {
     try {
       const queryString = 
-    'Select P.product_name, B.bidding_timestamp, B.amount, B.bid_id from `bm_auction_system`.`bid` B inner Join `bm_auction_system`.`auction` A on A.`bid_id` = B.`bid_id` inner Join `bm_auction_system`.`product` P on A.`product_id` = P.`product_id` where B.email_id = ?;'
+    'Select P.product_name, B.bidding_timestamp, B.amount, B.bid_id from `bm_auction_system`.`bid` B inner Join `bm_auction_system`.`auction` A on A.`auction_id` = B.`auction_id` inner Join `bm_auction_system`.`product` P on A.`product_id` = P.`product_id` where B.email_id = ?;'
       const [result] = await db.execute(queryString, [email_id]);
       return result;
     } catch (err) {
@@ -130,7 +130,7 @@ const User = {
   fetchHistoryAuctionsForUser: async (email_id) => {
     try {
       const queryString = 
-    'Select P.product_name, P.brand, P.colour, P.size, A.initial_price, A.end_time, A.auction_id from `bm_auction_system`.`auction` A inner inner Join `bm_auction_system`.`product` P on A.`product_id` = P.`product_id` where A.email_id = ?;'
+    'Select P.product_name, P.brand, P.colour, P.size, A.initial_price, A.end_time, A.auction_id from `bm_auction_system`.`auction` A inner Join `bm_auction_system`.`product` P on A.`product_id` = P.`product_id` where A.email_id = ?;'
       const [result] = await db.execute(queryString, [email_id]);
       return result;
     } catch (err) {

@@ -6,7 +6,7 @@ table {
   
   th, td {
     text-align: left;
-    padding: 8px;
+    padding: 100px;
   }
   
   th {
@@ -17,11 +17,5 @@ table {
     font-weight: bold;
   }
   .hidden {
-    display: none;
-  }
-  .ahidden {
-    display: none;
-  }
-  .bhidden {
     display: none;
   }

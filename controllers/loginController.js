@@ -100,6 +100,7 @@ const loginController = {
             return res.json(result);
         }
         catch (err){
+            console.log(err);
             return res.status(500).send('Internal Server Error');
         }
     },

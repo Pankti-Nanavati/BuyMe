@@ -5,6 +5,8 @@
 <!-- Required CSS -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
 <!-- Required JavaScript -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
@@ -77,11 +79,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <!-- <div id="bidTable" class="bhidden">
-          <p> No Bid History</p>
-        </div> -->
-        <div id="nobids">
-          
+        <div id="nobid">
         </div>
         <table id="bidTable" class="hidden">
             <thead>
@@ -106,18 +104,14 @@
 
 
 <div class="modal fade" id="auctionModal" tabindex="-1" aria-labelledby="auctionLabel" onclick="fetchAuctions(); auctionModal.show()" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-xl">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="auctionLabel">Auction History</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        <!-- <div id="auctionTable" class="ahidden">
-          <p> No Auction History</p>
-        </div> -->
+      <div class="modal-body" >
         <div id="noauction">
-          
         </div>
         <table id="auctionTable" class="hidden">
           <thead>
@@ -128,6 +122,7 @@
               <th>Size</th>
               <th>Price</th>
               <th>End Time</th>
+              <th>Delete</th>
             </tr>
           </thead>
           <tbody id="auctionTableBody">
@@ -161,10 +156,6 @@
               <label for="confirmPasswordInput" class="form-label">Confirm Password</label>
               <input type="password" class="form-control" id="confirmPasswordInput">
             </div>
-            <div class="mb-3">
-              <label for="reasonInput" class="form-label">Reason</label>
-              <input type="text" class="form-control" id="reasonInput">
-            </div>
           </form>
         </div>
         <div class="modal-footer">
@@ -183,32 +174,62 @@
     const auctionTable = document.querySelector('#auctionTable');
     const bidTable = document.querySelector('#bidTable');
 
-    function fetchAuctions() {
-    fetch(`/api/auctionHistory`)
+
+
+function fetchAuctions() {
+  fetch(`/api/auctionHistory`)
     .then(response => response.json())
     .then(data => {
-     
       // Clear previous table data
       auctionTableBody.innerHTML = '';
       if (data.length === 0) {
         document.getElementById("noauction").innerHTML = "No Auction history";
-    } else {
-      console.log(data);
-      data.forEach(auction => {
-        const row = auctionTableBody.insertRow();
-        row.innerHTML = `
-          <td>${auction.product_name}</td>
-          <td>${auction.brand}</td>
-          <td>${auction.colour}</td>
-          <td>${auction.size}</td>
-          <td>${auction.initial_price}</td>
-          <td>${auction.end_time}</td>
-        `;
-        var table = document.getElementById("auctionTable");
-        table.classList.remove("hidden");
+      } else {
+        data.forEach(auction => {
+          const row = auctionTableBody.insertRow();
+          row.innerHTML = `
+            <td>${auction.product_name}</td>
+            <td>${auction.brand}</td>
+            <td>${auction.colour}</td>
+            <td>${auction.size}</td>
+            <td>${auction.initial_price}</td>
+            <td>${auction.end_time}</td>
+            <td><i class="bi bi-trash clickable" data-id="${auction.auction_id}"></i></td>
+          `;
+          var table = document.getElementById("auctionTable");
+          table.classList.remove("hidden");
+        });
+        // Add event listeners to trash icons
+        
+        const trashIcons = document.querySelectorAll('.bi-trash.clickable');
+        trashIcons.forEach(icon => {
+          icon.addEventListener('click', () => {
+            const queryType='Delete an Auction';
+            const value= icon.getAttribute('data-id');
+            fetch('/api/raiseQuery', {
+              method: 'POST',
+              body: JSON.stringify({ queryType, value}),
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            })
+            .then(response => {
+              if (response.ok) {
+                alert('Delete request successfully sent !');
+              } else {
+                alert('Request failed');
+              }
+            })
+            .catch(error => {
+              alert('Request failed: ' + error.message);
+            });
+          });
+        });
+      }
     });
 }
-});}
+
+
 
 function fetchBids() {
 fetch(`/api/bidHistory`)
@@ -226,11 +247,37 @@ fetch(`/api/bidHistory`)
           <td>${bid.product_name}</td>
           <td>${bid.time}</td>
           <td>${bid.initial_price}</td>
+          <td><i class="bi bi-trash clickable" data-id="${bid.product_id}"></i></td>
         `;
-        bidTable.classList.remove('hidden');
+        var table = document.getElementById("bidTable");
+        table.classList.remove("hidden");
     });
-}
-});
+    const trashIcons = document.querySelectorAll('.bi-trash.clickable');
+        trashIcons.forEach(icon => {
+          icon.addEventListener('click', () => {
+            const queryType='Delete a Bid';
+            const value= icon.getAttribute('data-id');
+            fetch('/api/raiseQuery', {
+              method: 'POST',
+              body: JSON.stringify({queryType, value}),
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            })
+            .then(response => {
+              if (response.ok) {
+                alert('Delete request successfully sent !');
+              } else {
+                alert('Request failed');
+              }
+            })
+            .catch(error => {
+              alert('Request failed: ' + error.message);
+            });
+          });
+        });
+      }
+    });
 }
 
 
@@ -239,12 +286,11 @@ const submitBtn = document.getElementById('submit-btn');
     event.preventDefault(); // Prevents the form from submitting normally
 
     const value= document.getElementById('confirmPasswordInput').value;
-    const query = document.getElementById('reasonInput').value;
     const queryType='Reset Password';
     // Make an API request to the server with the color and size data
     fetch('/api/raiseQuery', {
       method: 'POST',
-      body: JSON.stringify({ query, queryType, value }),
+      body: JSON.stringify({ queryType, value }),
       headers: { 'Content-Type': 'application/json' }
     })
     .then(response => response.json())
