@@ -12,7 +12,7 @@ const customerRepController = {
   logout: async(req, res) => {
     req.session.destroy();
     req.logout();
-    res.redirect('/customer');
+    res.redirect('login');
   },
   
   login: async(req, res) => {
