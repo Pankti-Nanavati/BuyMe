@@ -58,8 +58,8 @@ const Admin = {
   },
   getSalesReport: async (date1, date2) => {
     const queryString1 = 'Select SUM(amount) from sales WHERE sale_timestamp <= ? and sale_timestamp >= ?;';
-    const queryString2 = 'Select TOP 5 p.product_name, SUM(s.amount) as product_earnings from sales s join product p on product_id WHERE s.sale_timestamp <= ? and s.sale_timestamp >= ? group by p.product_name Sort by product_earnings DESC;';
-    const queryString3 = 'Select TOP 5 buyer_email_id, SUM(amount) as user_earnings from sales WHERE sale_timestamp <= ? and sale_timestamp >= ? group by p.buyer_email_id Sort by user_earnings DESC;';
+    const queryString2 = 'Select TOP 5 P.product_name, SUM(S.amount) as product_earnings from sales S inner join product P on P.product_id = S.product_id WHERE S.sale_timestamp <= ? and S.sale_timestamp >= ? group by P.product_name Sort by product_earnings DESC;';
+    const queryString3 = 'Select TOP 5 buyer_email_id, SUM(amount) as user_earnings from sales WHERE sale_timestamp <= ? and sale_timestamp >= ? group by buyer_email_id Sort by user_earnings DESC;';
     try{
       const [result1] = await db.execute(queryString1, [date2, date1]);
       const [result2] = await db.execute(queryString2, [date2, date1]);

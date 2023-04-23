@@ -58,7 +58,7 @@ const User = {
     }
   },
   fetchAuctionForUser: async (email_id) => {
-    const queryString = 'Select P.product_name, A.end_time, A.initial_price from bm_auction_system.auction A Join bm_auction_system.product P on product_id where email_id = ?;'
+    const queryString = 'Select P.product_name, A.end_time, A.initial_price from bm_auction_system.auction A inner Join bm_auction_system.product P on P.product_id = A.product_id where email_id = ?;'
     try {
       const [result] = await db.execute(queryString, [email_id]);
       return result;
@@ -119,7 +119,7 @@ const User = {
   fetchHistoryBidsForUser: async (email_id) => {
     try {
       const queryString = 
-    'Select P.product_name, B.bidding_timestamp, B.amount, B.bid_id from `bm_auction_system`.`bid` B Join `bm_auction_system`.`auction` A on `bid_id` Join `bm_auction_system`.`product` P on `product_id` where email_id = ?;'
+    'Select P.product_name, B.bidding_timestamp, B.amount, B.bid_id from `bm_auction_system`.`bid` B inner Join `bm_auction_system`.`auction` A on A.`bid_id` = B.`bid_id` inner Join `bm_auction_system`.`product` P on A.`product_id` = P.`product_id` where B.email_id = ?;'
       const [result] = await db.execute(queryString, [email_id]);
       return result;
     } catch (err) {
@@ -130,7 +130,7 @@ const User = {
   fetchHistoryAuctionsForUser: async (email_id) => {
     try {
       const queryString = 
-    'Select P.product_name, P.brand, P.colour, P.size, A.initial_price, A.end_time, A.auction_id from `bm_auction_system`.`auction` A Join `bm_auction_system`.`product` P on `product_id` where email_id = ?;'
+    'Select P.product_name, P.brand, P.colour, P.size, A.initial_price, A.end_time, A.auction_id from `bm_auction_system`.`auction` A inner inner Join `bm_auction_system`.`product` P on A.`product_id` = P.`product_id` where A.email_id = ?;'
       const [result] = await db.execute(queryString, [email_id]);
       return result;
     } catch (err) {
@@ -139,7 +139,7 @@ const User = {
     }
   },
   fetchSalesForUser: async (email_id) => {
-    const queryString = 'Select P.product_name, P.colour, P.size S.amount from bm_auction_system.sales S join bm_auction_system.product P on product_id where email_id = ? ;'
+    const queryString = 'Select P.product_name, P.colour, P.size S.amount from bm_auction_system.sales S inner join bm_auction_system.product P on S.product_id = P.product_id where email_id = ? ;'
     try {
       const [result] = await db.execute(queryString, [email_id]);
       return result;
