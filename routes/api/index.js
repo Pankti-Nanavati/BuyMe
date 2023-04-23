@@ -19,10 +19,12 @@ const customerRepController = require('../../controllers/customerRepController')
  */
 
 router.get('/admin/login', adminController.loginView);
-router.post('/admin/login', adminController.login);
+router.post('/admin/login', passport.authenticate('admin'), adminController.login);
 router.get('/admin/logout', adminController.logout);
+
 router.get('/admin/create/cr', adminController.crView);
 router.post('/admin/create/cr', adminController.createCR);
+
 router.post('/admin/create/report', adminController.createCR);
 
 
