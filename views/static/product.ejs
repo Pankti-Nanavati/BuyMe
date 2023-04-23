@@ -10,33 +10,9 @@
 
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#">Hi Pankti Nanavati!</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link" href="/api/sell">Sell</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Alert</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Notification</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Cart</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/api/logout">Logout</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+    
+    <%- include('navbar') %>
+          
 
     <div class="product">
         <div class="product-image">
@@ -47,7 +23,6 @@
           <div class="product-buttons">
             <button class="list-item">List Your Item</button>
             <button id="bid-button" class="bid">Bid</button>
-
             <button class="set-alert" onclick="openModal()">Set Alert</button>
           </div>
         </div>
@@ -57,7 +32,6 @@
       <div class="modal" id="bid-modal">
         <div class="modal-content">
           <div class="modal-header">
-            
             <h2>Place Your Bid</h2>
             <span class="close">&times;</span>
           </div>
@@ -103,24 +77,14 @@
   <script>// Get the modal
   
     var modal = document.getElementById("bid-modal");
-    
-    // Get the button that opens the modal
     var bidBtn = document.getElementById("bid-button");
-    
-    // Get the <span> element that closes the modal
     var closeBtn = document.querySelector(".close");
-    
-    // When the user clicks on the bid button, open the modal
     bidBtn.onclick = function() {
       modal.style.display = "block";
     }
-    
-    // When the user clicks on <span> (x), close the modal
     closeBtn.onclick = function() {
       modal.style.display = "none";
     }
-    
-    // When the user clicks anywhere outside of the modal, close it
     window.onclick = function(event) {
       if (event.target == modal) {
         modal.style.display = "none";
@@ -128,21 +92,17 @@
     }
 
 
+
     function openModal() {
     document.getElementById("alert-modal").style.display = "block";
   }
-  
   function closeModal() {
     document.getElementById("alert-modal").style.display = "none";
   }
-
-
   const form = document.getElementById('alert-form');
   const submitBtn = document.getElementById('submit-btn');
-
   submitBtn.addEventListener('click', (event) => {
     event.preventDefault(); // Prevents the form from submitting normally
-
     const color = document.getElementById('color').value;
     const size = document.getElementById('size').value;
     const urlParams = new URLSearchParams(window.location.search);

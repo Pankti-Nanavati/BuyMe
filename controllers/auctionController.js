@@ -7,28 +7,6 @@ const auctionController = {
     return res.render('../views/static/sell', data);
   },
 
-  bidHistory: async (req, res) => {
-    try {
-      const userId = req.session.passport.user.id;
-      const result = await Auction.getAllBidsByUserId(userId);
-      return res.json(result);
-    } catch (err) {
-      console.error(err);
-      return res.status(500).json({ error: 'Internal server error' });
-    }
-  },
-
-  auctionHistory: async (req, res) => {
-    try {
-      const userId = req.session.passport.user.id;
-      const result = await Auction.getAllAuctionsByUserId(userId);
-      return res.json(result);
-    } catch (err) {
-      console.error(err);
-      return res.status(500).json({ error: 'Internal server error' });
-    }
-  },
-
   auctions: async (req, res) => {
     try {
       const result = await Auction.getActiveAuctions();

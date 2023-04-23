@@ -66,7 +66,8 @@ router.post('/raiseQuery', loginController.raiseQuery);
 router.post('/register', loginController.registerUser);
 router.get('/alert', loginController.fetchAlert);
 router.post('/alert', loginController.setAlert);
-
+router.get('/auctionHistory', loginController.auctionHistory);
+router.get('/bidHistory', loginController.bidHistory);
 
 
 
@@ -109,9 +110,6 @@ router.get('/product', searchController.productView);
  * 
  */
 
-
-router.get('/auctionHistory', auctionController.auctionHistory);
-router.get('/bidHistory', auctionController.bidHistory);
 router.get('/auctions', auctionController.auctions);
 router.post('/createAuction', auctionController.createAuction);
 router.post('/placeBid/:productId', auctionController.placeBid);

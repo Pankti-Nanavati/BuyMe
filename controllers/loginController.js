@@ -88,7 +88,6 @@ const loginController = {
 
     raiseQuery: async(req, res) => {
         try{
-            console.log(req.body)
             const query = req.body.query;
             const queryType = req.body.queryType;
             const id = req.session.passport.user.id;
@@ -117,7 +116,29 @@ const loginController = {
             console.log(err);
             return res.status(500).send('Internal Server Error');
         }
-    }
+    },
+
+    auctionHistory: async (req, res) => {
+        try{
+            const email_id = req.session.passport.user.id;
+            const result = await User.fetchHistoryAuctionsForUser(email_id);
+            return res.json(result);
+        } catch (err) {
+            console.log(err);
+            return res.status(500).send('Internal Server Error');
+        }        
+    },
+
+    bidHistory: async (req, res) => {
+        try{
+            const email_id = req.session.passport.user.id;
+            const result = await User.fetchHistoryBidsForUser(email_id);
+            return res.json(result);
+        } catch (err) {
+            console.log(err);
+            return res.status(500).send('Internal Server Error');
+        }        
+    },
 
 };
 
