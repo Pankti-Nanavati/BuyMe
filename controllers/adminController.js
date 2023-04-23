@@ -32,9 +32,9 @@ const adminController = {
     
     createCR: async(req, res) => {
         try {
-            const values = [req.body.email, await bcrypt.hash(req.body.password, 10), req.body.name, req.body.user_name, req.body.phone_number];
-            const result = await Admin.insertOneCR(values);
-            return res.json(result);
+            const values = [req.body.email_id, await bcrypt.hash(req.body.password, 10), req.body.name, req.body.user_name, req.body.phone_number];
+            await Admin.insertOneCR(values);
+            return res.redirect('homepage');
         } catch (err) {
             console.error(err);
             return res.status(500).json({ error: 'Internal server error' });
