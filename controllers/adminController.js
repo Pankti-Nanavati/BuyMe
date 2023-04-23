@@ -11,6 +11,7 @@ const adminController = {
     },
     
     login: async(req, res) => {
+        console.log(req.user);
         if (req.user.type === 'admin'){
             return res.redirect('adminHomepage');
         } else {

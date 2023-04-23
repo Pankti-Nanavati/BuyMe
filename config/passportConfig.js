@@ -15,6 +15,7 @@ module.exports = passport => {
     } else {
       userType = 'user';
     }
+    console.log(user, userType);
     done(null, {user_name: user.user_name, id: user.email_id, type: userType});
   });
   
@@ -84,7 +85,7 @@ module.exports = passport => {
       async (req, email_id, password, done) => {
         try {
           const user = await Admin.selectOneById(email_id);
-
+          console.log(await bcrypt.compare(password, user.password));
           if (!user || !user.isAdmin || !(await bcrypt.compare(password, user.password))) {
             return done(null, false, { message: 'Incorrect email or password' });
           }
