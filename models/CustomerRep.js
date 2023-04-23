@@ -4,7 +4,7 @@ const CR = {
   selectAll: async () => {
     try {
       const queryString =
-        'SELECT email_id, password, name, user_name, phone_number, emp_id FROM bm_auction_system.customer_rep;';
+        'SELECT email_id, password, name, user_name, phone_number FROM bm_auction_system.customer_rep;';
       const [rows] = await db.query(queryString);
       return rows;
     } catch (error) {
@@ -14,7 +14,7 @@ const CR = {
   },
   selectOneById: async (id) => {
     const queryString =
-      'SELECT email_id, password, name, user_name, phone_number, emp_id FROM bm_auction_system.customer_rep WHERE email_id=?;';
+      'SELECT email_id, password, name, user_name, phone_number FROM bm_auction_system.customer_rep WHERE email_id=?;';
     try {
       const [rows] = await db.execute(queryString, [id]);
       console.log('SelectOneById', rows);

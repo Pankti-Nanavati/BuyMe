@@ -6,16 +6,20 @@ const adminController = {
         res.render('../views/static/admin.ejs');
     },
 
+    homepageView: async (req, res) => {
+        res.render('../views/static/adminHomepage.ejs');
+    },
+
     crView: async (req, res) => {
         res.render('../views/static/createCustomerRep.ejs');
     },
     
     login: async(req, res) => {
-        console.log(req.user);
-        if (req.user.type === 'admin'){
-            return res.redirect('adminHomepage');
+        console.log(req.session);
+        if (req.session.passport.user.type === 'admin'){
+            return res.redirect('homepage');
         } else {
-            return res.redirect('admin');
+            return res.redirect('login');
         }
     },
 

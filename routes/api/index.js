@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const passport = require('passport');
+
+const userPassport = require('../../config/passportUserConfig');
+const adminPassport = require('../../config/passportAdminConfig');
+const customerRepPassport = require('../../config/passportCRConfig');
 
 const loginController = require('../../controllers/loginController')
 const searchController = require('../../controllers/searchController');
@@ -19,8 +22,9 @@ const customerRepController = require('../../controllers/customerRepController')
  */
 
 router.get('/admin/login', adminController.loginView);
-router.post('/admin/login', passport.authenticate('admin'), adminController.login);
+router.post('/admin/login', adminPassport.authenticate('admin'), adminController.login);
 router.get('/admin/logout', adminController.logout);
+router.get('/admin/homepage', adminController.homepageView);
 
 router.get('/admin/create/cr', adminController.crView);
 router.post('/admin/create/cr', adminController.createCR);
@@ -41,8 +45,9 @@ router.post('/admin/create/report', adminController.createCR);
  */
 
 router.get('/customerRep/login', customerRepController.loginView);
-router.post('/customerRep/login', customerRepController.login);
-router.get('customerRep/logout', customerRepController.logout);
+router.post('/customerRep/login', customerRepPassport.authenticate('customer'), customerRepController.login);
+router.get('/customerRep/logout', customerRepController.logout);
+router.get('/customerRep/homepage', customerRepController.homepageView);
 
 router.get('/customerRep/queries', customerRepController.queries);
 router.post('/customerRep/queries/resolve', customerRepController.resolveQueries);
@@ -64,7 +69,7 @@ router.get('/register', loginController.registerView);
 router.post('/register', loginController.registerUser);
 
 router.get('/login', loginController.loginView);
-router.post('/login', passport.authenticate('user'), loginController.login);
+router.post('/login', userPassport.authenticate('user'), loginController.login);
 router.get('/logout', loginController.logoutUser);
 
 router.get('/profile', loginController.getProfile);
@@ -102,8 +107,6 @@ router.post('/subcategory/:categoryId/products/filter', searchController.product
 router.get('/products', searchController.products);
 router.get('/product/:productId', searchController.productById);
 router.get('/product', searchController.productView);
-
-
 
 
 /**

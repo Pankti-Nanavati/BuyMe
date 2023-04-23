@@ -14,10 +14,9 @@ const Admin = {
   },
   selectOneById: async (id) => {
     const queryString =
-      'SELECT password FROM bm_auction_system.admin WHERE email_id=?;';
+      'SELECT email_id, password FROM bm_auction_system.admin WHERE email_id=?;';
     try {
       const [rows] = await db.execute(queryString, [id]);
-      console.log('SelectOneById', rows);
       return rows && rows.length ? rows[0] : null;
     } catch (err) {
       console.error(err);

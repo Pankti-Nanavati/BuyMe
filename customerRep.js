@@ -10,18 +10,17 @@ const session = require('express-session')
 
 const sessionStore = require('./config/sessionStore');
 
-const userPassport = require('./config/passportUserConfig');
-
+const customerRepPassport = require('./config/passportCustomerConfig');
 
 require('dotenv').config();
 
-const PORT = process.env.USER_PORT;
+const PORT = process.env.CUSTOMER_PORT;
 
 // For Logging
 app.use(morgan('dev'))
 
-const userSessionConfig = {
-    secret: process.env.SECRET_KEY,
+const customerRepSessionConfig = {
+    secret: process.env.CUSTOMER_SECRET_KEY,
     store: sessionStore,
     resave: false,
     saveUninitialized: false,
@@ -31,11 +30,8 @@ const userSessionConfig = {
     },
 };
 
-
-
 // Creating Session
-app.use(session(userSessionConfig));
-
+app.use(session(customerRepSessionConfig));
 
 // parse Json data
 app.use(express.json());
@@ -50,15 +46,11 @@ app.use(express.static(__dirname + '/views'));
 app.set('view engine', 'ejs');
 
 
-// Initialize Passport for user
-
-app.use(userPassport.initialize());
-app.use(userPassport.session());
-
+// Initialize Passport for admin
+app.use(customerRepPassport.initialize());
+app.use(customerRepPassport.session());
 
 // Setting Routes
 app.use(routes);
 
-app.listen(PORT, console.log("Server started at port: " + PORT));
-
-
+app.listen(PORT, console.log("Customer Server started at port: " + PORT));

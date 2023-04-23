@@ -5,6 +5,10 @@ const customerRepController = {
     res.render('../views/static/customerRep.ejs');
   },
   
+  homepageView: async(req, res) => {
+    res.render('../views/static/customerRepHomepage.ejs');
+  },
+
   logout: async(req, res) => {
     req.session.destroy();
     req.logout();
@@ -13,9 +17,9 @@ const customerRepController = {
   
   login: async(req, res) => {
     if (req.user.type === 'customer'){
-      return res.redirect('adminHomepage');
-    } else {
       return res.redirect('customerRepHomepage');
+    } else {
+      return res.redirect('login');
     }
   },
   
