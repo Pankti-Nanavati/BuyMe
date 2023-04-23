@@ -16,8 +16,8 @@ const customerRepController = {
   },
   
   login: async(req, res) => {
-    if (req.user.type === 'customer'){
-      return res.redirect('customerRepHomepage');
+    if (req.session.passport.user.type === 'customer'){
+      return res.redirect('homepage');
     } else {
       return res.redirect('login');
     }

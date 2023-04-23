@@ -15,7 +15,6 @@ const adminController = {
     },
     
     login: async(req, res) => {
-        console.log(req.session);
         if (req.session.passport.user.type === 'admin'){
             return res.redirect('homepage');
         } else {
