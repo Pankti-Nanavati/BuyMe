@@ -37,9 +37,10 @@ const CR = {
   },
   fetchQueries: async (customerRep_email) => {
     const queryString = 
-    'SELECT user_email_id, query_type FROM bm_auction_system.user_queries value where custRep_email = ? and resolved_flag = 0;'
+    'SELECT user_email_id, query_type FROM bm_auction_system.user_queries value where custRep_email_id = ? and resolved_flag = 0;'
     try {
       const [rows] = await db.execute(queryString, [customerRep_email]);
+      console.log('row', rows);
       return rows;
   } catch (err) {
       console.error(err);
