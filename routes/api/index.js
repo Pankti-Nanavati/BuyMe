@@ -21,6 +21,7 @@ const customerRepController = require('../../controllers/customerRepController')
 router.get('/admin/login', adminController.loginView);
 router.post('/admin/login', adminController.login);
 router.get('/admin/logout', adminController.logout);
+router.get('/admin/create/cr', adminController.crView);
 router.post('/admin/create/cr', adminController.createCR);
 router.post('/admin/create/report', adminController.createCR);
 
@@ -40,6 +41,7 @@ router.post('/admin/create/report', adminController.createCR);
 router.get('/customerRep/login', customerRepController.loginView);
 router.post('/customerRep/login', customerRepController.login);
 router.get('customerRep/logout', customerRepController.logout);
+
 router.get('/customerRep/queries', customerRepController.queries);
 router.post('/customerRep/queries/resolve', customerRepController.resolveQueries);
 
@@ -57,20 +59,23 @@ router.post('/customerRep/queries/resolve', customerRepController.resolveQueries
  * */ 
  
 router.get('/register', loginController.registerView);
+router.post('/register', loginController.registerUser);
+
 router.get('/login', loginController.loginView);
+router.post('/login', passport.authenticate('user'), loginController.login);
 router.get('/logout', loginController.logoutUser);
+
 router.get('/profile', loginController.getProfile);
 router.get('/homepage', loginController.homepageView);
-router.post('/login', passport.authenticate('user'), loginController.login);
+
+
 router.post('/raiseQuery', loginController.raiseQuery);
-router.post('/register', loginController.registerUser);
+
 router.get('/alert', loginController.fetchAlert);
 router.post('/alert', loginController.setAlert);
+
 router.get('/auctionHistory', loginController.auctionHistory);
 router.get('/bidHistory', loginController.bidHistory);
-
-
-
 
 
 
@@ -88,12 +93,13 @@ router.get('/bidHistory', loginController.bidHistory);
 
 router.get('/category', searchController.categories);
 router.get('/category/:categoryId/subcategories', searchController.subCategories);
+
 router.get('/subcategory/:categoryId/products', searchController.productsByCategoryId);
 router.post('/subcategory/:categoryId/products/filter', searchController.productsByFilter);
+
 router.get('/products', searchController.products);
 router.get('/product/:productId', searchController.productById);
 router.get('/product', searchController.productView);
-
 
 
 
@@ -112,8 +118,10 @@ router.get('/product', searchController.productView);
 
 router.get('/auctions', auctionController.auctions);
 router.post('/createAuction', auctionController.createAuction);
-router.post('/placeBid/:productId', auctionController.placeBid);
 router.get('/sell', auctionController.sell);
+
+router.post('/placeBid/:productId', auctionController.placeBid);
+
 
 
 module.exports = router;

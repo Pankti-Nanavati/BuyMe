@@ -5,12 +5,16 @@ const adminController = {
     loginView: async (req, res) => {
         res.render('../views/static/admin.ejs');
     },
+
+    crView: async (req, res) => {
+        res.render('../views/static/createCustomerRep.ejs');
+    },
     
     login: async(req, res) => {
         if (req.user.type === 'admin'){
             return res.redirect('adminHomepage');
         } else {
-            return res.redirect('customerRepHomepage');
+            return res.redirect('admin');
         }
     },
 

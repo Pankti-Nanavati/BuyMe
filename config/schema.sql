@@ -181,7 +181,6 @@ Create Table `user_queries` (
   `query_id` int(10) NOT NULL AUTO_INCREMENT,
   `user_email_id` varchar(45) NOT NULL,
   `custRep_email_id` varchar(45) NOT NULL,
-  `query` LONGTEXT,
   `query_type` ENUM('Reset Password', 'Delete a Bid', 'Delete an Auction'),
   `value` varchar(70);
   `resolved_flag` Boolean DEFAULT 0,

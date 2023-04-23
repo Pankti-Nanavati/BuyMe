@@ -105,7 +105,6 @@ const User = {
       const [custReps] = await db.execute(getCustomerReps);
       const n = custReps.length;
       const index = Math.floor(Math.random() * n)%n;
-      console.log(custReps);
       const custRep_email = custReps[index].email_id;
       const queryString = 
     'Insert into `bm_auction_system`.`user_queries` (user_email_id, custRep_email_id, query_type, value) Values (?,?,?,?);'

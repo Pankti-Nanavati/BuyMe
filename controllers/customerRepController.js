@@ -21,10 +21,10 @@ const customerRepController = {
   
   queries: async(req, res) => {
     try {
-      const categoryId = req.params.categoryId;
+      const email_id = req.body.email_id;
       const offset = req.query.offset;
       const limit = req.query.limit;
-      const result = await CustomerRep.selectAllProductsBySubcategoryId(categoryId, offset, limit);
+      const result = await CustomerRep.fetchQueries(email_id);
       return res.json(result);
     } catch (err) {
       console.error(err);
@@ -34,10 +34,20 @@ const customerRepController = {
   
   resolveQueries: async(req, res) => {
     try {
-      const filter = req.body.filter;
-      const offset = req.query.offset;
-      const limit = req.query.limit;
-      const result = await CustomerRep.filterProductsBySubcategoryId(filter, offset, limit);
+
+      const queryId = req.body.queryId;
+      const queryType = req.body.queryType;
+      const email_id = req.body.email_id;
+
+      if (queryType == 'Reset Password'){
+        await CustomerRep.changePasswordById(email_id, req.body.value);
+      }
+      else if (queryType == 'Delete a Bid'){
+        await CustomerRep.deleteBidById(email_id);
+      } else {
+        await CustomerRep.deleteAuctionById(email_id);
+      }
+      const result = await CustomerRep.resolveQuery(queryId);
       return res.json(result);
     } catch (err) {
       console.error(err);
