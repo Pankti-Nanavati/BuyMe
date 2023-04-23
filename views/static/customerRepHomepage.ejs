@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="../../css/admin.css">
+    <!-- Required CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Required JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+
+  </head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/api/homepage">Hi Customer Rep !</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="logout">Logout</a>
+          </li>
+        </ul>
+      </div>       
+    </div>
+  </nav>
+
+  <div class="container mt-3">
+    <div id="productList">
+    </div>
+  </div>
+
+  </body>
+  </html>
+<script>
+  $("#submit-button").click(function() { // attach click event listener to submit button
+    const selectedId = $("#subcategory").val();
+    $.ajax({
+      url: `subcategory/${selectedId}/products`, // replace with your API endpoint
+      type: "GET",
+      data: { 
+      },
+      success: function(response) {
+        console.log(response);
+        var productsContainer = $("#productList");
+        productsContainer.empty(); // clear previous products (if any)
+        response.forEach(function(product) { // loop over products
+          var productDiv = $("<div class='product-item'>"); // create product div
+            var productCard = $("<div class='product'>"); // create product display card
+              // productCard.append("<div class='product-image'><img src='" + product.image + "' alt='Product Image'></div>");
+              productCard.append("<div class='product-info'><a href='product?productId=" + product.product_id + "'><h2 class='product-title'>" + product.product_name + "</h2></a><p class='product-description'>" + product.brand + "</p></div>");
+              productDiv.append(productCard); // append product card to product div
+              productsContainer.append(productDiv); // append product div to container
+            });
+          },
+          error: function(xhr, status, error) {
+            console.log("Error:", error);
+          }
+        });
+      });
+
+    </script>

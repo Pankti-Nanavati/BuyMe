@@ -6,7 +6,7 @@
   "scripts": {
     "develop": "nodemon app.js",
     "admin": "nodemon admin.js",
-    "customer": "customerRep.js",
+    "customer": "nodemon customerRep.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

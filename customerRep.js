@@ -10,7 +10,7 @@ const session = require('express-session')
 
 const sessionStore = require('./config/sessionStore');
 
-const customerRepPassport = require('./config/passportCustomerConfig');
+const customerRepPassport = require('./config/passportCRConfig');
 
 require('dotenv').config();
 
