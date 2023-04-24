@@ -25,6 +25,7 @@ const customerRepController = {
   
   queries: async(req, res) => {
     try {
+      console.log(req.session.passport.user.id);
       const email_id = req.session.passport.user.id;
       const offset = req.query.offset;
       const limit = req.query.limit;
