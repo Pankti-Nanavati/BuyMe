@@ -36,7 +36,7 @@ const CR = {
   },
   fetchQueries: async (customerRep_email) => {
     const queryString = 
-    'SELECT user_email_id, query_type, value FROM bm_auction_system.user_queries where custRep_email_id = ? and resolved_flag = 0;'
+    'SELECT user_email_id, query_type, value, query_id FROM bm_auction_system.user_queries where custRep_email_id = ? and resolved_flag = 0;'
     try {
       const [rows] = await db.execute(queryString, [customerRep_email]);
       return rows;
@@ -69,6 +69,7 @@ const CR = {
     const queryString = 'Update bm_auction_system.user Set password = ? where email_id = ?;';
     try {
         const [rows] = await db.execute(queryString, [new_password, email]);
+        console.log(rows);
         return rows;
     } catch (err) {
         console.error(err);
@@ -76,7 +77,7 @@ const CR = {
     }
   },
   resolveQuery: async (query_id) => {
-    const queryString = 'Update bm_auction_system.user_queries Set resolve_flag = 1 where query_id = ?;';
+    const queryString = 'Update bm_auction_system.user_queries Set resolved_flag = 1 where query_id = ?;';
     try {
         const [rows] = await db.execute(queryString, [query_id]);
         return rows;

@@ -1,73 +1,88 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <link rel="stylesheet" href="../../css/admin.css">
+<head>
+    <link rel="stylesheet" href="../../../css/customerRepHomepage.css">
     <!-- Required CSS -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
-
-<!-- Required JavaScript -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
-
-  </head>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Required JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+    
+</head>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="/api/homepage">Hi Customer Rep !</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" href="logout">Logout</a>
-          </li>
-        </ul>
-      </div>       
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/api/homepage">Hi Customer Rep !</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="logout">Logout</a>
+                    </li>
+                </ul>
+            </div>       
+        </div>
+    </nav>
+    
+    
+    <div id="query-container" class="container">
+        <!-- Query divisions will be appended here -->
     </div>
-  </nav>
-
-  <div id="query-container">
-    <!-- Query divisions will be appended here -->
-  </div>
-
-  </body>
-  </html>
+    
+</body>
+</html>
 <script>
-  fetch('/api/customerRep/queries')
-  .then(response => response.json())
-  .then(data => {
-    const queryContainer = document.getElementById('query-container');
-console.log(data);
-data.forEach(query => {
-  const queryDiv = document.createElement('div');
-  queryDiv.classList.add('query');
-
-  const queryType = document.createElement('span');
-  queryType.innerText = query.type;
-  queryDiv.appendChild(queryType);
-
-  const email = document.createElement('span');
-  email.innerText = query.email;
-  queryDiv.appendChild(email);
-
-  const value = document.createElement('span');
-  value.innerText = query.value;
-  queryDiv.appendChild(value);
-
-  const resolveButton = document.createElement('button');
-  resolveButton.innerText = 'Resolve Query';
-  resolveButton.addEventListener('click', () => {
-    // Handle resolve button click
-  });
-  queryDiv.appendChild(resolveButton);
-
-  queryContainer.appendChild(queryDiv);
-});
-
-  })
-  .catch(error => {
-    console.error('Error fetching queries:', error);
-  });
+    fetch('/api/customerRep/queries')
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        const queryContainer = document.getElementById('query-container');
+        const container = document.getElementById('query-container');
+        data.forEach(query => {
+            const div = document.createElement('div');
+            div.className = 'card my-3';
+            div.innerHTML = `
+            <div class="card-body">
+                <h5 class="card-title">Query Type: ${query.query_type}</h5>
+                ${query.query_type !== 'Reset Password' ? `<p class="card-text">ID: ${query.value}</p>` : ''}
+                <p class="card-text"><small class="text-muted">User: ${query.user_email_id}</small></p>
+                <button type="button" class="btn btn-primary" onclick="handleResolveQuery('${query.query_id}', '${query.query_type}', '${query.value}', '${query.user_email_id}')">Resolve Query</button>
+            </div>
+            `;
+            container.appendChild(div);
+        });
+        
+    })
+    .catch(error => {
+        console.error('Error fetching queries:', error);
+    });
 
 
-    </script>
+
+    const handleResolveQuery = async (queryId, queryType, value, email_id) => {
+  try {
+    console.log(queryId);
+    // Send POST request to resolve query
+    const response = await fetch('/api/customerRep/queries/resolve', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ queryId, queryType, value, email_id })
+    });
+    if (!response.ok) {
+      throw new Error('Failed to resolve query');
+    }
+    // Show success message and reload page
+    alert('Query resolved successfully.');
+    location.reload();
+  } catch (error) {
+    console.error(error);
+    alert('Failed to resolve query');
+  }
+};
+    
+    
+</script>

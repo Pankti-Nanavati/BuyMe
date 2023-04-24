@@ -40,7 +40,7 @@ const customerRepController = {
       const queryId = req.body.queryId;
       const queryType = req.body.queryType;
       const email_id = req.body.email_id;
-
+      console.log(queryId, queryType, email_id);
       if (queryType == 'Reset Password'){
         await CustomerRep.changePasswordById(email_id, req.body.value);
       }
