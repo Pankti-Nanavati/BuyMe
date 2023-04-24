@@ -30,11 +30,23 @@ const auctionController = {
     }
   },
 
+  placeAutoBid: async(req, res) => {
+    try {
+      const email_id = req.session.passport.user.id;
+      const { aution_id, increment_amount, upper_limit } = req.body;
+      const result = await Auction.placeBid(email_id, aution_id, increment_amount, upper_limit);
+      return res.json(result);
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+  },
+
   placeBid: async (req, res) => {
     try {
-      const productId = req.params.productId;
-      const { bidderId, amount } = req.body;
-      const result = await Auction.placeBid(productId, bidderId, amount);
+      const email_id = req.session.passport.user.id;
+      const { product_id, aution_id, amount } = req.body;
+      const result = await Auction.placeBid(product_id, aution_id, email_id, amount);
       return res.json(result);
     } catch (err) {
       console.error(err);

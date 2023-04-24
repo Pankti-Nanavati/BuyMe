@@ -126,7 +126,8 @@ router.get('/auctions', auctionController.auctions);
 router.post('/createAuction', auctionController.createAuction);
 router.get('/sell', auctionController.sell);
 
-router.post('/placeBid/:productId', auctionController.placeBid);
+router.post('/placeBid', auctionController.placeBid);
+router.post('/placeAutoBid', auctionController.placeAutoBid);
 
 
 
