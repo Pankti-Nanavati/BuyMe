@@ -14,7 +14,6 @@ customerRepPassport.serializeUser((user, done) => {
 
 customerRepPassport.deserializeUser(async (idObj, done) => {
     try {
-        console.log('Inside customer Rep', idObj);
         const customer = await CustomerRep.selectOneById(idObj.id);
         done(null, customer);
     } catch (err) {

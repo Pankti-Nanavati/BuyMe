@@ -17,7 +17,6 @@ const CR = {
       'SELECT email_id, password, name, user_name, phone_number FROM bm_auction_system.customer_rep WHERE email_id=?;';
     try {
       const [rows] = await db.execute(queryString, [id]);
-      console.log('SelectOneById', rows);
       return rows && rows.length ? rows[0] : null;
     } catch (err) {
       console.error(err);
@@ -40,7 +39,6 @@ const CR = {
     'SELECT user_email_id, query_type, value FROM bm_auction_system.user_queries where custRep_email_id = ? and resolved_flag = 0;'
     try {
       const [rows] = await db.execute(queryString, [customerRep_email]);
-      console.log('row', rows);
       return rows;
   } catch (err) {
       console.error(err);

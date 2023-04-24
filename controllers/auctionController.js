@@ -5,7 +5,6 @@ const auctionController = {
   sell: async(req, res) => {
 
     const data = {user_name: req.session.passport.user.user_name}
-    console.log(data);
     return res.render('../views/static/sell', data);
   },
 

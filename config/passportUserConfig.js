@@ -30,7 +30,6 @@ new LocalStrategy(
     passwordField: 'password',
   },
   async (req, email_id, password, done) => {
-    console.log('Inside User passport strategy');
     if (!req.user && (!email_id === '' || password.length >= 5)) {
       try {
         const user = await User.selectOneById(email_id);
@@ -52,7 +51,6 @@ new LocalStrategy(
         done(err, null);
       }
     } else if (req.user) {
-      console.log('Authenticated via session', req.user);
       done(null, req.user);
     } else {
       return done(null, false, {
