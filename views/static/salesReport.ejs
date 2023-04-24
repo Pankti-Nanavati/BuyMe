@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" href="../../../salesReport.css">
+    <link rel="stylesheet" href="../../../css/salesReport.css">
     <!-- Required CSS -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
 
@@ -12,15 +12,30 @@
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Hi Admin</a>
+      <a class="navbar-brand" href="/api/homepage">Hi Admin !</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="/api/admin/logout">Logout</a>
+          </li>
+        </ul>
+      </div>       
     </div>
   </nav>
+
   <main>
     <h2> Generate Sales Report</h2>
-    <form style="margin-top: 50px;">
+    <!-- <form style="margin-top: 50px;">
+        <label for="from">From:</label>
+        <input type="datetime-local" id="from" name="from">
+        <label for="to">To:</label>
+        <input type="datetime-local" id="to" name="to">
+        <button type="submit" id="submitBtn">Submit</button>
+      </form> -->
+      <form id="salesReportForm" style="margin-top: 50px;">
         <label for="from">From:</label>
         <input type="datetime-local" id="from" name="from">
         <label for="to">To:</label>
@@ -28,6 +43,8 @@
         <button type="submit" id="submitBtn">Submit</button>
       </form>
   </main>
+
+
 
   <h2 class="hidden">Summary of Sales</h2>
 <table id="summaryTable" class="hidden">
@@ -81,25 +98,68 @@
   </body>
   </html>
   <script>
-   const form = document.querySelector('form');
-const submitBtn = document.querySelector('#submitBtn');
-const summaryTableBody = document.querySelector('#summaryTableBody');
-const totalEarnings = document.querySelector('#totalEarnings');
-const table2Body = document.querySelector('#table2Body');
-const table3Body = document.querySelector('#table3Body');
+//    const form = document.querySelector('form');
+// const submitBtn = document.querySelector('#submitBtn');
+// const summaryTableBody = document.querySelector('#summaryTableBody');
+// const totalEarnings = document.querySelector('#totalEarnings');
+// const table2Body = document.querySelector('#table2Body');
+// const table3Body = document.querySelector('#table3Body');
 
-form.addEventListener('submit', (event) => {
-  event.preventDefault();
-  const fromDate = document.querySelector('#from').value;
-  const toDate = document.querySelector('#to').value;
+// form.addEventListener('submit', (event) => {
+//   event.preventDefault();
+//   const fromDate = document.querySelector('#from').value;
+//   const toDate = document.querySelector('#to').value;
 
-  fetch(`http://api.example.com/sales?from=${fromDate}&to=${toDate}`)
+//   fetch(`/api/admin/create/report?from=${fromDate}&to=${toDate}`)
+//     .then(response => response.json())
+//     .then(data => {
+//       // Clear previous table data
+//       summaryTableBody.innerHTML = '';
+//       table2Body.innerHTML = '';
+//       table3Body.innerHTML = '';
+
+//       // Populate summary table and calculate total earnings
+//       let total = 0;
+//       data.forEach(sale => {
+//         const row = summaryTableBody.insertRow();
+//         row.innerHTML = `
+//           <td>${sale.productName}</td>
+//           <td>${sale.category}</td>
+//           <td>${sale.subcategory}</td>
+//           <td>${sale.sellerName}</td>
+//           <td>${sale.buyerName}</td>
+//           <td>${sale.price}</td>
+//         `;
+//         total += sale.price;
+//         summaryTable.classList.remove('hidden');
+//       table2.classList.remove('hidden');
+//       table3.classList.remove('hidden');
+//     });
+// });
+// });
+
+
+
+
+const salesReportForm = document.querySelector('#salesReportForm');
+  const summaryTableBody = document.querySelector('#summaryTableBody');
+
+  salesReportForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const from = document.querySelector('#from').value;
+    const to = document.querySelector('#to').value;
+console.log(from);
+    fetch('/api/admin/create/report', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ from, to })
+    })
     .then(response => response.json())
     .then(data => {
       // Clear previous table data
       summaryTableBody.innerHTML = '';
-      table2Body.innerHTML = '';
-      table3Body.innerHTML = '';
 
       // Populate summary table and calculate total earnings
       let total = 0;
@@ -115,12 +175,8 @@ form.addEventListener('submit', (event) => {
         `;
         total += sale.price;
         summaryTable.classList.remove('hidden');
-      table2.classList.remove('hidden');
-      table3.classList.remove('hidden');
-    });
-});
-}
-
-
-
-  </script>
+      });
+    })
+    .catch(error => console.error(error));
+  });
+</script>
