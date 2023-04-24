@@ -13,6 +13,10 @@ const adminController = {
     crView: async (req, res) => {
         res.render('../views/static/createCustomerRep.ejs');
     },
+
+    reportView: async(req, res) => {
+        res.render('../views/static/salesReport.ejs');
+    },
     
     login: async(req, res) => {
         if (req.session.passport.user.type === 'admin'){

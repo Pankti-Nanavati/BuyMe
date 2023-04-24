@@ -29,6 +29,7 @@ router.get('/admin/homepage', adminController.homepageView);
 router.get('/admin/create/cr', adminController.crView);
 router.post('/admin/create/cr', adminController.createCR);
 
+router.get('/admin/create/report', adminController.reportView);
 router.post('/admin/create/report', adminController.createReport);
 
 
