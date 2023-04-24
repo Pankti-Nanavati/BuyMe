@@ -34,7 +34,6 @@ new LocalStrategy(
       try {
         const user = await User.selectOneById(email_id);
         if (!user) {
-          console.log()
           return done(null, false, {
             message: `No email_id found that matches ${email_id}`
           });

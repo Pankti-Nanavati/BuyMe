@@ -69,7 +69,6 @@ const CR = {
     const queryString = 'Update bm_auction_system.user Set password = ? where email_id = ?;';
     try {
         const [rows] = await db.execute(queryString, [new_password, email]);
-        console.log(rows);
         return rows;
     } catch (err) {
         console.error(err);

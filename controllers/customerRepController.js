@@ -40,14 +40,14 @@ const customerRepController = {
       const queryId = req.body.queryId;
       const queryType = req.body.queryType;
       const email_id = req.body.email_id;
-      console.log(queryId, queryType, email_id);
+      const value = req.body.value;
       if (queryType == 'Reset Password'){
-        await CustomerRep.changePasswordById(email_id, req.body.value);
+        await CustomerRep.changePasswordById(email_id, value);
       }
       else if (queryType == 'Delete a Bid'){
-        await CustomerRep.deleteBidById(email_id);
+        await CustomerRep.deleteBidById(value);
       } else {
-        await CustomerRep.deleteAuctionById(email_id);
+        await CustomerRep.deleteAuctionById(value);
       }
       const result = await CustomerRep.resolveQuery(queryId);
       return res.json(result);
