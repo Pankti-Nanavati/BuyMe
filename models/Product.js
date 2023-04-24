@@ -50,7 +50,7 @@
       },
       selectProductByProductID: async (product_id) => {
           try {
-              const queryString = 'SELECT product_id, product_name, brand, colour, size, price FROM bm_auction_system.product WHERE product_id=?;';
+              const queryString = 'SELECT P.product_id, P.product_name, P.brand, P.colour, P.size, P.price, A.auction_id, if(A.end_time < NOW(), 0, 1) as active_flag FROM bm_auction_system.product P inner join bm_auction_system.auction A on A.product_id = P.product_id WHERE P.product_id=?;';
               const [rows] = await db.execute(queryString, [product_id]);
               return rows[0];
           } catch (err) {
