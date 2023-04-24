@@ -39,6 +39,18 @@ const adminController = {
             return res.status(500).json({ error: 'Internal server error' });
         }
     },
+
+    createReport: async(req, res) => {
+        try {
+            const from = req.body.from;
+            const to = req.body.to;
+            const result = await Admin.getSalesReport(from, to);
+            return res.json(result);
+        } catch (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Internal server error' });
+        }        
+    },
     
 };
 

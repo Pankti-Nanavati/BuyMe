@@ -63,11 +63,11 @@ const Admin = {
       const [result1] = await db.execute(queryString1, [date2, date1]);
       const [result2] = await db.execute(queryString2, [date2, date1]);
       const [result3] = await db.execute(queryString3, [date2, date1]);
-      const result = {}
+      const result = {};
       result['total_earnings'] = result1;
       result['Top_products'] = result2;
       result['Top_buyers'] = result3;
-      return result
+      return result;
     } catch (err) {
       console.error(err);
       throw new Error('Failed to fetch sales belonging to the given range');
