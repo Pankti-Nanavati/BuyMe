@@ -20,6 +20,7 @@ const PORT = process.env.ADMIN_PORT;
 app.use(morgan('dev'))
 
 const adminSessionConfig = {
+  name: 'admin-session',
   secret: process.env.ADMIN_SECRET_KEY,
   store: sessionStore,
   resave: false,

@@ -120,6 +120,7 @@ const loginController = {
 
     auctionHistory: async (req, res) => {
         try{
+            console.log(req.session);
             const email_id = req.session.passport.user.id;
             const result = await User.fetchHistoryAuctionsForUser(email_id);
             return res.json(result);

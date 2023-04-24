@@ -12,7 +12,6 @@ const sessionStore = require('./config/sessionStore');
 
 const userPassport = require('./config/passportUserConfig');
 
-
 require('dotenv').config();
 
 const PORT = process.env.USER_PORT;
@@ -21,6 +20,7 @@ const PORT = process.env.USER_PORT;
 app.use(morgan('dev'))
 
 const userSessionConfig = {
+    name: 'user-session',
     secret: process.env.SECRET_KEY,
     store: sessionStore,
     resave: false,
@@ -30,7 +30,6 @@ const userSessionConfig = {
       sameSite: true
     },
 };
-
 
 
 // Creating Session

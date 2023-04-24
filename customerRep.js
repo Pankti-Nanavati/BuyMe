@@ -20,13 +20,14 @@ const PORT = process.env.CUSTOMER_PORT;
 app.use(morgan('dev'))
 
 const customerRepSessionConfig = {
+    name: 'customer-session',
     secret: process.env.CUSTOMER_SECRET_KEY,
     store: sessionStore,
     resave: false,
     saveUninitialized: false,
     cookie: {
       maxAge: 3600000, // 3600000 1 hour in milliseconds. The expiration time of the cookie to set it as a persistent cookie.
-      sameSite: true
+      sameSite: true,
     },
 };
 
