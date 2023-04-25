@@ -95,7 +95,7 @@ BEGIN
             LEAVE bid_loop;
         END IF;
 
-        IF u_product_name == cur_product_name and u_colour == cur_colour and u_size == cur_size THEN
+        IF u_product_name = cur_product_name and u_colour = cur_colour and u_size = cur_size THEN
 			UPDATE bm_auction_system.alert SET send_notification_flag = 1 where email_id = u_email_id;
 		END IF;
     END LOOP;
