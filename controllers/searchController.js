@@ -75,7 +75,6 @@ const searchController = {
         try {
           const productId = req.params.productId;
           const result = await Product.selectProductByProductID(productId);
-
           return res.json(result);
         } catch (err) {
           console.error(err);

@@ -34,7 +34,7 @@ const auctionController = {
     try {
       const email_id = req.session.passport.user.id;
       const { auction_id, increment_amount, upper_limit } = req.body;
-      const result = await Auction.placeBid(email_id, auction_id, increment_amount, upper_limit);
+      const result = await Auction.createAutobid(email_id, auction_id, increment_amount, upper_limit);
       return res.json(result);
     } catch (err) {
       console.error(err);
