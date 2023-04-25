@@ -33,8 +33,8 @@ const auctionController = {
   placeAutoBid: async(req, res) => {
     try {
       const email_id = req.session.passport.user.id;
-      const { aution_id, increment_amount, upper_limit } = req.body;
-      const result = await Auction.placeBid(email_id, aution_id, increment_amount, upper_limit);
+      const { auction_id, increment_amount, upper_limit } = req.body;
+      const result = await Auction.placeBid(email_id, auction_id, increment_amount, upper_limit);
       return res.json(result);
     } catch (err) {
       console.error(err);
@@ -45,8 +45,8 @@ const auctionController = {
   placeBid: async (req, res) => {
     try {
       const email_id = req.session.passport.user.id;
-      const { product_id, aution_id, amount } = req.body;
-      const result = await Auction.placeBid(product_id, aution_id, email_id, amount);
+      const { product_id, auction_id, amount } = req.body;
+      const result = await Auction.placeBid(product_id, auction_id, email_id, amount);
       return res.json(result);
     } catch (err) {
       console.error(err);
