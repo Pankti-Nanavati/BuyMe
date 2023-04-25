@@ -2,6 +2,8 @@ const express =  require('express');
 
 const app = express();
 
+const cors = require('cors');
+
 const routes = require('./routes')
 
 const morgan = require('morgan');
@@ -31,6 +33,7 @@ const userSessionConfig = {
     },
 };
 
+app.use(cors());
 
 // Creating Session
 app.use(session(userSessionConfig));
