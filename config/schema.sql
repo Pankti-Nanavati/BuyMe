@@ -1,6 +1,8 @@
 DROP DATABASE IF EXISTS bm_auction_system;
 CREATE DATABASE bm_auction_system;
+
 use bm_auction_system;
+
 CREATE TABLE `user` (
   `email_id` varchar(45) NOT NULL,
   `password` varchar(65) DEFAULT NULL,
@@ -10,26 +12,12 @@ CREATE TABLE `user` (
   `address` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`email_id`)
 );
-truncate user;
-select * from user;
-
-drop table user;
-
-ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '';
-
-CREATE USER 'buyme-user'@'localhost' IDENTIFIED BY 'buyme';
-GRANT ALL ON bm_auction_system.* TO 'buyme-user'@'localhost';
 
 CREATE TABLE `category` (
   `category_id` int(2) NOT NULL AUTO_INCREMENT,
   `category_name` varchar(25) NOT NULL,
   PRIMARY KEY (`category_id`)
 );
-
-INSERT INTO `bm_auction_system`.`category`
-(`category_name`)
-VALUES
-("shoes");
 
 CREATE TABLE `subcategory` (
   `subcategory_id` int(2) NOT NULL AUTO_INCREMENT,
@@ -38,22 +26,6 @@ CREATE TABLE `subcategory` (
   PRIMARY KEY (`subcategory_id`),
   FOREIGN KEY (`category_id`) REFERENCES `category`(`category_id`)
 );
-
-INSERT INTO `bm_auction_system`.`subcategory`
-(`subcategory_name`,
-`category_id`)
-VALUES
-("sports shoes", 1);
-INSERT INTO `bm_auction_system`.`subcategory`
-(`subcategory_name`,
-`category_id`)
-VALUES
-("sandals", 1);
-INSERT INTO `bm_auction_system`.`subcategory`
-(`subcategory_name`,
-`category_id`)
-VALUES
-("heels", 1);
 
 CREATE TABLE `product` (
   `product_id` int(2) NOT NULL AUTO_INCREMENT,
@@ -67,38 +39,6 @@ CREATE TABLE `product` (
   PRIMARY KEY (`product_id`),
   FOREIGN KEY (`subcategory_id`) REFERENCES `subcategory`(`subcategory_id`)
 );
-
-INSERT INTO `bm_auction_system`.`product`
-(`product_name`,
-`brand`,
-`colour`,
-`size`,
-`price`,
-`subcategory_id`)
-VALUES
-("PUMA Smash V2 Sneakers", "PUMA", "white", 5, 50, 1);
-
-INSERT INTO `bm_auction_system`.`product`
-(`product_name`,
-`brand`,
-`colour`,
-`size`,
-`price`,
-`subcategory_id`)
-VALUES
-("PUMA Smash V2 Sneakers", "PUMA", "white", 6, 50, 1);
-
-
-INSERT INTO `bm_auction_system`.`product`
-(`product_name`,
-`brand`,
-`colour`,
-`size`,
-`price`,
-`subcategory_id`)
-VALUES
-("PUMA Smash V2 Sneakers", "PUMA", "white", 7, 50, 1);
-
 
 CREATE TABLE `auction` (
   `auction_id` int(5) NOT NULL AUTO_INCREMENT,
@@ -147,7 +87,7 @@ Create Table alert (
   PRIMARY KEY (`alert_id`), 
   FOREIGN KEY (`email_id`) REFERENCES user (`email_id`));
 
-Create Table admin (
+Create Table `admin` (
   `email_id` varchar(45) NOT NULL,
   `password` varchar(65) DEFAULT NULL,
   PRIMARY KEY (`email_id`)
@@ -182,11 +122,38 @@ Create Table `user_queries` (
   `user_email_id` varchar(45) NOT NULL,
   `custRep_email_id` varchar(45) NOT NULL,
   `query_type` ENUM('Reset Password', 'Delete a Bid', 'Delete an Auction'),
-  `value` varchar(70);
+  `value` varchar(70),
   `resolved_flag` Boolean DEFAULT 0,
-  PRIMARY KEY (`email_id`)
+  PRIMARY KEY (`email_id`),
   FOREIGN KEY (`user_email_id`) REFERENCES user (`email_id`), 
   FOREIGN KEY (`custRep_email_id`) REFERENCES `customer_rep` (`email_id`)
 );
 
+/*
 
+INSERT INTO `bm_auction_system`.`category`
+(`category_name`)
+VALUES
+("shoes");
+
+INSERT INTO `bm_auction_system`.`subcategory`
+(`subcategory_name`,
+`category_id`)
+VALUES
+("sports shoes", 1);
+
+INSERT INTO `bm_auction_system`.`subcategory`
+(`subcategory_name`,
+`category_id`)
+VALUES
+("sandals", 1);
+
+INSERT INTO `bm_auction_system`.`subcategory`
+(`subcategory_name`,
+`category_id`)
+VALUES
+("heels", 1);
+
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '<your new root password>';
+
+*/
