@@ -37,7 +37,7 @@ const auctionController = {
       const result = await Auction.createAutobid(email_id, auction_id, increment_amount, upper_limit);
       return res.json(result);
     } catch (err) {
-      console.error(err);
+      
       return res.status(500).json({ error: 'Internal server error' });
     }
   },
@@ -45,12 +45,13 @@ const auctionController = {
   placeBid: async (req, res) => {
     try {
       const email_id = req.session.passport.user.id;
-      console.log(req.body);
       const { product_id, auction_id, amount } = req.body;
       const result = await Auction.placeBid(product_id, auction_id, email_id, amount);
       return res.json(result);
     } catch (err) {
-      console.error(err);
+      if (err.message == 'Bid amount must be greater than current bid') {
+        return res.status(400).json(err.message);
+      }
       return res.status(500).json({ error: 'Internal server error' });
     }
   },

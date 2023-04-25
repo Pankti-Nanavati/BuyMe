@@ -52,6 +52,7 @@ const Auction = {
   },
   placeBid: async (productId, auction_id, email_id, amount) => {
     try {
+      console.log('Inside model', productId, auction_id, email_id, amount);
       const currentBidQuery=  'select amount from bm_auction_system.bid where bidding_timestamp IN (select MAX(bidding_timestamp) from bid where email_id = ? and auction_id = ?);'
       const [bidRows] = await db.execute(currentBidQuery, [email_id, auction_id]);
       const auctionQueryString = 'SELECT auction_id FROM bm_auction_system.auction WHERE product_id = ? and end_time > NOW();';
@@ -60,20 +61,20 @@ const Auction = {
       if (auctionRows.length === 0) {
         throw new Error('Auction not found or has ended');
       }
-
-      const currentBid = bidRows[0].amount;
-
-      if (amount <= currentBid) {
-        throw new Error('Bid amount must be greater than current bid');
-      }
-
-      const queryString = 'INSERT INTO `bm_auction_system`.`bid`(`email_id`, `auction_id`, `amount`) VALUES (?, ?, ?);';
+      if (bidRows.length != 0){
+        const currentBid = bidRows[0].amount;
+        console.log("cur ", currentBid)
+        if (amount <= currentBid) {
+          throw new Error('Bid amount must be greater than current bid');
+        }
+      } 
+      const queryString = 'INSERT INTO `bm_auction_system`.`bid`(`email_id`, `auction_id`, `amount`, `bidding_timestamp`) VALUES (?, ?, ?, NOW());';
       const [result] = await db.execute(queryString, [email_id, auction_id, amount]);
 
       if (result.affectedRows === 0) {
         throw new Error('Failed to place bid');
       }
-      return { currentBid: amount, endTime };
+      return { currentBid: amount };
     } catch (err) {
       throw err;
     }

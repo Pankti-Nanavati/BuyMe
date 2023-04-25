@@ -148,7 +148,6 @@ const salesReportForm = document.querySelector('#salesReportForm');
     event.preventDefault();
     const from = document.querySelector('#from').value;
     const to = document.querySelector('#to').value;
-console.log(from);
     fetch('/api/admin/create/report', {
       method: 'POST',
       headers: {
@@ -158,6 +157,7 @@ console.log(from);
     })
     .then(response => response.json())
     .then(data => {
+      console.log(data);
       // Clear previous table data
       summaryTableBody.innerHTML = '';
 

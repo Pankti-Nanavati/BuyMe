@@ -19,10 +19,12 @@
           <img src="product1.jpg" alt="Product Image">
         </div>
         <div class="product-info">
-          <h2 class="product-title"><%= product.product_name %></h2> Brand: <%= product.brand %> <br> Color: <%= product.colour %> <br> Size: <%= product.size %> <br> Prize: $<%= product.price%></p>
-          <div class="product-buttons">
-            <button class="list-item">List Your Item</button>
-            <button id="bid-button" class="bid">Bid</button>
+          <h2 class="product-title"><%= product.result.product_name %></h2> Brand: <%= product.result.brand %> <br> Color: <%= product.result.colour %> <br> Size: <%= product.result.size %> <br> Price: $<%= product.result.price%> <% if (product.currentBid === 0) { %> <br> Current Bid: $<%= product.result.price %> <% } else{ %><br> Current Bid: $<%= product.currentBid %> <% } %></p>
+            <div class="product-buttons">
+              <% if (product.result.active_flag === 1) { %>
+              <button id="bid-button" class="bid">Bid</button>
+              <% } %>
+            <!-- <button id="bid-button" class="bid">Bid</button> -->
             <button class="set-alert" onclick="openModal()">Set Alert</button>
           </div>
         </div>
@@ -35,11 +37,11 @@
             <h2>Place Your Bid</h2>
             <span class="close">&times;</span>
           </div>
-          <div class="modal-body">
             <div class="bid-form">
-              <label for="bid-amount">Your Bid Amount ($)</label>
+              <label for="bid-amount" style="margin-top: 25px;">Your Bid Amount ($)</label>
               <input type="text" id="bid-amount" name="bid-amount">
             </div>
+            <button class="place-bid-btn" style="margin-top: 15px;" id="placeBidButton">Place Bid</button>
             <div class="or-divider">
               <p class="or"><span>OR</span></p>
             </div>
@@ -53,11 +55,9 @@
                 <input type="text" id="auto-bid-max" name="auto-bid-max">
               </div>
             </div>
+            <button class="placeAuto-bid-btn" style="margin-top: 15px;" id="autoBidButton">Place Auto Bid</button>
           </div>
-            <button class="place-bid-btn">Place Bid</button>
         </div>
-      </div>
-
 
       <div id="alert-modal" class="alertmodal">
         <div class="alertmodal-content">
@@ -118,4 +118,72 @@
     .then(data => window.location.href = '/api/product?productId=' + productId)
     .catch(error => console.error(error));
   });
+
+
+  //Place Bid button
+const placeBidButton = document.getElementById('placeBidButton');
+placeBidButton.addEventListener('click', () => {
+const amount = document.getElementById("bid-amount").value;
+const product_id = `<%= product.result.product_id %>`;
+const auction_id = `<%= product.result.auction_id %>`;
+console.log(product_id, auction_id);
+fetch('/api/placeBid', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    product_id,
+    auction_id,
+    amount
+  })
+})
+.then(response => {
+  if (response.ok) {
+    // Bid was successfully posted to the API
+    // Close the modal and stay on the same page
+    document.getElementById("bid-modal").style.display = "none";
+  } else if (response.status === 400) {
+    // Handle "Bid amount must be greater than current bid" error
+    alert('Bid amount must be greater than current bid');
+  } else {
+    // Handle errors
+  }
+})
+.catch(error => {
+  // Handle errors
+});
+});
+
+//autobid
+const autoBidButton = document.getElementById('autoBidButton');
+autoBidButton.addEventListener('click', () => {
+const  increment_amount= document.getElementById("auto-bid-increment").value;
+const upper_limit = document.getElementById("auto-bid-max").value;
+const auction_id = `<%= product.result.auction_id %>`;
+console.log(increment_amount, upper_limit, auction_id);
+fetch('/api/placeAutoBid', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    auction_id,
+    increment_amount,
+    upper_limit
+  })
+})
+.then(response => {
+  if (response.ok) {
+    // Bid was successfully posted to the API
+    // Close the modal and stay on the same page
+    document.getElementById("bid-modal").style.display = "none";
+  } else {
+    // Handle errors
+  }
+})
+.catch(error => {
+  // Handle errors
+});
+});
     </script>
