@@ -45,6 +45,7 @@ const auctionController = {
   placeBid: async (req, res) => {
     try {
       const email_id = req.session.passport.user.id;
+      console.log(req.body);
       const { product_id, auction_id, amount } = req.body;
       const result = await Auction.placeBid(product_id, auction_id, email_id, amount);
       return res.json(result);
