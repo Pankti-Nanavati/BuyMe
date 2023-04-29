@@ -1,7 +1,7 @@
 -- autobid procedure
 DROP PROCEDURE IF EXISTS `bm_auction_system.sp_make_autobid`;
 DELIMITER $$
-CREATE PROCEDURE `bm_auction_system.sp_make_autobid`(IN `cur_auction_id` INT, IN `amount` FLOAT)
+CREATE PROCEDURE `bm_auction_system.sp_make_autobid`(IN `cur_auction_id` INT, IN `amount` FLOAT, OUT `@total_amount` FLOAT)
 BEGIN
     DECLARE done INT DEFAULT FALSE;
     DECLARE `email` VARCHAR(255);
@@ -30,7 +30,7 @@ BEGIN
             VALUES (`cur_auction_id`, `email`, CURRENT_TIMESTAMP, `total_amount`);
         END IF;
     END LOOP;
-
+    select @total_amount;
     CLOSE cur;
 END $$
 DELIMITER ;

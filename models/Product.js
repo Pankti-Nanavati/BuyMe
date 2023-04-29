@@ -73,6 +73,17 @@
           try {
               const queryString = 'INSERT INTO `bm_auction_system`.`product`(`product_id`, `product_name`, `brand`, `colour`, `size`, `price`, `subcategory_id`) VALUES (?,?,?,?,?,?,?);';
               const [result] = await db.execute(queryString, vals);
+              const alertQuery = 'SELECT email_id, product_name, colour, size FROM `bm_auction_system`.`alert` where product_name = ?;';
+              const [alerts] = await db.execute(alertQuery, [vals[1]]);
+              for (let i = 0; i < alerts.length; i++){
+                console.log("setting alert for user: ", alerts[i].email_id)
+                const updateQuery = 'UPDATE bm_auction_system.alert SET send_notification_flag = 1 where email_id = ?;';
+                const [updateRes] = await db.execute(updateQuery, [alerts[i].email_id]);
+                console.log(updateRes);
+              }
+            //   const sp_query = "call bm_auction_system.sp_notification(?,?,?);"
+            //   const [sp_res] = await db.execute(sp_query, [vals[1], vals[3], vals[4]])
+            //   console.log(sp_res)
               return result;
           } catch (err) {
               throw err;
