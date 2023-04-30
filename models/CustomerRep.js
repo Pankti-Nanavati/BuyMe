@@ -47,7 +47,7 @@ const CR = {
   },
   fetchQuestions: async (email_id) => {
     try {
-      const queryString = 'Select question, q_timestamp, answer, a_timestamp where email_id = ?;'
+      const queryString = 'Select question, q_timestamp, answer, a_timestamp from `bm_auction_system`.`queries_answers` where email_id = ?;'
       const [result] = await db.execute(queryString, [email_id]);
       return result;
     } catch (err) {
