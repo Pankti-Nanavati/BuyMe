@@ -14,9 +14,13 @@ const sessionStore = require('./config/sessionStore');
 
 const userPassport = require('./config/passportUserConfig');
 
+// Require Cron Job
+require('./jobs/autobidJob');
+
 require('dotenv').config();
 
 const PORT = process.env.USER_PORT;
+
 
 // For Logging
 app.use(morgan('dev'))

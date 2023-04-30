@@ -129,6 +129,16 @@ Create Table `user_queries` (
   FOREIGN KEY (`custRep_email_id`) REFERENCES `customer_rep` (`email_id`)
 );
 
+Create Table `bid_notifications` (
+  `notif_id` int(10) NOT NULL AUTO_INCREMENT,
+  `email_id` varchar(45) NOT NULL,
+  `auction_id` int(5) NOT NULL,
+  `message` varchar(70),
+  PRIMARY KEY (`notif_id`),
+  FOREIGN KEY (`email_id`) REFERENCES user (`email_id`),
+  FOREIGN KEY (`auction_id`) REFERENCES auction (`auction_id`)
+);
+
 /*
 
 INSERT INTO `bm_auction_system`.`category`
