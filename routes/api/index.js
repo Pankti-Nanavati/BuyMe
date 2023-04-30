@@ -21,8 +21,8 @@ const customerRepController = require('../../controllers/customerRepController')
  * POST /admin/create/cr - To create a Customer Rep | body - {}
  */
 
-router.get('/admin/login', adminController.loginView);
-router.post('/admin/login', adminPassport.authenticate('admin'), adminController.login);
+router.get('/admin/login', adminController.loginView); 
+router.post('/admin/login', adminPassport.authenticate('admin'), adminController.login); 
 router.get('/admin/logout', adminController.logout);
 router.get('/admin/homepage', adminController.homepageView);
 
@@ -52,6 +52,7 @@ router.get('/customerRep/homepage', customerRepController.homepageView);
 
 router.get('/customerRep/queries', customerRepController.queries);
 router.post('/customerRep/queries/resolve', customerRepController.resolveQueries);
+router.get('/customerRep/questions', customerRepController.fetchQuestions);
 router.post('/customerRep/answerQuestion', customerRepController.answerQuestion);
 
 
@@ -67,6 +68,7 @@ router.post('/customerRep/answerQuestion', customerRepController.answerQuestion)
  * POST /login    -> Fetches Homepage 
  * */ 
  
+
 router.get('/register', loginController.registerView);
 router.post('/register', loginController.registerUser);
 
@@ -78,17 +80,18 @@ router.get('/profile', loginController.getProfile);
 router.get('/homepage', loginController.homepageView);
 
 
-router.post('/raiseQuery', loginController.raiseQuery);
-
 router.get('/alert', loginController.fetchAlert);
 router.post('/alert', loginController.setAlert);
 
 router.get('/auctionHistory', loginController.auctionHistory);
 router.get('/bidHistory', loginController.bidHistory);
 
+
+router.post('/raiseQuery', loginController.raiseQuery);
 router.get('/userQuery', loginController.queryView);
 router.post('/userQuery', loginController.postQuestion);
 router.get('/fetchQA', loginController.fetchQuestionAnswer);
+
 router.post('/fetchQA/filter', loginController.fetchQuestionAnswerFilter);
 
 

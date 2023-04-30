@@ -8,7 +8,7 @@ const customerRepController = {
   homepageView: async(req, res) => {
     res.render('../views/static/customerRepHomepage.ejs');
   },
-
+  
   logout: async(req, res) => {
     req.session.destroy();
     req.logout();
@@ -36,7 +36,7 @@ const customerRepController = {
   
   resolveQueries: async(req, res) => {
     try {
-
+      
       const queryId = req.body.queryId;
       const queryType = req.body.queryType;
       const email_id = req.body.email_id;
@@ -56,20 +56,33 @@ const customerRepController = {
       return res.status(500).json({ error: 'Internal server error' });
     }
   },
-
-  answerQuestion: async(req, res) => {
+  
+  fetchQuestions: async(req, res) => {
     try{
-        const query_id = res.body.queryId;
-        const answer = res.body.answer;
-        const result = await CustomerRep.answerQuestion(query_id, answer);
-        return res.json(result);
+      const email_id = req.session.passport.user.id;
+      const result = await CustomerRep.fetchQuestions(email_id);
+      return res.json(result);
     }
     catch(err) {
       console.error(err);
       return res.status(500).json({ error: 'Internal server error' });
     }
   },
-
+  
+  
+  answerQuestion: async(req, res) => {
+    try{
+      const query_id = res.body.queryId;
+      const answer = res.body.answer;
+      const result = await CustomerRep.answerQuestion(query_id, answer);
+      return res.json(result);
+    }
+    catch(err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+  },
+  
 };
 
 module.exports = customerRepController;
