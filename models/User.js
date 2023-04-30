@@ -143,9 +143,11 @@ const User = {
   },
   fetchQuestionsForUserByKeyword: async (email_id, keyword) => {
     try {
-      const queryString = 'Select question, q_timestamp, answer, a_timestamp from `bm_auction_system`.`queries_answers` where user_email_id = ? and question like "%?%";'
+      const modified_keyword = "%";
+      modified_keyword = modified_keyword.concat(keyword, "%");
+      const queryString = 'Select question, q_timestamp, answer, a_timestamp from `bm_auction_system`.`queries_answers` where user_email_id = ? and question like ?";'
       console.log(queryString)
-      const [result] = await db.execute(queryString, [email_id, keyword]);
+      const [result] = await db.execute(queryString, [email_id, modified_keyword]);
       return result;
     } catch (err) {
       console.error(err);
