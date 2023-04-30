@@ -115,6 +115,22 @@ const User = {
       throw new Error('Failed to raise query');
     }
   },
+  askQuestion: async (email_id, question) => {
+    try {
+      const getCustomerReps = 'Select email_id from `bm_auction_system`.`customer_rep`;'
+      const [custReps] = await db.execute(getCustomerReps);
+      const n = custReps.length;
+      const index = Math.floor(Math.random() * n);
+      const custRep_email = custReps[index].email_id;
+      const queryString = 
+      'Insert into `bm_auction_system`.`queries_answers` (user_email_id, custRep_email_id, question, q_timestamp) Values (?,?,?, NOW());'
+      const [result] = await db.execute(queryString, [email_id, custRep_email, question]);
+      return result;
+    } catch (err) {
+      console.error(err);
+      throw new Error('Failed to ask question');
+    }
+  },
   fetchHistoryBidsForUser: async (email_id) => {
     try {
       const queryString = 

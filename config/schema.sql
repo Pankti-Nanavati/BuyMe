@@ -49,6 +49,7 @@ CREATE TABLE `auction` (
   `increment_amount` float(10), 
   `minimum_price` float(10), 
   `initial_price` float(10), 
+  `has_winner` Boolean DEFAULT 0,
   PRIMARY KEY (`auction_id`),
   FOREIGN KEy (`email_id`) REFERENCES `user`(`email_id`),
   FOREIGN KEY (`product_id`) REFERENCES `product`(`product_id`)
@@ -129,6 +130,19 @@ Create Table `user_queries` (
   FOREIGN KEY (`custRep_email_id`) REFERENCES `customer_rep` (`email_id`)
 );
 
+Create Table `queries_answers` (
+  `query_id` int(10) NOT NULL AUTO_INCREMENT,
+  `user_email_id` varchar(45) NOT NULL,
+  `custRep_email_id` varchar(45) NOT NULL,
+  `question` varchar(70),
+  `answer` varchar(70),
+  `q_timestamp` TIMESTAMP,
+  `a_timestamp` TIMESTAMP,
+  PRIMARY KEY (`query_id`),
+  FOREIGN KEY (`user_email_id`) REFERENCES user (`email_id`), 
+  FOREIGN KEY (`custRep_email_id`) REFERENCES `customer_rep` (`email_id`)
+);
+
 Create Table `bid_notifications` (
   `notif_id` int(10) NOT NULL AUTO_INCREMENT,
   `email_id` varchar(45) NOT NULL,
@@ -138,6 +152,8 @@ Create Table `bid_notifications` (
   FOREIGN KEY (`email_id`) REFERENCES user (`email_id`),
   FOREIGN KEY (`auction_id`) REFERENCES auction (`auction_id`)
 );
+
+
 
 /*
 
