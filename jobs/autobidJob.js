@@ -28,8 +28,8 @@ const runAutoBid = async () => {
                     //implement notification for upper limit here
                     console.log("User's upper limit has reached");
                     message = "The upper limit you have set has been reached, the system can not bid further";
-                    const notifQuery = 'Insert into `bm_auction_system`.`bid_notifications` (email_id, auction_id, message) VALUES (?,?,?);';
-                    const [notifs] = await db.execute(notifQuery, [autobids[i].email_id, rows[a].auction_id, message]);
+                    const notifQuery = 'Insert into `bm_auction_system`.`notifications` (email_id, message) VALUES (?,?);';
+                    const [notifs] = await db.execute(notifQuery, [autobids[i].email_id, message]);
                     console.log(notifs)
                 }
             }
@@ -43,8 +43,8 @@ const runAutoBid = async () => {
                 if (currentUserBid < currentBid){
                     message = "Someone exceeded your bid, the highest bid is now: $";
                     message = message.concat(currentBid);
-                    const notifQuery = 'Insert into `bm_auction_system`.`bid_notifications` (email_id, auction_id, message) VALUES (?,?,?);';
-                    const [notifs] = await db.execute(notifQuery, [manualbids[j].email_id, rows[a].auction_id, message]);
+                    const notifQuery = 'Insert into `bm_auction_system`.`notifications` (email_id, message) VALUES (?,?,?);';
+                    const [notifs] = await db.execute(notifQuery, [manualbids[j].email_id, message]);
                     console.log(notifs)
                 }
             }
