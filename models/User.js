@@ -141,10 +141,10 @@ const User = {
       throw new Error('Failed to fetch questions-answers');
     }
   },
-  fetchQuestionsForUserByKeyword: async (email_id) => {
+  fetchQuestionsForUserByKeyword: async (email_id, keyword) => {
     try {
       const queryString = 'Select question, q_timestamp, answer, a_timestamp from `bm_auction_system`.`queries_answers` where user_email_id = ? and question like "%?%";'
-      const [result] = await db.execute(queryString, [email_id]);
+      const [result] = await db.execute(queryString, [email_id, keyword]);
       return result;
     } catch (err) {
       console.error(err);
