@@ -169,6 +169,18 @@ const loginController = {
         }        
     },
 
+    fetchQuestionAnswerFilter: async(req, res) => {
+        try{
+            const email_id = req.session.passport.user.id;
+            const keyword = req.body.keyword;
+            const result = await User.fetchQuestionsForUserByKeyword(email_id, keyword);
+            return res.json(result);
+        } catch (err) {
+            console.log(err);
+            return res.status(500).send('Internal Server Error');
+        }        
+    }
+
 };
 
 module.exports = loginController;
