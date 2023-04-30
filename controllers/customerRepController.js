@@ -59,7 +59,10 @@ const customerRepController = {
   
   fetchQuestions: async(req, res) => {
     try{
+      console.log(req.session);
       const email_id = req.session.passport.user.id;
+      
+      console.log(email_id);
       const result = await CustomerRep.fetchQuestions(email_id);
       return res.json(result);
     }

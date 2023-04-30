@@ -60,7 +60,7 @@
 </div>
 
 <div class="d-grid col-4 mx-auto my-5">
-  <button type="button" class="btn btn-primary btn-lg"> Raise a Query</button>
+  <a href="/api/userQuery" type="button" class="btn btn-primary btn-lg" id="query-btn" > Raise a Query</a>
 </div>
 
 <div class="modal fade" id="bidModal" tabindex="-1" aria-labelledby="bidLabel" onclick="fetchBids(); bidModal.show()" aria-hidden="true">
@@ -289,4 +289,9 @@ const submitBtn = document.getElementById('submit-btn');
     .then(data => window.location.href = '/api/profile')
     .catch(error => console.error(error));
 });
+
+// const queryButton = document.getElementById('query-btn');
+//   queryButton.addEventListener('click', () => {
+//     window.open('/api/userQuery', '_blank');
+//   });
 </script>
