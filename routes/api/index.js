@@ -89,7 +89,7 @@ router.get('/bidHistory', loginController.bidHistory);
 router.get('/userQuery', loginController.queryView);
 router.post('/userQuery', loginController.postQuestion);
 router.get('/fetchQA', loginController.fetchQuestionAnswer);
-router.get('/fetchQA/filter', loginController.fetchQuestionAnswerFilter);
+router.post('/fetchQA/filter', loginController.fetchQuestionAnswerFilter);
 
 
 /**
