@@ -69,6 +69,11 @@ const loginController = {
         });
     },
 
+    queryView: (req, res) => {
+        const data = {user_name: req.session.passport.user.user_name};
+        return res.render('../views/static/questions.ejs', data);
+    },
+
     homepageView: (req, res) => {
         const data = {user_name: req.session.passport.user.user_name};  
         res.render("../views/static/homepage", data);

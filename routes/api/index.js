@@ -129,6 +129,8 @@ router.get('/sell', auctionController.sell);
 router.post('/placeBid', auctionController.placeBid);
 router.post('/placeAutoBid', auctionController.placeAutoBid);
 
+router.get('/userQuery', )
+
 
 
 module.exports = router;
