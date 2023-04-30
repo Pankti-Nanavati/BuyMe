@@ -133,7 +133,7 @@ const User = {
   },
   fetchQuestionsForUser: async (email_id) => {
     try {
-      const queryString = 'Select question, q_timestamp, answer, a_timestamp from `bm_auction_system`.`queries_answers` where email_id = ?;'
+      const queryString = 'Select question, q_timestamp, answer, a_timestamp from `bm_auction_system`.`queries_answers` where user_email_id = ?;'
       const [result] = await db.execute(queryString, [email_id]);
       return result;
     } catch (err) {
@@ -143,7 +143,7 @@ const User = {
   },
   fetchQuestionsForUserByKeyword: async (email_id) => {
     try {
-      const queryString = 'Select question, q_timestamp, answer, a_timestamp from `bm_auction_system`.`queries_answers` where email_id = ? and question like "%?%";'
+      const queryString = 'Select question, q_timestamp, answer, a_timestamp from `bm_auction_system`.`queries_answers` where user_email_id = ? and question like "%?%";'
       const [result] = await db.execute(queryString, [email_id]);
       return result;
     } catch (err) {
