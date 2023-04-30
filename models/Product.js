@@ -31,7 +31,12 @@
       filterProductsBySubcategoryId: async (filters, sorted, id) => {
           try {
             console.log(filters);
-              let filter = 'WHERE ';
+            if (filters.length == 0){
+                let filter  = ""
+            }
+            else{
+                let filter = 'WHERE ';
+            }
               for (let key in filters) {
                   if (filters[key] != "") {
                     console.log("Non empty", key, filters[key])
