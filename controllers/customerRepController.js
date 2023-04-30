@@ -56,6 +56,20 @@ const customerRepController = {
       return res.status(500).json({ error: 'Internal server error' });
     }
   },
+
+  answerQuestion: async(req, res) => {
+    try{
+        const query_id = res.body.queryId;
+        const answer = res.body.answer;
+        const result = await CustomerRep.answerQuestion(query_id, answer);
+        return res.json(result);
+    }
+    catch(err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+  },
+
 };
 
 module.exports = customerRepController;

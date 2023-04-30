@@ -156,7 +156,18 @@ const loginController = {
             console.log(err);
             return res.status(500).send('Internal Server Error');
         }        
-    }
+    },
+
+    fetchQuestionAnswer: async(req, res) => {
+        try{
+            const email_id = req.session.passport.user.id;
+            const result = await User.fetchQuestionsForUser(email_id);
+            return res.json(result);
+        } catch (err) {
+            console.log(err);
+            return res.status(500).send('Internal Server Error');
+        }        
+    },
 
 };
 

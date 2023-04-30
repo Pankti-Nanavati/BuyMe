@@ -52,6 +52,7 @@ router.get('/customerRep/homepage', customerRepController.homepageView);
 
 router.get('/customerRep/queries', customerRepController.queries);
 router.post('/customerRep/queries/resolve', customerRepController.resolveQueries);
+router.post('/customerRep/answerQuestion', customerRepController.answerQuestion);
 
 
 
@@ -87,7 +88,7 @@ router.get('/bidHistory', loginController.bidHistory);
 
 router.get('/userQuery', loginController.queryView);
 router.post('/userQuery', loginController.postQuestion);
-
+router.get('/fetchQA', loginController.fetchQuestionAnswer);
 
 
 /**
@@ -130,8 +131,6 @@ router.get('/sell', auctionController.sell);
 
 router.post('/placeBid', auctionController.placeBid);
 router.post('/placeAutoBid', auctionController.placeAutoBid);
-
-
 
 
 
