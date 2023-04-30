@@ -16,6 +16,7 @@ const userPassport = require('./config/passportUserConfig');
 
 // Require Cron Job
 require('./jobs/autobidJob');
+require('./jobs/auctionWinnerJob');
 
 require('dotenv').config();
 
