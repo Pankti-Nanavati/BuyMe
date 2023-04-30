@@ -34,9 +34,25 @@
               for (let key in filters) {
                   if (filters[key].length != 0) {
                       if (filter == 'WHERE ') {
-                          filter = filter.concat(key, " = '", filters[key], "'");
+                        if (key = "max_price"){
+                            filter = filter.concat("price < ", filters[key]);
+                        }
+                        else if (key = "min_price"){
+                            filter = filter.concat("price > ", filters[key]);
+                        }
+                        else{
+                            filter = filter.concat(key, " = '", filters[key], "'");
+                        }
                       } else {
-                          filter = filter.concat(" AND ", key, " = '", filters[key], "'");
+                        if (key = "max_price"){
+                            filter = filter.concat(" AND price < ", filters[key]);
+                        }
+                        else if (key = "min_price"){
+                            filter = filter.concat(" AND price > ", filters[key]);
+                        }
+                        else{
+                            filter = filter.concat(" AND ", key, " = '", filters[key], "'");
+                        }
                       }
                   }
               }
