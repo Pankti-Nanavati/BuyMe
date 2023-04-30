@@ -45,6 +45,16 @@ const CR = {
       throw new Error('Unable to fetch queries for particular customer representative');
   }
   },
+  fetchQuestions: async (email_id) => {
+    try {
+      const queryString = 'Select question, q_timestamp, answer, a_timestamp where email_id = ?;'
+      const [result] = await db.execute(queryString, [email_id]);
+      return result;
+    } catch (err) {
+      console.error(err);
+      throw new Error('Failed to fetch questions-answers');
+    }
+  },
   deleteBidById: async (Id) => {
     const queryString = 'Delete from bm_auction_system.bid where bid_id = ?;';
     try {
@@ -83,6 +93,16 @@ const CR = {
     } catch (err) {
         console.error(err);
         throw new Error('Unable to resolve query');
+    }
+  },
+  answerQuestion: async (query_id, answer) => {
+    const queryString = 'Update bm_auction_system.queries_answers Set answer = ?, a_timestamp = NOW() where query_id = ?;';
+    try {
+        const [rows] = await db.execute(queryString, [query_id]);
+        return rows;
+    } catch (err) {
+        console.error(err);
+        throw new Error('Unable to answer question');
     }
   }
 };
