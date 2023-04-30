@@ -85,6 +85,8 @@ router.post('/alert', loginController.setAlert);
 router.get('/auctionHistory', loginController.auctionHistory);
 router.get('/bidHistory', loginController.bidHistory);
 
+router.get('/userQuery', loginController.queryView);
+router.post('/userQuery', loginController.postQuestion);
 
 
 
@@ -129,7 +131,7 @@ router.get('/sell', auctionController.sell);
 router.post('/placeBid', auctionController.placeBid);
 router.post('/placeAutoBid', auctionController.placeAutoBid);
 
-router.get('/userQuery', loginController.queryView);
+
 
 
 

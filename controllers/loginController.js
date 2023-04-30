@@ -146,6 +146,18 @@ const loginController = {
         }        
     },
 
+    postQuestion: async(req, res) => {
+        try{
+            const email_id = req.session.passport.user.id;
+            const query = req.body.query;  
+            const result = await User.askQuestion(email_id, query);
+            return res.json(result);
+        } catch (err) {
+            console.log(err);
+            return res.status(500).send('Internal Server Error');
+        }        
+    }
+
 };
 
 module.exports = loginController;
