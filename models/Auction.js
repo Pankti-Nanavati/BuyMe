@@ -73,26 +73,6 @@ const Auction = {
       if (result.affectedRows === 0) {
         throw new Error('Failed to place bid');
       }
-      console.log("Calling the stored procedure")
-      const checkAutoBid = 'SELECT `email_id`, `increment`, `upper_limit` FROM `bm_auction_system`.`autobid` WHERE `auction_id` = ?;';
-      const [autobids] = await db.execute(checkAutoBid, [auction_id]);
-      for (let i = 0; i < autobids.length; i++) {
-        var new_bid = autobids[i].amount;
-        new_bid = amount + autobids[i].increment;
-        if (new_bid <= autobids[i].upper_limit){
-          const query = 'INSERT INTO `bm_auction_system`.`bid` (`email_id`, `auction_id`, `bidding_timestamp`, `amount`) VALUES (?,?, NOW(), ?);';
-          const [newbid] = await db.execute(query, [autobids[i].email_id, auction_id, new_bid]);
-          console.log("Autobid made a new bid", newbid);
-        }
-        else{
-          //implement notification for upper limit here
-          console.log("User's upper limit has reached")
-        }
-      }
-      // const sp_query = "call bm_auction_system.sp_make_autobid(?,?);"
-      // const [sp_res] = await db.execute(sp_query, [auction_id, amount])
-      // console.log("Execution Done for SP")
-      // console.log("SP Result:", sp_res)
       return { currentBid: new_bid };
     } catch (err) {
       throw err;
