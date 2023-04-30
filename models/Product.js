@@ -28,7 +28,7 @@
               throw err;
           }
       },
-      filterProductsBySubcategoryId: async (filters, id) => {
+      filterProductsBySubcategoryId: async (filters, sorted, id) => {
           try {
             console.log(filters);
               let filter = 'WHERE ';
@@ -58,7 +58,15 @@
                       }
                   }
               }
-              filter = filter.concat(" AND subcategory_id = ", id, ";")
+              if(sorted != ""){
+                filter = filter.concat(" AND subcategory_id = ", id, ";")
+              }
+              else if (sorted == "ASC"){
+                filter = filter.concat(" AND subcategory_id = ", id, " order by price ASC;")
+              }
+              else{
+                filter = filter.concat(" AND subcategory_id = ", id, " order by price DESC;")
+              }
               const initial_queryString = `SELECT product_id, product_name, brand, colour, size, price from bm_auction_system.product `;
               const queryString = initial_queryString.concat(filter);
               const [rows] = await db.execute(queryString);
