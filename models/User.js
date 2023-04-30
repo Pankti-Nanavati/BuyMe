@@ -153,6 +153,16 @@ const User = {
       throw new Error('Failed to fetch auction history');
     }
   },
+  fetchNotificationsForUser: async (email_id) => {
+    try {
+      const queryString = 'Select message from `bm_auction_system`.`notifications` where email_id = ?;'
+      const [result] = await db.execute(queryString, [email_id]);
+      return result;
+    } catch (err) {
+      console.error(err);
+      throw new Error('Failed to fetch notifications');
+    }
+  },
   fetchSalesForUser: async (email_id) => {
     const queryString = 'Select P.product_name, P.colour, P.size S.amount from bm_auction_system.sales S inner join bm_auction_system.product P on S.product_id = P.product_id where email_id = ? ;'
     try {
