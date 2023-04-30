@@ -131,6 +131,16 @@ const User = {
       throw new Error('Failed to ask question');
     }
   },
+  fetchQuestionsForUser: async (email_id) => {
+    try {
+      const queryString = 'Select question, q_timestamp, answer, a_timestamp where email_id = ?;'
+      const [result] = await db.execute(queryString, [email_id]);
+      return result;
+    } catch (err) {
+      console.error(err);
+      throw new Error('Failed to fetch questions-answers');
+    }
+  },
   fetchHistoryBidsForUser: async (email_id) => {
     try {
       const queryString = 
