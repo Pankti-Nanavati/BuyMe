@@ -49,9 +49,8 @@ const searchController = {
       productsByFilter: async(req, res) => {
         try {
           const filter = req.body.filter;
-          const offset = req.query.offset;
-          const limit = req.query.limit;
-          const result = await Product.filterProductsBySubcategoryId(filter, offset, limit);
+          const id = req.params.categoryId;
+          const result = await Product.filterProductsBySubcategoryId(filter, id);
           return res.json(result);
         } catch (err) {
           console.error(err);
