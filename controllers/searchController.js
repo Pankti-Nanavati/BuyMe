@@ -48,9 +48,13 @@ const searchController = {
       
       productsByFilter: async(req, res) => {
         try {
+          console.log('req.params', req.params);
+          console.log(req.params.categoryId);
           const filter = req.body.filter;
           const id = req.params.categoryId;
+          
           const result = await Product.filterProductsBySubcategoryId(filter, id);
+          console.log(result);
           return res.json(result);
         } catch (err) {
           console.error(err);

@@ -30,25 +30,27 @@
       },
       filterProductsBySubcategoryId: async (filters, id) => {
           try {
+            console.log(filters);
               let filter = 'WHERE ';
               for (let key in filters) {
-                  if (filters[key].length != 0) {
+                  if (filters[key] != "") {
+                    console.log("Non empty", key, filters[key])
                       if (filter == 'WHERE ') {
-                        if (key = "max_price"){
-                            filter = filter.concat("price < ", filters[key]);
+                        if (key == "max_price"){
+                            filter = filter.concat("price <= ", filters[key]);
                         }
-                        else if (key = "min_price"){
-                            filter = filter.concat("price > ", filters[key]);
+                        else if (key == "min_price"){
+                            filter = filter.concat("price >= ", filters[key]);
                         }
                         else{
                             filter = filter.concat(key, " = '", filters[key], "'");
                         }
                       } else {
-                        if (key = "max_price"){
-                            filter = filter.concat(" AND price < ", filters[key]);
+                        if (key == "max_price"){
+                            filter = filter.concat(" AND price <= ", filters[key]);
                         }
-                        else if (key = "min_price"){
-                            filter = filter.concat(" AND price > ", filters[key]);
+                        else if (key == "min_price"){
+                            filter = filter.concat(" AND price >= ", filters[key]);
                         }
                         else{
                             filter = filter.concat(" AND ", key, " = '", filters[key], "'");

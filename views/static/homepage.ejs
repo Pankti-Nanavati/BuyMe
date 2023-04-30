@@ -27,7 +27,9 @@
       </select>
     </div>
     <button type="button" class="btn btn-primary ms-2" id="submit-button">Submit</button>
-  </div>
+    <div class="hidden" id="filter">
+    <button type="button" class="btn btn-secondary ms-2" id="filter-button" data-bs-toggle="modal" data-bs-target="#filter-modal" >Filter</button>
+  </div></div>
   
   <div class="container mt-3">
     <div id="productList">
@@ -47,6 +49,50 @@
     <tbody id="auctionTableBody">
     </tbody>
   </table>
+</div>
+
+
+<div class="modal fade" id="filter-modal" tabindex="-1" aria-labelledby="filter-modal-label" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="filter-modal-label">Filter Products</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="row">
+            <div class="col">
+              <label for="brand-input" class="form-label">Brand:</label>
+              <input type="text" class="form-control" id="brand-input">
+            </div>
+            <div class="col">
+              <label for="size-input" class="form-label">Size:</label>
+              <input type="text" class="form-control" id="size-input">
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col">
+              <label for="color-input" class="form-label">Color:</label>
+              <input type="text" class="form-control" id="color-input">
+            </div>
+            <div class="col">
+              <label for="min-price-input" class="form-label">Minimum Price:</label>
+              <input type="number" class="form-control" id="min-price-input">
+            </div>
+            <div class="col">
+              <label for="max-price-input" class="form-label">Maximum Price:</label>
+              <input type="number" class="form-control" id="max-price-input">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="applyfilter" data-bs-dismiss="modal">Apply Filters</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 </body>
@@ -81,6 +127,7 @@
           });
           
           
+          
           $("#submit-button").click(function() { // attach click event listener to submit button
             const selectedId = $("#subcategory").val();
             $.ajax({
@@ -100,6 +147,8 @@
                       productDiv.append(productCard); // append product card to product div
                       productsContainer.append(productDiv); // append product div to container
                     });
+                    const filter = document.getElementById("filter");
+                    filter.classList.remove("hidden");
                   },
                   error: function(xhr, status, error) {
                     console.log("Error:", error);
@@ -132,5 +181,41 @@
                 });
                 
 
+                const applyfilterbutton = document.getElementById('applyfilter');
+                applyfilterbutton.addEventListener('click', (event) => {
+                event.preventDefault(); // Prevents the form from submitting normally
+                const brand = document.getElementById('brand-input')?.value ?? -1;
+                const colour = document.getElementById('color-input')?.value ?? -1;
+                const size = document.getElementById('size-input')?.value ?? null;
+                const max_price = document.getElementById('max-price-input')?.value ?? -1;
+                const min_price = document.getElementById('min-price-input')?.value ?? -1;
+                console.log(colour, size);
+                const selectedId = $("#subcategory").val();
+                // Make an API request to the server with the color and size data
+                fetch(`/api/subcategory/${selectedId}/products/filter`, {
+                  method: 'POST',
+                  body: JSON.stringify({ filter:{brand, colour, size, max_price, min_price} }),
+                  headers: { 'Content-Type': 'application/json' }
+                })
+                .then(response => response.json())
+                .then(data => {
+                  console.log(data);
+                  var productsContainer = $("#productList");
+                productsContainer.empty(); // clear previous products (if any)
+                data.forEach(function(product) { // loop over products
+                  var productDiv = $("<div class='product-item'>"); // create product div
+                    var productCard = $("<div class='product'>"); // create product display card
+                      // productCard.append("<div class='product-image'><img src='" + product.image + "' alt='Product Image'></div>");
+                      productCard.append("<div class='product-info'><a href='product?productId=" + product.product_id + "'><h2 class='product-title'>" + product.product_name + "</h2></a><p class='product-description'>" + product.brand + "</p></div>");
+                      productDiv.append(productCard); // append product card to product div
+                      productsContainer.append(productDiv); // append product div to container
+                    });
+                    const filter = document.getElementById("filter");
+                    filter.classList.remove("hidden");
+                  // do something with the data
+                })
+                // .then(() => $('#filter-modal').modal('hide'))
+                .catch(error => console.error(error));
+              });
                 
               </script>
