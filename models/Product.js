@@ -28,7 +28,7 @@
               throw err;
           }
       },
-      filterProductsBySubcategoryId: async (filters) => {
+      filterProductsBySubcategoryId: async (subcategory_id, filters) => {
           try {
               let filter = 'WHERE ';
               for (let key in filters) {
@@ -40,6 +40,7 @@
                       }
                   }
               }
+              filter = filter.concat(" AND subcategory_id = ", subcateorgy_id, ";")
               const initial_queryString = `SELECT product_id, product_name, brand, colour, size, price from bm_auction_system.product `;
               const queryString = initial_queryString.concat(filter);
               const [rows] = await db.execute(queryString);
