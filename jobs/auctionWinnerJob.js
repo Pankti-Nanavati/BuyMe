@@ -17,7 +17,7 @@ const runAuctionWinnerJob = async () => {
                     console.log(salesEntryRes);
                     var message = "";
                     message = message.concat("Congratulations! You won the auction, the product ", product_name, "is for you to buy!");
-                    const prevMessageQuery = 'Select message from `bm_auction_system`.`notifications` where email_id = ?;';
+                    const prevMessageQuery = 'Select message from `bm_auction_system`.`notifications` where email_id = ? and seen = 0;';
                     const [prevMessages] = await db.execute(prevMessageQuery, [highestBid[0].email_id]);
                     var message_flag = 1
                     if (prevMessages.length != 0){

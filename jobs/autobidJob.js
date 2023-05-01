@@ -44,7 +44,7 @@ const runAutoBid = async () => {
                 const [userBidRows] = await db.execute(currentUserBidQuery, [manualbids[j].email_id, rows[a].auction_id]);
                 const currentUserBid = userBidRows[0].amount;
                 if (currentUserBid < currentBid){
-                    const prevMessageQuery = 'Select message from `bm_auction_system`.`notifications` where email_id = ?;';
+                    const prevMessageQuery = 'Select message from `bm_auction_system`.`notifications` where email_id = ? and seen =0;';
                     const [prevMessages] = await db.execute(prevMessageQuery, [manualbids[j].email_id]);
                     var message_flag = 1
                     message = "Someone exceeded your bid, the highest bid is now: $";
