@@ -21,7 +21,7 @@
       },
       selectAllProductsBySubcategoryId: async (id) => {
           try {
-              const queryString = 'SELECT product_id, product_name, brand, colour, size, price from bm_auction_system.product WHERE subcategory_id=?;';
+              const queryString = 'SELECT product_id, product_name, brand, description, colour, size, price from bm_auction_system.product WHERE subcategory_id=?;';
               const [rows] = await db.execute(queryString, [id]);
               return rows;
           } catch (err) {
