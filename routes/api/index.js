@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
 
 const userPassport = require('../../config/passportUserConfig');
 const adminPassport = require('../../config/passportAdminConfig');
@@ -10,7 +11,9 @@ const searchController = require('../../controllers/searchController');
 const auctionController = require('../../controllers/auctionController');
 const adminController = require('../../controllers/adminController');
 const customerRepController = require('../../controllers/customerRepController');
+const storage = require('../../config/multerConfig');
 
+const upload = multer(storage);
 /**
  * 
  * Admin API's 

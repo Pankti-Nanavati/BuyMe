@@ -1,5 +1,6 @@
 const Auction = require('../models/Auction');
 
+
 const auctionController = {
 
   sell: async(req, res) => {
@@ -20,9 +21,12 @@ const auctionController = {
 
   createAuction: async (req, res) => {
     try {
+      console.log(req);
       const email_id = req.session.passport.user.id;
-      const {product_name, brand, colour, size, price, subcategoryId, end_time, increment_amount, minimum_price, initial_price } = req.body;
-      const result = await Auction.createAuction(email_id, product_name, brand, colour, size, price, subcategoryId, end_time, increment_amount, minimum_price, initial_price);
+      const {product_name, brand, colour, size, price, description, subcategoryId, end_time, increment_amount, minimum_price, initial_price } = req.body;
+      console.log('Reading file', req.file);
+      const path = req.file.path;
+      const result = await Auction.createAuction(email_id, product_name, brand, colour, size, price, description, path, subcategoryId, end_time, increment_amount, minimum_price, initial_price);
       return res.json(result);
     } catch (err) {
       console.error(err);
