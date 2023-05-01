@@ -36,69 +36,83 @@
         <button type="submit" id="submitBtn">Submit</button>
       </form>
   </main>
+  
+  <div class="hidden" id="totalearnings">
+ <h4 style="text-align: center; margin-top: 70px;" id="totalEarnings"></h4>
+  </div>
 
-
-<h2 class="hidden">Top Buyers</h2>
-<table id="topBuyerTable" class="hidden">
+<div class="hidden" id="topBuyer">
+<h2 style="text-align: center; margin-top: 70px;">Top Buyers</h2>
+<table id="topBuyerTable">
   <thead>
     <tr>
-      <th>Buyer Email Id</th>
-      <th>Total Spendings</th>
+      <th>Name</th>
+      <th>Email Id</th>
     </tr>
   </thead>
   <tbody id="topBuyerTableBody">
   </tbody>
 </table>
+</div>
 
-
-<h2 class="hidden">Top Products</h2>
-<table id="topProductTable" class="hidden">
+<div class="hidden" id="topProduct">
+<h2 style="text-align: center; margin-top: 70px;">Top Products</h2>
+<table id="topProductTable">
   <thead>
     <tr>
+      <th>Product Name</th>
       <th>Product Id</th>
-      <th>Total Amount</th>
     </tr>
   </thead>
   <tbody id="topProductTableBody">
   </tbody>
 </table>
+</div>
 
-<h2 class="hidden">Earning per User</h2>
-<table id="earningsUserTable" class="hidden">
+<div class="hidden" id="earningsUser">
+<h2 style="text-align: center; margin-top: 70px;">Earning per User</h2>
+<table id="earningsUserTable">
   <thead>
     <tr>
-      <th>Buyer Email Id</th>
-      <th>Total Earnings</th>
+      <th>Buyer Name</th>
+      <th>Email Id</th>
+      <th>Earnings</th>
     </tr>
   </thead>
   <tbody id="earningsUserTableBody">
   </tbody>
 </table>
+</div>
 
-
-<h2 class="hidden">Earning per Category</h2>
-<table id="earningsCategoryTable" class="hidden">
+<div class="hidden" id="earningsCategory">
+<h2 style="text-align: center; margin-top: 70px;">Earning per Category</h2>
+<table id="earningsCategoryTable">
   <thead>
     <tr>
-      <th>Buyer Email Id</th>
-      <th>Total Earnings</th>
+      <th>Subcategory Name</th>
+      <th>Subcategory Id</th>
+      <th>Earnings</th>
     </tr>
   </thead>
   <tbody id="earningsCategoryTableBody">
   </tbody>
 </table>
+</div>
 
-<h2 class="hidden">Earning per Item</h2>
-<table id="earningsItemTable" class="hidden">
+<div class="hidden" id="earningsItem">
+<h2 style="text-align: center; margin-top: 70px;">Earning per Item</h2>
+<table id="earningsItemTable" style="margin-bottom: 100px;">
   <thead>
     <tr>
-      <th>Buyer Email Id</th>
-      <th>Total Earnings</th>
+      <th>Product Name</th>
+      <th>Product Id</th>
+      <th>Earnings</th>
     </tr>
   </thead>
   <tbody id="earningsItemTableBody">
   </tbody>
 </table>
+</div>
 
   </body>
   </html>
@@ -114,6 +128,8 @@ const topProductTableBody = document.querySelector('#topProductTableBody');
 const earningsUserTableBody = document.querySelector('#earningsUserTableBody');
 const earningsCategoryTableBody = document.querySelector('#earningsCategoryTableBody');
 const earningsItemTableBody = document.querySelector('#earningsItemTableBody');
+const earningsDisplay = document.getElementById('totalEarnings');
+        
   salesReportForm.addEventListener('submit', (event) => {
     event.preventDefault();
     const from = document.querySelector('#from').value;
@@ -133,61 +149,68 @@ const earningsItemTableBody = document.querySelector('#earningsItemTableBody');
       top_buyers= data['Top_buyers'];
       top_products= data['Top_products'];
       total_earnings=data['total_earnings'];
-      total_earnings_user=data['total_earnings_user'];
-      total_earnings_category=data['total_earnings_category'];
-      total_earnings_item=data['total_earnings_item'];
+      total_earnings_user=data['total_earnings_per_user'];
+      total_earnings_category=data['total_earnings_per_category'];
+      total_earnings_item=data['total_earnings_per_item'];
       // Populate summary table and calculate total earnings
+      
+      earningsDisplay.innerHTML = `Total Earnings: $ ${total_earnings}`;
+      totalearnings.classList.remove('hidden');
+
       top_buyers.forEach(sale => {
         const row = topBuyerTableBody.insertRow();
         row.innerHTML = `
+          <td>${sale.name}</td>
           <td>${sale.buyer_email_id}</td>
-          <td>${sale.user_earnings}</td>
         `;
-        topBuyerTable.classList.remove('hidden');
+        topBuyer.classList.remove('hidden');
 
 
       topProductTableBody.innerHTML = '';
       // Populate summary table and calculate total earnings
       top_products.forEach(sale => {
-        const row = topBuyerTableBody.insertRow();
+        const row = topProductTableBody.insertRow();
         row.innerHTML = `
+          <td>${sale.product_name}</td>
           <td>${sale.product_id}</td>
-          <td>${sale.product_earnings}</td>
         `;
-        topProductTable.classList.remove('hidden');
+        topProduct.classList.remove('hidden');
       });
 
       earningsUserTableBody.innerHTML = '';
       // Populate summary table and calculate total earnings
-      top_earnings_user.forEach(sale => {
+      total_earnings_user.forEach(sale => {
         const row = earningsUserTableBody.insertRow();
         row.innerHTML = `
+          <td>${sale.name}</td>
           <td>${sale.buyer_email_id}</td>
           <td>${sale.user_earnings}</td>
         `;
-        earningsUserTable.classList.remove('hidden');
+        earningsUser.classList.remove('hidden');
       });
 
       earningsItemTableBody.innerHTML = '';
       // Populate summary table and calculate total earnings
-      top_earnings_item.forEach(sale => {
+      total_earnings_item.forEach(sale => {
         const row = earningsItemTableBody.insertRow();
         row.innerHTML = `
+        <td>${sale.product_name}</td>
           <td>${sale.product_id}</td>
           <td>${sale.item_earnings}</td>
         `;
-        earningsItemTable.classList.remove('hidden');
+        earningsItem.classList.remove('hidden');
       });
 
       earningsCategoryTableBody.innerHTML = '';
       // Populate summary table and calculate total earnings
-      top_earnings_category.forEach(sale => {
+      total_earnings_category.forEach(sale => {
         const row = earningsCategoryTableBody.insertRow();
         row.innerHTML = `
+        <td>${sale.subcategory_name}</td>
           <td>${sale.subcategory_id}</td>
           <td>${sale.category_earnings}</td>
         `;
-        earningsCategoryTable.classList.remove('hidden');
+        earningsCategory.classList.remove('hidden');
       });
       });
     })
