@@ -75,8 +75,8 @@ const customerRepController = {
   
   answerQuestion: async(req, res) => {
     try{
-      const query_id = res.body.queryId;
-      const answer = res.body.answer;
+      const query_id = req.body.queryId;
+      const answer = req.body.answer;
       const result = await CustomerRep.answerQuestion(query_id, answer);
       return res.json(result);
     }

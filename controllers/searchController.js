@@ -51,9 +51,10 @@ const searchController = {
           console.log('req.params', req.params);
           console.log(req.params.categoryId);
           const filter = req.body.filter;
+          const order = req.body.order;
           const id = req.params.categoryId;
           
-          const result = await Product.filterProductsBySubcategoryId(filter, id);
+          const result = await Product.filterProductsBySubcategoryId(filter, order, id);
           console.log(result);
           return res.json(result);
         } catch (err) {
