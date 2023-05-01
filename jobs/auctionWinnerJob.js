@@ -17,9 +17,21 @@ const runAuctionWinnerJob = async () => {
                     console.log(salesEntryRes);
                     var message = "";
                     message = message.concat("Congratulations! You won the auction, the product ", product_name, "is for you to buy!");
-                    const notifQuery = 'Insert into `bm_auction_system`.`notifications` (email_id, message) VALUES (?,?);';
-                    const [notifs] = await db.execute(notifQuery, [highestBid[0].email_id, message]);
-                    console.log(notifs);
+                    const prevMessageQuery = 'Select message from `bm_auction_system`.`notifications` where email_id = ?;';
+                    const [prevMessages] = await db.execute(prevMessageQuery, [highestBid[0].email_id]);
+                    var message_flag = 1
+                    if (prevMessages.length != 0){
+                        for(let m=0; m< prevMessages.length; m++){
+                            if(message === prevMessages[m].message){
+                                message_flag = 0;
+                            }
+                        }
+                    }
+                    if(message_flag){
+                        const notifQuery = 'Insert into `bm_auction_system`.`notifications` (email_id, message) VALUES (?,?);';
+                        const [notifs] = await db.execute(notifQuery, [highestBid[0].email_id, message]);
+                        console.log(notifs);
+                    }
                 }
                 const updateAuction = 'Update `bm_auction_system`.`auction` set has_winner = 1 where auction_id = ?;';
                 const [updateAuctionRes] = await db.execute(updateAuction, [endedAuctions[i].auction_id]);
