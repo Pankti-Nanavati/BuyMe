@@ -83,6 +83,8 @@ router.get('/homepage', loginController.homepageView);
 router.get('/alert', loginController.fetchAlert);
 router.post('/alert', loginController.setAlert);
 
+router.get('/notifications', loginController.fetchNotifications);
+
 router.get('/auctionHistory', loginController.auctionHistory);
 router.get('/bidHistory', loginController.bidHistory);
 
