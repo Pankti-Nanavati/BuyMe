@@ -34,6 +34,7 @@ CREATE TABLE `notifications` (
   `notif_id` int NOT NULL AUTO_INCREMENT,
   `email_id` varchar(45) NOT NULL,
   `message` varchar(70) DEFAULT NULL,
+  `seen` boolean DEFAULT 0,
   PRIMARY KEY (`notif_id`),
   KEY `email_id` (`email_id`),
   CONSTRAINT `notifications_ibfk_1` FOREIGN KEY (`email_id`) REFERENCES `user` (`email_id`)

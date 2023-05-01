@@ -180,6 +180,9 @@ const User = {
     try {
       const queryString = 'Select message from `bm_auction_system`.`notifications` where email_id = ?;'
       const [result] = await db.execute(queryString, [email_id]);
+      const seenNotif = 'Update `bm_auction_system`.`notifications` set seen = 1 where email_id = ?;'
+      const [seen] = await db.execute(seenNotif, [email_id]);
+      console.log(seen)
       return result;
     } catch (err) {
       console.error(err);

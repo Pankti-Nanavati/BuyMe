@@ -22,7 +22,7 @@ const runAutoBid = async () => {
                     new_bid = currentBid + autobids[i].increment;
                     if (new_bid <= autobids[i].upper_limit){
                         const query = 'INSERT INTO `bm_auction_system`.`bid` (`email_id`, `auction_id`, `bidding_timestamp`, `amount`) VALUES (?,?, NOW(), ?);';
-                        const [newbid] = await db.execute(query, [autobids[i].email_id, auction_id, new_bid]);
+                        const [newbid] = await db.execute(query, [autobids[i].email_id, rows[a].auction_id, new_bid]);
                         console.log("Autobid made a new bid", newbid);
                         currentBid = new_bid;
                     }
@@ -44,11 +44,23 @@ const runAutoBid = async () => {
                 const [userBidRows] = await db.execute(currentUserBidQuery, [manualbids[j].email_id, rows[a].auction_id]);
                 const currentUserBid = userBidRows[0].amount;
                 if (currentUserBid < currentBid){
+                    const prevMessageQuery = 'Select message from `bm_auction_system`.`notifications` where email_id = ?;';
+                    const [prevMessages] = await db.execute(prevMessageQuery, [manualbids[j].email_id]);
+                    var message_flag = 1
                     message = "Someone exceeded your bid, the highest bid is now: $";
                     message = message.concat(currentBid);
-                    const notifQuery = 'Insert into `bm_auction_system`.`notifications` (email_id, message) VALUES (?,?,?);';
-                    const [notifs] = await db.execute(notifQuery, [manualbids[j].email_id, message]);
-                    console.log(notifs)
+                    if (prevMessages.length != 0){
+                        for(let m=0; m< prevMessages.length; m++){
+                            if(message === prevMessages[m].message){
+                                message_flag = 0;
+                            }
+                        }
+                    }
+                    if(message_flag){
+                        const notifQuery = 'Insert into `bm_auction_system`.`notifications` (email_id, message) VALUES (?,?);';
+                        const [notifs] = await db.execute(notifQuery, [manualbids[j].email_id, message]);
+                        console.log(notifs)
+                    }
                 }
             }
         }
