@@ -28,18 +28,30 @@ const Auction = {
       throw err;
     }
   },
-  createAuction: async (email_id, product_name, brand, colour, size, price, subcategoryId, end_time, increment_amount, minimum_price, initial_price) => {
+  createAuction: async (email_id, product_name, brand, colour, size, price, description, file_path, subcategoryId, end_time, increment_amount, minimum_price, initial_price) => {
     try {
-      const queryString1 = 'INSERT INTO bm_auction_system.product (product_name, brand, colour, size, price, subcategory_id) VALUES (?,?,?,?,?,?);';
-      const [result1] = await db.execute(queryString1, [product_name, brand, colour, size, price, subcategoryId]);
+      const queryString1 = 'INSERT INTO `bm_auction_system`.`product`(`product_name`, `brand`, `colour`, `size`, `price`,`description`, `img`, `subcategory_id`) VALUES (?,?,?,?,?,?,?, LOAD_FILE(?),?);';
+      const [result1] = await db.execute(queryString1, [product_name, brand, colour, size, price, description, file_path, subcategoryId]);
       productId= result1.insertId;
+      const alertQuery = 'SELECT email_id, product_name, colour, size FROM `bm_auction_system`.`alert` where product_name = ? and colour = ? and size = ? and send_notification_flag = 0;';
+      const [alerts] = await db.execute(alertQuery, [product_name, colour, size]);
+      for (let i = 0; i < alerts.length; i++){
+          console.log("setting alert for user: ", alerts[i].email_id)
+          const updateQuery = 'UPDATE bm_auction_system.alert SET send_notification_flag = 1 where email_id = ?;';
+          const [updateRes] = await db.execute(updateQuery, [alerts[i].email_id]);
+          console.log(updateRes);
+          const message = "";
+          message = message.concat("The product you were waiting for-", vals[1], "is available!");
+          const notifQuery = 'Insert into `bm_auction_system`.`notifications` (email_id, message) VALUES (?,?);';
+          const [notifs] = await db.execute(notifQuery, [alerts[i].email_id, message]);
+          console.log(notifs);
+      }
       const queryString2 = 'INSERT INTO bm_auction_system.auction (email_id, product_id, end_time, start_time, increment_amount, minimum_price, initial_price) VALUES (?,?,?, CURRENT_TIMESTAMP,?,?,?);';
       const [result2] = await db.execute(queryString2, [email_id, productId, end_time, increment_amount, minimum_price, initial_price]);
       return result2.insertId;
     } catch (err) {
       throw err;
     }
-
   },
   createAutobid: async (email_id, auction_id, increment_amount, upper_limit) => {
     try {

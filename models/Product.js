@@ -87,29 +87,7 @@
           } catch (err) {
               throw err;
           }
-      },
-      insertOne: async (vals) => {
-        try {
-            const queryString = 'INSERT INTO `bm_auction_system`.`product`(`product_id`, `product_name`, `brand`, `colour`, `size`, `price`,`description`, `img`, `subcategory_id`) VALUES (?,?,?,?,?,?,?, LOAD_FILE(?),?);';
-            const [result] = await db.execute(queryString, vals);
-            const alertQuery = 'SELECT email_id, product_name, colour, size FROM `bm_auction_system`.`alert` where product_name = ? and send_notification_flag = 0;';
-            const [alerts] = await db.execute(alertQuery, [vals[1]]);
-            for (let i = 0; i < alerts.length; i++){
-                console.log("setting alert for user: ", alerts[i].email_id)
-                const updateQuery = 'UPDATE bm_auction_system.alert SET send_notification_flag = 1 where email_id = ?;';
-                const [updateRes] = await db.execute(updateQuery, [alerts[i].email_id]);
-                console.log(updateRes);
-                const message = "";
-                message = message.concat("The product you were waiting for-", vals[1], "is available!");
-                const notifQuery = 'Insert into `bm_auction_system`.`notifications` (email_id, message) VALUES (?,?);';
-                const [notifs] = await db.execute(notifQuery, [alerts[i].email_id, message]);
-                console.log(notifs);
-            }
-            return result;
-        } catch (err) {
-            throw err;
-        }
-    }
+      }
 };
 
 module.exports = Product;
