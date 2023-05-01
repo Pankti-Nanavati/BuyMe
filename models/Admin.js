@@ -57,11 +57,11 @@ const Admin = {
   },
   getSalesReport: async (date1, date2) => {
     const queryString1 = 'Select SUM(amount) as total from sales WHERE sale_timestamp <= ? and sale_timestamp >= ?;';
-    const queryString2 = 'Select product_id, SUM(amount) as item_earnings from sales WHERE sale_timestamp <= ? and sale_timestamp >= ? group by product_id order by item_earnings DESC limit 5;';
-    const queryString3 = 'Select buyer_email_id, SUM(amount) as user_earnings from sales WHERE sale_timestamp <= ? and sale_timestamp >= ? group by buyer_email_id order by user_earnings DESC limit 5;';
-    const queryString4 = 'Select product_id, SUM(amount) as item_earnings from sales WHERE sale_timestamp <= ? and sale_timestamp >= ? group by product_id order by item_earnings DESC';
-    const queryString5 = 'Select buyer_email_id, SUM(amount) as user_earnings from sales WHERE sale_timestamp <= ? and sale_timestamp >= ? group by buyer_email_id order by user_earnings DESC';
-    const queryString6 = 'Select P.subcategory_id, SUM(S.amount) as category_earnings from sales S inner join product P on P.product_id = S.product_id WHERE S.sale_timestamp <= ? and S.sale_timestamp >= ? group by P.subcategory_id order by category_earnings DESC';
+    const queryString2 = 'Select P.product_id, P.product_name, SUM(S.amount) as item_earnings from sales S inner join product P on P.product_id = S.product_id WHERE S.sale_timestamp <= ? and S.sale_timestamp >= ? group by P.product_id order by item_earnings DESC limit 5;';
+    const queryString3 = 'Select S.buyer_email_id, U.name, SUM(S.amount) as user_earnings from sales S inner join user U on U.email_id = S.buyer_email_id WHERE S.sale_timestamp <= ? and S.sale_timestamp >= ? group by S.buyer_email_id order by user_earnings DESC limit 5;';
+    const queryString4 = 'Select P.product_id, P.product_name, SUM(S.amount) as item_earnings from sales S inner join product P on P.product_id = S.product_id WHERE S.sale_timestamp <= ? and S.sale_timestamp >= ? group by P.product_id order by item_earnings DESC';
+    const queryString5 = 'Select S.buyer_email_id, U.name, SUM(S.amount) as user_earnings from sales S inner join user U on S.buyer_email_id = U.email_id WHERE S.sale_timestamp <= ? and S.sale_timestamp >= ? group by S.buyer_email_id order by user_earnings DESC';
+    const queryString6 = 'Select P.subcategory_id, C.subcategory_name, SUM(S.amount) as category_earnings from sales S inner join product P on P.product_id = S.product_id inner join subcategory C on P.subcategory_id = C.subcategory_id WHERE S.sale_timestamp <= ? and S.sale_timestamp >= ? group by P.subcategory_id order by category_earnings DESC';
     try{
       const [result1] = await db.execute(queryString1, [date2, date1]);
       const [result2] = await db.execute(queryString2, [date2, date1]);

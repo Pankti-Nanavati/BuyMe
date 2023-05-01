@@ -33,7 +33,7 @@ DROP TABLE IF EXISTS `notifications`;
 CREATE TABLE `notifications` (
   `notif_id` int NOT NULL AUTO_INCREMENT,
   `email_id` varchar(45) NOT NULL,
-  `message` varchar(70) DEFAULT NULL,
+  `message` varchar(700) DEFAULT NULL,
   `seen` boolean DEFAULT 0,
   PRIMARY KEY (`notif_id`),
   KEY `email_id` (`email_id`),
