@@ -77,7 +77,7 @@ const Admin = {
         topProducts['product_name'].push(result2[i].product_name);
       }
       var topUsers = {}
-      topUser['email_id'] = []
+      topUsers['email_id'] = []
       topUsers['name'] = []
       for(let j= 0; j< result3.length; j++){
         topUsers['email_id'].push(result3[j].buyer_email_id);
