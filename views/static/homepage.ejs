@@ -152,7 +152,7 @@
                   var productDiv = $("<div class='product-item'>"); // create product div
                     var productCard = $("<div class='product'>"); // create product display card
                       // productCard.append("<div class='product-image'><img src='" + product.image + "' alt='Product Image'></div>");
-                      productCard.append("<div class='product-info'><a href='product?productId=" + product.product_id + "'><h2 class='product-title'>" + product.product_name + "</h2></a><p class='product-description'>" + product.brand + "</p></div>");
+                      productCard.append("<div class='product-info'><a href='product?productId=" + product.product_id + "'><h2 class='product-title'>" + product.product_name + "</h2></a><p class='product-description'>" + product.brand + "</p><p class='product-desc'>" + product.description + "</p></div>");
                       productDiv.append(productCard); // append product card to product div
                       productsContainer.append(productDiv); // append product div to container
                     });

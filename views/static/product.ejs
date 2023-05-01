@@ -19,7 +19,7 @@
           <img src="product-image/<%= product.result.img %>" alt="Product Image">
         </div>
         <div class="product-info">
-          <h2 class="product-title"><%= product.result.product_name %></h2> Brand: <%= product.result.brand %> <br> Color: <%= product.result.colour %> <br> Size: <%= product.result.size %> <br> Price: $<%= product.result.price%> <% if (product.currentBid === 0) { %> <br> Current Bid: $<%= product.result.price %> <% } else{ %><br> Current Bid: $<%= product.currentBid %> <% } %></p>
+          <h2 class="product-title"><%= product.result.product_name %></h2>Description: <%= product.result.description %> <br> Brand: <%= product.result.brand %> <br> Color: <%= product.result.colour %> <br> Size: <%= product.result.size %> <br> Price: $<%= product.result.price%> <% if (product.currentBid === 0) { %> <br> Current Bid: $<%= product.result.price %> <% } else{ %><br> Current Bid: $<%= product.currentBid %> <% } %></p>
             <div class="product-buttons">
               <% if (product.result.active_flag === 1) { %>
               <button id="bid-button" class="bid">Bid</button>
@@ -80,13 +80,14 @@
       
 
   <script>// Get the modal
-   if (`<%= product.result.active_flag %>` === 1) { 
+ 
     var modal = document.getElementById("bid-modal");
     var bidBtn = document.getElementById("bid-button");
     var closeBtn = document.querySelector(".close");
+    if (bidBtn) {
     bidBtn.onclick = function() {
       modal.style.display = "block";
-    }
+    }}
     closeBtn.onclick = function() {
       modal.style.display = "none";
     }
@@ -95,7 +96,7 @@
         modal.style.display = "none";
       }
     }
-  }
+  
 
 
     function openModal() {
@@ -127,7 +128,7 @@
 
   // Place Bid button
 
-  if (`<%= product.result.active_flag %>` === 1) { 
+  // if (`<%= product.result.active_flag %>` === 1) { 
   
 const placeBidButton = document.getElementById('placeBidButton');
 placeBidButton.addEventListener('click', () => {
@@ -195,7 +196,7 @@ fetch('/api/placeAutoBid', {
 });
 });
 
-  }
+  // }
 
 
 
@@ -220,7 +221,7 @@ fetch(`/api/similarItems/${productId}`)
         </div>
         <div class="product-info">
           <h2 class="product-title"><a href="/api/product?productId=${product.product_id}">${product.product_name}</a></h2>
-          <p>Brand: ${product.brand} <br> Color: ${product.colour} <br> Size: ${product.size} 
+          <p>Description: ${product.brand} <br> Brand: ${product.brand} 
           </p>
         </div>
       `;
