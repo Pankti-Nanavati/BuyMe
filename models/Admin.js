@@ -69,13 +69,19 @@ const Admin = {
       const [result4] = await db.execute(queryString4, [date2, date1]);
       const [result5] = await db.execute(queryString5, [date2, date1]);
       const [result6] = await db.execute(queryString6, [date2, date1]);
-      var topProducts = []
+      var topProducts = {}
+      topProducts['product_id'] = []
+      topProducts['product_name'] = []
       for(let i= 0; i< result2.length; i++) {
-        topProducts.push(result2[i].product_id);
+        topProducts['product_id'].push(result2[i].product_id);
+        topProducts['product_name'].push(result2[i].product_name);
       }
-      var topUsers = []
+      var topUsers = {}
+      topUser['email_id'] = []
+      topUsers['name'] = []
       for(let j= 0; j< result3.length; j++){
-        topUsers.push(result3[j].buyer_email_id);
+        topUsers['email_id'].push(result3[j].buyer_email_id);
+        topUsers['name'].push(result3[j].name);
       }
       const result = {};
       result['total_earnings'] = result1[0].total;

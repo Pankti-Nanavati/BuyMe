@@ -5,7 +5,7 @@ const runAuctionWinnerJob = async () => {
     try {
         console.log("calling function assignAuctionWinner");
         //fetching auctions that have ended and their winners have not been assigned
-        const endedAuctionsQuery = 'Select DISTINCT(A.auction_id, A.minimum_price, A.email_id, A.product_id, P.product_name) from `bm_auction_system`.`auction` A inner join `bm_auction_system`.`product` P on A.product_id = P.product_id where A.end_time < NOW() and A.has_winner = 0;';
+        const endedAuctionsQuery = 'Select A.auction_id, A.minimum_price, A.email_id, A.product_id, P.product_name from `bm_auction_system`.`auction` A inner join `bm_auction_system`.`product` P on A.product_id = P.product_id where A.end_time < NOW() and A.has_winner = 0;';
         const [endedAuctions] = await db.execute(endedAuctionsQuery);
         console.log('Ended auctions', endedAuctions);
         if(endedAuctions.length != 0){

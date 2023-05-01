@@ -7,11 +7,13 @@ const runAutoBid = async () => {
         //fetching all active auctions
         const queryString = 'SELECT auction_id, initial_price FROM bm_auction_system.auction where end_time > NOW();';
         const [rows] = await db.query(queryString);
+        console.log(rows)
         if(rows.length != 0){
             for (let a = 0; a < rows.length; a++){
                 //fetching the highest bid
                 const currentBidQuery=  'select email_id, amount from bm_auction_system.bid where bidding_timestamp IN (select MAX(bidding_timestamp) from bid where auction_id = ?);'
                 const [bidRows] = await db.execute(currentBidQuery, [rows[a].auction_id]);
+                console.log(bidRows)
                 var first_bidder = 0
                 if(bidRows.length != 0){
                     var currentBid = bidRows[0].amount;
@@ -24,6 +26,7 @@ const runAutoBid = async () => {
                 //fetching autobid users
                 const checkAutoBid = 'SELECT `email_id`, `increment`, `upper_limit` FROM `bm_auction_system`.`autobid` where auction_id = ?;';
                 const [autobids] = await db.execute(checkAutoBid, [rows[a].auction_id]);
+                console.log(autobids)
                 if(autobids.length != 0){
                     if(first_bidder){
                         currentWinner = autobids[i].email_id;
