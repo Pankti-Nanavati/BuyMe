@@ -19,13 +19,15 @@ const runAutoBid = async () => {
                 }
                 else{
                     var currentBid = rows[a].initial_price;
-                    var currentWinner = "";
                     first_bidder = 1;
                 }
                 //fetching autobid users
                 const checkAutoBid = 'SELECT `email_id`, `increment`, `upper_limit` FROM `bm_auction_system`.`autobid` where auction_id = ?;';
                 const [autobids] = await db.execute(checkAutoBid, [rows[a].auction_id]);
                 if(autobids.length != 0){
+                    if(first_bidder){
+                        currentWinner = autobids[i].email_id;
+                    }
                     for (let i = 0; i < autobids.length; i++) {
                         if((autobids[i].email_id != currentWinner) || (first_bidder)){
                             var new_bid = autobids[i].amount;
