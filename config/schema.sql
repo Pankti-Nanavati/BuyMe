@@ -153,6 +153,7 @@ Create Table `notifications` (
 );
 
 
+alter table product MODIFY column img varchar(100);
 
 /*
 

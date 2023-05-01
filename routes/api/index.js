@@ -13,7 +13,10 @@ const adminController = require('../../controllers/adminController');
 const customerRepController = require('../../controllers/customerRepController');
 const storage = require('../../config/multerConfig');
 
-const upload = multer(storage);
+const upload = multer({
+    storage: storage
+  });
+  
 /**
  * 
  * Admin API's 
@@ -122,6 +125,7 @@ router.get('/product/:productId', searchController.productById);
 router.get('/product', searchController.productView);
 router.get('/similarItems/:productId', searchController.similarItems);
 
+
 /**
  * 
  * Auction / Bid API
@@ -135,12 +139,12 @@ router.get('/similarItems/:productId', searchController.similarItems);
  */
 
 router.get('/auctions', auctionController.auctions);
-router.post('/createAuction', auctionController.createAuction);
+router.post('/createAuction', upload.single('image'), auctionController.createAuction);
 router.get('/sell', auctionController.sell);
 
 router.post('/placeBid', auctionController.placeBid);
 router.post('/placeAutoBid', auctionController.placeAutoBid);
-
+router.get('/product-image/:filename', searchController.fetchImage);
 
 
 module.exports = router;

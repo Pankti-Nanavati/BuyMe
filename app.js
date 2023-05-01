@@ -53,6 +53,7 @@ app.use(express.urlencoded({ extended: true }));
 // Serve static Files
 app.use(express.static(__dirname + '/views'));
 
+
 // Set View Engine
 app.set('view engine', 'ejs');
 

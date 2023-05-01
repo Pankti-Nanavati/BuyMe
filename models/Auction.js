@@ -30,7 +30,7 @@ const Auction = {
   },
   createAuction: async (email_id, product_name, brand, colour, size, price, description, file_path, subcategoryId, end_time, increment_amount, minimum_price, initial_price) => {
     try {
-      const queryString1 = 'INSERT INTO `bm_auction_system`.`product`(`product_name`, `brand`, `colour`, `size`, `price`,`description`, `img`, `subcategory_id`) VALUES (?,?,?,?,?,?,?, LOAD_FILE(?),?);';
+      const queryString1 = 'INSERT INTO `bm_auction_system`.`product`(`product_name`, `brand`, `colour`, `size`, `price`,`description`, `img`, `subcategory_id`) VALUES (?,?,?,?,?,?,?,?);';
       const [result1] = await db.execute(queryString1, [product_name, brand, colour, size, price, description, file_path, subcategoryId]);
       productId= result1.insertId;
       const alertQuery = 'SELECT email_id, product_name, colour, size FROM `bm_auction_system`.`alert` where product_name = ? and colour = ? and size = ? and send_notification_flag = 0;';

@@ -1,4 +1,5 @@
 const Product = require('../models/Product');
+const path = require('path');
 
 const searchController = {
 
@@ -93,6 +94,18 @@ const searchController = {
           return res.json(result);
         } catch (err) {
           console.error(err);
+          return res.status(500).json({ error: 'Internal server error' });
+        }
+      },
+
+      fetchImage: async(req, res) => {
+        try{
+          const { filename } = req.params;
+          const imagePath = path.join(__dirname,'..','views/assets', filename);
+          return res.sendFile(imagePath);
+        }
+        catch(err) {
+          console.log(err);
           return res.status(500).json({ error: 'Internal server error' });
         }
       },

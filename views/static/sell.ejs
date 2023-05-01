@@ -13,7 +13,7 @@
   <%- include('navbar') %>
   
   <div class="container mt-5">
-    <form id="AuctionForm">
+    <form action = '/api/createAuction' id="AuctionForm" method = 'post' enctype="multipart/form-data">
       <div class="mb-3">
         <label for="product-name" class="form-label">Product Name:</label>
         <input type="text" class="form-control" id="product_name" name="product_name">
@@ -122,30 +122,32 @@
               });
               
               
-              $(document).ready(function() {
-                $('#AuctionForm').submit(function(event) {
-                  event.preventDefault(); // prevent the form from submitting normally
-                  
-                  const formdata = $('#AuctionForm').serializeArray();
-                  const jsonData = { subcategoryId: $("#subcategory").val() };
-                  
-                  $.each(formdata, function(index, element) {
-                    jsonData[element.name] = element.value;
-                  });
-                  
-                  // make the API call
-                  $.ajax({
-                    type: 'POST',
-                    url: '/api/createAuction',
-                    data: jsonData,
-                    success: function(response) {
-                      window.location.href = '/api/homepage';
+              // $(document).ready(function() {
+              //   $('#AuctionForm').submit(function(event) {
+              //     event.preventDefault(); // prevent the form from submitting normally
 
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                      console.log(textStatus, errorThrown); // handle the API error
-                    }
-                  });
-                });
-              });
+              //     const formdata = $('#AuctionForm').serializeArray();
+              //     const jsonData = { subcategoryId: $("#subcategory").val() };
+
+              //     $.each(formdata, function(index, element) {
+              //       jsonData[element.name] = element.value;
+              //     });
+
+              //     // make the API call
+              //     $.ajax({
+              //       type: 'POST',
+              //       url: '/api/createAuction',
+              //       data: jsonData,
+              //       contentType: false,
+              //       processData: false,
+              //       success: function(response) {
+              //         window.location.href = '/api/homepage';
+
+              //       },
+              //       error: function(jqXHR, textStatus, errorThrown) {
+              //         console.log(textStatus, errorThrown); // handle the API error
+              //       }
+              //     });
+              //   });
+              // });
             </script>

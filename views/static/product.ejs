@@ -16,7 +16,7 @@
 
     <div class="product">
         <div class="product-image">
-          <img src="product1.jpg" alt="Product Image">
+          <img src="product-image/<%= product.result.img %>" alt="Product Image">
         </div>
         <div class="product-info">
           <h2 class="product-title"><%= product.result.product_name %></h2> Brand: <%= product.result.brand %> <br> Color: <%= product.result.colour %> <br> Size: <%= product.result.size %> <br> Price: $<%= product.result.price%> <% if (product.currentBid === 0) { %> <br> Current Bid: $<%= product.result.price %> <% } else{ %><br> Current Bid: $<%= product.currentBid %> <% } %></p>
@@ -211,12 +211,12 @@ fetch(`/api/similarItems/${productId}`)
     console.log(data);
     // Create product items for each product
     data.forEach(product => {
-      
+      console.log('printing', product); 
       const productItem = document.createElement("div");
       productItem.classList.add("product");
       productItem.innerHTML = `
         <div class="product-image">
-          <img src="${product.image_url}" alt="Product Image">
+          <img src="product-image/${product.img}" alt="Product Image">
         </div>
         <div class="product-info">
           <h2 class="product-title"><a href="/api/product?productId=${product.product_id}">${product.product_name}</a></h2>
