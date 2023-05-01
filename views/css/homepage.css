@@ -1,4 +1,22 @@
+.dropdown-menu {
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: #ffffff;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  padding: 0.5rem;
+  font-size: 0.9rem;
+}
 
+.dropdown-menu li {
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+}
+
+.dropdown-menu li:hover {
+  background-color: #f8f9fa;
+}
   .navbar-nav .nav-link:hover {
     background-color: transparent !important;
   }
@@ -69,4 +87,5 @@
   .hide {
     display: none;
   }
+
   

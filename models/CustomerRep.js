@@ -98,7 +98,7 @@ const CR = {
   answerQuestion: async (query_id, answer) => {
     const queryString = 'Update bm_auction_system.queries_answers Set answer = ?, a_timestamp = NOW() where query_id = ?;';
     try {
-        const [rows] = await db.execute(queryString, [query_id]);
+        const [rows] = await db.execute(queryString, [answer, query_id]);
         return rows;
     } catch (err) {
         console.error(err);

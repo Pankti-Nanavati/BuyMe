@@ -121,12 +121,13 @@ answerQuestionsButton.addEventListener('click', async (event) => {
       div.className = 'card my-3';
       div.innerHTML = `
         <div class="card-body">
-          <h5 class="card-title">Question: ${question.text}</h5>
+          <h5 class="card-title">Question: ${question.question}</h5>
+          <h6>User: ${question.user_email_id}</h6>
           <div class="mb-3">
             <label for="answer" class="form-label">Answer:</label>
-            <input type="text" class="form-control" id="answer-${question.id}">
+            <input type="text" class="form-control" id="answer-${question.query_id}">
           </div>
-          <button type="button" class="btn btn-primary" onclick="resolveQuery('${question.id}')">Resolve Query</button>
+          <button type="button" class="btn btn-primary" onclick="resolveQuery('${question.query_id}')">Resolve Query</button>
         </div>
       `;
       questionsContainer.appendChild(div);
@@ -136,29 +137,51 @@ answerQuestionsButton.addEventListener('click', async (event) => {
   }
 });
 
-const resolveQuery = async (questionId) => {
+
+
+const resolveQuery = async (queryId) => {
   try {
     // Get answer
-    const answer = document.getElementById(`answer-${questionId}`).value;
-    console.log(answer);
+    const answer = document.getElementById(`answer-${queryId}`).value;
+    console.log(answer,queryId);
     // Post data to resolve query
-    const response = await fetch('/api/resolve-query', {
+    const response = await fetch('/api/customerRep/answerQuestion', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ questionId, answer })
+      body: JSON.stringify({ queryId, answer })
     });
     if (!response.ok) {
       throw new Error('Failed to resolve query');
     }
     // Reload page
-    location.reload();
-  } catch (error) {
+    const data = await fetch('/api/customerRep/questions');
+    const questions = await data.json();
+    console.log(questions);
+    // Display questions
+    const questionsContainer = document.getElementById('questions-container');
+    questionsContainer.innerHTML = '';
+    questions.forEach(question => {
+      const div = document.createElement('div');
+      div.className = 'card my-3';
+      div.innerHTML = `
+        <div class="card-body">
+          <h5 class="card-title">Question: ${question.question}</h5>
+          <h6>User: ${question.user_email_id}</h6>
+          <div class="mb-3">
+            <label for="answer" class="form-label">Answer:</label>
+            <input type="text" class="form-control" id="answer-${question.query_id}">
+          </div>
+          <button type="button" class="btn btn-primary" onclick="resolveQuery('${question.query_id}')">Resolve Query</button>
+        </div>
+      `;
+      questionsContainer.appendChild(div);
+  }) 
+}catch (error) {
     console.error(error);
     alert('Failed to resolve query');
-  }
-};
+  } };
 
     
 </script>

@@ -70,12 +70,12 @@
               <label for="size-input" class="form-label">Size:</label>
               <input type="text" class="form-control" id="size-input">
             </div>
-          </div>
-          <div class="row mt-3">
             <div class="col">
               <label for="color-input" class="form-label">Color:</label>
               <input type="text" class="form-control" id="color-input">
             </div>
+          </div>
+          <div class="row mt-3">
             <div class="col">
               <label for="min-price-input" class="form-label">Minimum Price:</label>
               <input type="number" class="form-control" id="min-price-input">
@@ -83,6 +83,15 @@
             <div class="col">
               <label for="max-price-input" class="form-label">Maximum Price:</label>
               <input type="number" class="form-control" id="max-price-input">
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col">
+              <label for="sort-select" class="form-label">Sort:</label>
+              <select class="form-select" id="sort-select">
+                <option value="ASC">Ascending</option>
+                <option value="DESC">Descending</option>
+              </select>
             </div>
           </div>
         </form>
@@ -189,12 +198,14 @@
                 const size = document.getElementById('size-input')?.value ?? null;
                 const max_price = document.getElementById('max-price-input')?.value ?? -1;
                 const min_price = document.getElementById('min-price-input')?.value ?? -1;
-                console.log(colour, size);
+                const sort = document.getElementById('sort-select').value;
+                const order = sort === 'ASC' ? 'ASC' : sort === 'DESC' ? 'DESC' : null;
+                console.log(order);
                 const selectedId = $("#subcategory").val();
                 // Make an API request to the server with the color and size data
                 fetch(`/api/subcategory/${selectedId}/products/filter`, {
                   method: 'POST',
-                  body: JSON.stringify({ filter:{brand, colour, size, max_price, min_price} }),
+                  body: JSON.stringify({ filter:{brand, colour, size, max_price, min_price}, order }),
                   headers: { 'Content-Type': 'application/json' }
                 })
                 .then(response => response.json())

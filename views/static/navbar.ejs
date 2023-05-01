@@ -28,9 +28,14 @@
           <li class="nav-item">
             <a class="nav-link" id="open-modal">Alert</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Notification</a>
-          </li>
+            <li class="nav-item">
+              <!-- <a class="nav-link" id="notification-link" data-toggle="dropdown" data-target="#notification-dropdown">Notification</a>
+              <ul class="dropdown-menu" id="notification-dropdown"></ul> -->
+              <a class="nav-link dropdown-toggle" id="notification-link" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Notification <i class="bi bi-bell"></i>
+              </a>
+              <ul class="dropdown-menu" id="notification-dropdown"></ul>
+            </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Cart</a>
           </li>
@@ -87,6 +92,45 @@ function openAlertModal() {
 $(document).ready(function() {
   $("#open-modal").click(openAlertModal);
 });
+
+
+
+
+const notificationLink = document.getElementById("notification-link");
+const notificationDropdown = document.getElementById("notification-dropdown");
+notificationLink.addEventListener("click", async () => {
+  // Send request to API to fetch notifications
+  const response = await fetch("/api/notifications");
+  const notifications = await response.json();
+
+  // Clear the dropdown menu
+  notificationDropdown.innerHTML = "";
+  if (notifications.length === 0) {
+    const listItem = document.createElement("li");
+    listItem.classList.add("dropdown-item");
+    listItem.textContent = "No Notifications";
+    notificationDropdown.appendChild(listItem);
+  }
+  // Create dropdown menu items for each notification
+  else{
+    notifications.forEach(notification => {
+    const listItem = document.createElement("li");
+    listItem.classList.add("dropdown-item");
+    listItem.textContent = notification.message;
+    notificationDropdown.appendChild(listItem);
+  });
+}
+  // Show the dropdown menu
+  notificationDropdown.classList.add("show");
+});
+document.addEventListener("click", event => {
+  if (!notificationDropdown.contains(event.target)) {
+    notificationDropdown.classList.remove("show");
+  }
+});
+
+ 
+
 
 
 </script>
