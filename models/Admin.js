@@ -69,24 +69,24 @@ const Admin = {
       const [result4] = await db.execute(queryString4, [date2, date1]);
       const [result5] = await db.execute(queryString5, [date2, date1]);
       const [result6] = await db.execute(queryString6, [date2, date1]);
-      var topProducts = {}
-      topProducts['product_id'] = []
-      topProducts['product_name'] = []
-      for(let i= 0; i< result2.length; i++) {
-        topProducts['product_id'].push(result2[i].product_id);
-        topProducts['product_name'].push(result2[i].product_name);
-      }
-      var topUsers = {}
-      topUsers['email_id'] = []
-      topUsers['name'] = []
-      for(let j= 0; j< result3.length; j++){
-        topUsers['email_id'].push(result3[j].buyer_email_id);
-        topUsers['name'].push(result3[j].name);
-      }
+      // var topProducts = {}
+      // topProducts['product_id'] = []
+      // topProducts['product_name'] = []
+      // for(let i= 0; i< result2.length; i++) {
+      //   topProducts['product_id'].push(result2[i].product_id);
+      //   topProducts['product_name'].push(result2[i].product_name);
+      // }
+      // var topUsers = {}
+      // topUsers['email_id'] = []
+      // topUsers['name'] = []
+      // for(let j= 0; j< result3.length; j++){
+      //   topUsers['email_id'].push(result3[j].buyer_email_id);
+      //   topUsers['name'].push(result3[j].name);
+      // }
       const result = {};
       result['total_earnings'] = result1[0].total;
-      result['Top_products'] = topProducts;
-      result['Top_buyers'] = topUsers;
+      result['Top_products'] = result2;
+      result['Top_buyers'] = result3;
       result['total_earnings_per_user'] = result5;
       result['total_earnings_per_item'] = result4;
       result['total_earnings_per_category'] = result6;
