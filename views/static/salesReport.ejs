@@ -38,8 +38,7 @@
   </main>
 
 
-
-  <h2 class="hidden">Top Buyers</h2>
+<h2 class="hidden">Top Buyers</h2>
 <table id="topBuyerTable" class="hidden">
   <thead>
     <tr>
@@ -52,6 +51,54 @@
 </table>
 
 
+<h2 class="hidden">Top Products</h2>
+<table id="topProductTable" class="hidden">
+  <thead>
+    <tr>
+      <th>Product Id</th>
+      <th>Total Amount</th>
+    </tr>
+  </thead>
+  <tbody id="topProductTableBody">
+  </tbody>
+</table>
+
+<h2 class="hidden">Earning per User</h2>
+<table id="earningsUserTable" class="hidden">
+  <thead>
+    <tr>
+      <th>Buyer Email Id</th>
+      <th>Total Earnings</th>
+    </tr>
+  </thead>
+  <tbody id="earningsUserTableBody">
+  </tbody>
+</table>
+
+
+<h2 class="hidden">Earning per Category</h2>
+<table id="earningsCategoryTable" class="hidden">
+  <thead>
+    <tr>
+      <th>Buyer Email Id</th>
+      <th>Total Earnings</th>
+    </tr>
+  </thead>
+  <tbody id="earningsCategoryTableBody">
+  </tbody>
+</table>
+
+<h2 class="hidden">Earning per Item</h2>
+<table id="earningsItemTable" class="hidden">
+  <thead>
+    <tr>
+      <th>Buyer Email Id</th>
+      <th>Total Earnings</th>
+    </tr>
+  </thead>
+  <tbody id="earningsItemTableBody">
+  </tbody>
+</table>
 
   </body>
   </html>
@@ -62,8 +109,11 @@
 
 
 const salesReportForm = document.querySelector('#salesReportForm');
-  const summaryTableBody = document.querySelector('#summaryTableBody');
-
+const topBuyerTableBody = document.querySelector('#topBuyerTableBody');
+const topProductTableBody = document.querySelector('#topProductTableBody');
+const earningsUserTableBody = document.querySelector('#earningsUserTableBody');
+const earningsCategoryTableBody = document.querySelector('#earningsCategoryTableBody');
+const earningsItemTableBody = document.querySelector('#earningsItemTableBody');
   salesReportForm.addEventListener('submit', (event) => {
     event.preventDefault();
     const from = document.querySelector('#from').value;
@@ -79,20 +129,74 @@ const salesReportForm = document.querySelector('#salesReportForm');
     .then(data => {
       console.log(data);
       // Clear previous table data
-      summaryTableBody.innerHTML = '';
+      topBuyerTableBody.innerHTML = '';
       top_buyers= data['Top_buyers'];
       top_products= data['Top_products'];
       total_earnings=data['total_earnings'];
+      total_earnings_user=data['total_earnings_user'];
+      total_earnings_category=data['total_earnings_category'];
+      total_earnings_item=data['total_earnings_item'];
       // Populate summary table and calculate total earnings
       top_buyers.forEach(sale => {
-        const row = summaryTableBody.insertRow();
+        const row = topBuyerTableBody.insertRow();
         row.innerHTML = `
           <td>${sale.buyer_email_id}</td>
-          <td>${sale.amount}</td>
+          <td>${sale.user_earnings}</td>
         `;
-        summaryTable.classList.remove('hidden');
+        topBuyerTable.classList.remove('hidden');
+
+
+      topProductTableBody.innerHTML = '';
+      // Populate summary table and calculate total earnings
+      top_products.forEach(sale => {
+        const row = topBuyerTableBody.insertRow();
+        row.innerHTML = `
+          <td>${sale.product_id}</td>
+          <td>${sale.product_earnings}</td>
+        `;
+        topProductTable.classList.remove('hidden');
+      });
+
+      earningsUserTableBody.innerHTML = '';
+      // Populate summary table and calculate total earnings
+      top_earnings_user.forEach(sale => {
+        const row = earningsUserTableBody.insertRow();
+        row.innerHTML = `
+          <td>${sale.buyer_email_id}</td>
+          <td>${sale.user_earnings}</td>
+        `;
+        earningsUserTable.classList.remove('hidden');
+      });
+
+      earningsItemTableBody.innerHTML = '';
+      // Populate summary table and calculate total earnings
+      top_earnings_item.forEach(sale => {
+        const row = earningsItemTableBody.insertRow();
+        row.innerHTML = `
+          <td>${sale.product_id}</td>
+          <td>${sale.item_earnings}</td>
+        `;
+        earningsItemTable.classList.remove('hidden');
+      });
+
+      earningsCategoryTableBody.innerHTML = '';
+      // Populate summary table and calculate total earnings
+      top_earnings_category.forEach(sale => {
+        const row = earningsCategoryTableBody.insertRow();
+        row.innerHTML = `
+          <td>${sale.subcategory_id}</td>
+          <td>${sale.category_earnings}</td>
+        `;
+        earningsCategoryTable.classList.remove('hidden');
+      });
       });
     })
     .catch(error => console.error(error));
   });
+
+
+
+
+ 
+  
 </script>

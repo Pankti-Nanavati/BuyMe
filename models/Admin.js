@@ -81,8 +81,8 @@ const Admin = {
       result['total_earnings'] = result1[0].total;
       result['Top_products'] = topProducts;
       result['Top_buyers'] = topUsers;
-      result['total_earnings_per_user'] = result4;
-      result['total_earnings_per_item'] = result5;
+      result['total_earnings_per_user'] = result5;
+      result['total_earnings_per_item'] = result4;
       result['total_earnings_per_category'] = result6;
       return result;
     } catch (err) {
