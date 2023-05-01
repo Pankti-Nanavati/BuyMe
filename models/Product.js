@@ -60,7 +60,7 @@
             const currentBidQuery=  'select amount from bm_auction_system.bid B inner join bm_auction_system.auction A on A.auction_id = B.auction_id inner join bm_auction_system.product P on P.product_id = A.product_id  where P.product_id = ? ORDER BY B.bidding_timestamp DESC limit 1;';
             const [bidRows] = await db.execute(currentBidQuery, [product_id]);
             const currentBid = (bidRows.length == 0 ? 0 : bidRows[0].amount);
-            const queryString = 'SELECT P.product_id, P.product_name, P.brand, P.colour, P.size, P.price, P.img, A.auction_id, if(A.end_time < NOW(), 0, 1) as active_flag FROM bm_auction_system.product P inner join bm_auction_system.auction A on A.product_id = P.product_id WHERE P.product_id=?;';
+            const queryString = 'SELECT P.product_id, P.product_name, P.brand, P.colour, P.size, P.price, P.description, P.img, A.auction_id, if(A.end_time < NOW(), 0, 1) as active_flag FROM bm_auction_system.product P inner join bm_auction_system.auction A on A.product_id = P.product_id WHERE P.product_id=?;';
             const [rows] = await db.execute(queryString, [product_id]);
             return {"result": rows[0] ,"currentBid": currentBid};
         } catch (err) {
@@ -72,7 +72,7 @@
             const getSubCatID = 'select subcategory_id from bm_auction_system.product where product_id = ?'
             const [subCatRes] = await db.execute(getSubCatID, [product_id]);
             const subCat = subCatRes[0].subcategory_id;
-            const queryString = 'SELECT P.product_id, P.product_name, P.brand, P.colour, P.size, P.price, P.img, A.auction_id, if(A.end_time < NOW(), 0, 1) as active_flag FROM bm_auction_system.product P inner join bm_auction_system.auction A on A.product_id = P.product_id WHERE P.product_id != ? and P.subcategory_id = ? limit 3;';
+            const queryString = 'SELECT P.product_id, P.product_name, P.brand, P.colour, P.size, P.price, P.description, P.img, A.auction_id, if(A.end_time < NOW(), 0, 1) as active_flag FROM bm_auction_system.product P inner join bm_auction_system.auction A on A.product_id = P.product_id WHERE P.product_id != ? and P.subcategory_id = ? limit 3;';
             const [rows] = await db.execute(queryString, [product_id, subCat]);
             return rows;
         } catch (err) {
