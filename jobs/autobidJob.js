@@ -19,7 +19,7 @@ const runAutoBid = async () => {
                 }
                 else{
                     var currentBid = rows[a].initial_price;
-                    var currentWinner = bidRows[0].email_id;
+                    var currentWinner = "";
                     first_bidder = 1;
                 }
                 //fetching autobid users
