@@ -90,7 +90,7 @@ CREATE TABLE `product` (
   `price` float NOT NULL,
   `subcategory_id` int NOT NULL,
   `img` varchar(100) DEFAULT NULL,
-  `description` varchar(60) DEFAULT NULL,
+  `description` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`product_id`),
   KEY `subcategory_id` (`subcategory_id`),
   CONSTRAINT `product_ibfk_1` FOREIGN KEY (`subcategory_id`) REFERENCES `subcategory` (`subcategory_id`)
