@@ -19,7 +19,7 @@
           <img src="product-image/<%= product.result.img %>" alt="Product Image">
         </div>
         <div class="product-info">
-          <h2 class="product-title"><%= product.result.product_name %></h2>Description: <%= product.result.description %> <br> Brand: <%= product.result.brand %> <br> Color: <%= product.result.colour %> <br> Size: <%= product.result.size %> <br> Price: $<%= product.result.price%> <% if (product.currentBid === 0) { %> <br> Current Bid: $<%= product.result.price %> <% } else{ %><br> Current Bid: $<%= product.currentBid %> <% } %></p>
+          <h2 class="product-title"><%= product.result.product_name %></h2>Description: <%= product.result.description %> <br> Brand: <%= product.result.brand %> <br> Color: <%= product.result.colour %> <br> Size: <%= product.result.size %> <br> Price: $<%= product.result.price%> <% if (product.result.active_flag === 1) { if (product.currentBid === 0) { %> <br> Current Bid: $<%= product.result.price %> <% } else{ %><br> Current Bid: $<%= product.currentBid %> <% }} %></p>
             <div class="product-buttons">
               <% if (product.result.active_flag === 1) { %>
               <button id="bid-button" class="bid">Bid</button>
