@@ -85,6 +85,17 @@ const searchController = {
           return res.status(500).json({ error: 'Internal server error' });
         }
       },
+
+      similarItems: async(req, res) => {
+        try {
+          const productId = req.params.productId;
+          const result = await Product.fetchSimilarProducts(productId);
+          return res.json(result);
+        } catch (err) {
+          console.error(err);
+          return res.status(500).json({ error: 'Internal server error' });
+        }
+      },
 };
 
 module.exports = searchController;

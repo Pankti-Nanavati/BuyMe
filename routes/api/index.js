@@ -117,7 +117,7 @@ router.post('/subcategory/:categoryId/products/filter', searchController.product
 router.get('/products', searchController.products);
 router.get('/product/:productId', searchController.productById);
 router.get('/product', searchController.productView);
-
+router.get('/similarItems/:productId', searchController.similarItems);
 
 /**
  * 
