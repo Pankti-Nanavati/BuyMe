@@ -10,19 +10,21 @@ const runAuctionWinnerJob = async () => {
         for(let i = 0; i < endedAuctions.length; i++){
             const highestBidQuery = 'Select MAX(amount), email_id, bidding_timestamp from `bm_auction_system`.`bid` where auction_id = ? group by email_id, bidding_timestamp;';
             const [highestBid] = await db.execute(highestBidQuery, [endedAuctions[i].auction_id]);
-            if (highestBid.length > 0 && endedAuctions[i].minimum_price <= highestBid[0].amount){
-                const salesEntry = 'Insert into `bm_auction_system`.`sales` (buyer_email_id, seller_email_id, auction_id, product_id, amount, sale_timestamp) VALUES (?,?,?,?,?,?);';
-                const [salesEntryRes] = await db.execute(salesEntry, [highestBid[0].email_id, endedAuctions[i].email_id, endedAuctions[i].product_id, highestBid[0].amount, highestBid[0].bidding_timestamp]);
-                console.log(salesEntryRes);
-                var message = "";
-                message = message.concat("Congratulations! You won the auction, the product ", product_name, "is for you to buy!");
-                const notifQuery = 'Insert into `bm_auction_system`.`notifications` (email_id, message) VALUES (?,?);';
-                const [notifs] = await db.execute(notifQuery, [highestBid[0].email_id, message]);
-                console.log(notifs);
-            }
-            const updateAuction = 'Update `bm_auction_system`.`auction` set has_winner = 1 where auction_id = ?;';
-            const [updateAuctionRes] = await db.execute(updateAuction, [endedAuctions[i].auction_id]);
-            console.log(updateAuctionRes);
+            if(highestBid.length != 0){
+                if (highestBid.length > 0 && endedAuctions[i].minimum_price <= highestBid[0].amount){
+                    const salesEntry = 'Insert into `bm_auction_system`.`sales` (buyer_email_id, seller_email_id, auction_id, product_id, amount, sale_timestamp) VALUES (?,?,?,?,?,?);';
+                    const [salesEntryRes] = await db.execute(salesEntry, [highestBid[0].email_id, endedAuctions[i].email_id, endedAuctions[i].product_id, highestBid[0].amount, highestBid[0].bidding_timestamp]);
+                    console.log(salesEntryRes);
+                    var message = "";
+                    message = message.concat("Congratulations! You won the auction, the product ", product_name, "is for you to buy!");
+                    const notifQuery = 'Insert into `bm_auction_system`.`notifications` (email_id, message) VALUES (?,?);';
+                    const [notifs] = await db.execute(notifQuery, [highestBid[0].email_id, message]);
+                    console.log(notifs);
+                }
+                const updateAuction = 'Update `bm_auction_system`.`auction` set has_winner = 1 where auction_id = ?;';
+                const [updateAuctionRes] = await db.execute(updateAuction, [endedAuctions[i].auction_id]);
+                console.log(updateAuctionRes);
+            }  
         }    
     }
     catch(err){

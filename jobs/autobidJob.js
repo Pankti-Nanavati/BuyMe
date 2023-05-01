@@ -9,28 +9,31 @@ const runAutoBid = async () => {
         const [rows] = await db.query(queryString);
         for (let a = 0; a < rows.length; a++){
             //fetching the highest bid
-            const currentBidQuery=  'select amount from bm_auction_system.bid where bidding_timestamp IN (select MAX(bidding_timestamp) from bid where auction_id = ?);'
+            const currentBidQuery=  'select email_id, amount from bm_auction_system.bid where bidding_timestamp IN (select MAX(bidding_timestamp) from bid where auction_id = ?);'
             const [bidRows] = await db.execute(currentBidQuery, [rows[a].auction_id]);
             const currentBid = bidRows[0].amount;
+            const currentWinner = bidRows[0].email_id;
             //fetching autobid users
             const checkAutoBid = 'SELECT `email_id`, `increment`, `upper_limit` FROM `bm_auction_system`.`autobid` where auction_id = ?;';
             const [autobids] = await db.execute(checkAutoBid, [rows[a].auction_id]);
             for (let i = 0; i < autobids.length; i++) {
-                var new_bid = autobids[i].amount;
-                new_bid = currentBid + autobids[i].increment;
-                if (new_bid <= autobids[i].upper_limit){
-                    const query = 'INSERT INTO `bm_auction_system`.`bid` (`email_id`, `auction_id`, `bidding_timestamp`, `amount`) VALUES (?,?, NOW(), ?);';
-                    const [newbid] = await db.execute(query, [autobids[i].email_id, auction_id, new_bid]);
-                    console.log("Autobid made a new bid", newbid);
-                    currentBid = new_bid;
-                }
-                else{
-                    //implement notification for upper limit here
-                    console.log("User's upper limit has reached");
-                    message = "The upper limit you have set has been reached, the system can not bid further";
-                    const notifQuery = 'Insert into `bm_auction_system`.`notifications` (email_id, message) VALUES (?,?);';
-                    const [notifs] = await db.execute(notifQuery, [autobids[i].email_id, message]);
-                    console.log(notifs)
+                if(autobids[i].email_id != currentWinner){
+                    var new_bid = autobids[i].amount;
+                    new_bid = currentBid + autobids[i].increment;
+                    if (new_bid <= autobids[i].upper_limit){
+                        const query = 'INSERT INTO `bm_auction_system`.`bid` (`email_id`, `auction_id`, `bidding_timestamp`, `amount`) VALUES (?,?, NOW(), ?);';
+                        const [newbid] = await db.execute(query, [autobids[i].email_id, auction_id, new_bid]);
+                        console.log("Autobid made a new bid", newbid);
+                        currentBid = new_bid;
+                    }
+                    else{
+                        //implement notification for upper limit here
+                        console.log("User's upper limit has reached");
+                        message = "The upper limit you have set has been reached, the system can not bid further";
+                        const notifQuery = 'Insert into `bm_auction_system`.`notifications` (email_id, message) VALUES (?,?);';
+                        const [notifs] = await db.execute(notifQuery, [autobids[i].email_id, message]);
+                        console.log(notifs)
+                    }
                 }
             }
             //fetching manual bidders
