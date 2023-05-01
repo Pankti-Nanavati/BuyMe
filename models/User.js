@@ -178,7 +178,7 @@ const User = {
   },
   fetchNotificationsForUser: async (email_id) => {
     try {
-      const queryString = 'Select message from `bm_auction_system`.`notifications` where email_id = ?;'
+      const queryString = 'Select message from `bm_auction_system`.`notifications` where email_id = ? and seen = 0;'
       const [result] = await db.execute(queryString, [email_id]);
       const seenNotif = 'Update `bm_auction_system`.`notifications` set seen = 1 where email_id = ?;'
       const [seen] = await db.execute(seenNotif, [email_id]);
