@@ -28,13 +28,6 @@
 
   <main>
     <h2> Generate Sales Report</h2>
-    <!-- <form style="margin-top: 50px;">
-        <label for="from">From:</label>
-        <input type="datetime-local" id="from" name="from">
-        <label for="to">To:</label>
-        <input type="datetime-local" id="to" name="to">
-        <button type="submit" id="submitBtn">Submit</button>
-      </form> -->
       <form id="salesReportForm" style="margin-top: 50px;">
         <label for="from">From:</label>
         <input type="datetime-local" id="from" name="from">
@@ -46,97 +39,24 @@
 
 
 
-  <h2 class="hidden">Summary of Sales</h2>
-<table id="summaryTable" class="hidden">
+  <h2 class="hidden">Top Buyers</h2>
+<table id="topBuyerTable" class="hidden">
   <thead>
     <tr>
-      <th>Product Name</th>
-      <th>Category</th>
-      <th>Subcategory</th>
-      <th>Seller Name</th>
-      <th>Buyer Name</th>
-      <th>Price</th>
+      <th>Buyer Email Id</th>
+      <th>Total Spendings</th>
     </tr>
   </thead>
-  <tbody id="summaryTableBody">
-  </tbody>
-  <tfoot>
-    <tr>
-      <th colspan="5">Total Earnings:</th>
-      <td id="totalEarnings"></td>
-    </tr>
-  </tfoot>
-</table>
-
-<h2 class="hidden">Table 2</h2>
-<table id="table2" class="hidden">
-  <thead>
-    <tr>
-      <th>Column 1</th>
-      <th>Column 2</th>
-      <th>Column 3</th>
-    </tr>
-  </thead>
-  <tbody id="table2Body">
+  <tbody id="topBuyerTableBody">
   </tbody>
 </table>
 
-<h2 class="hidden">Table 3</h2>
-<table id="table3" class="hidden">
-  <thead>
-    <tr>
-      <th>Column 1</th>
-      <th>Column 2</th>
-      <th>Column 3</th>
-    </tr>
-  </thead>
-  <tbody id="table3Body">
-  </tbody>
-</table>
 
 
   </body>
   </html>
   <script>
-//    const form = document.querySelector('form');
-// const submitBtn = document.querySelector('#submitBtn');
-// const summaryTableBody = document.querySelector('#summaryTableBody');
-// const totalEarnings = document.querySelector('#totalEarnings');
-// const table2Body = document.querySelector('#table2Body');
-// const table3Body = document.querySelector('#table3Body');
 
-// form.addEventListener('submit', (event) => {
-//   event.preventDefault();
-//   const fromDate = document.querySelector('#from').value;
-//   const toDate = document.querySelector('#to').value;
-
-//   fetch(`/api/admin/create/report?from=${fromDate}&to=${toDate}`)
-//     .then(response => response.json())
-//     .then(data => {
-//       // Clear previous table data
-//       summaryTableBody.innerHTML = '';
-//       table2Body.innerHTML = '';
-//       table3Body.innerHTML = '';
-
-//       // Populate summary table and calculate total earnings
-//       let total = 0;
-//       data.forEach(sale => {
-//         const row = summaryTableBody.insertRow();
-//         row.innerHTML = `
-//           <td>${sale.productName}</td>
-//           <td>${sale.category}</td>
-//           <td>${sale.subcategory}</td>
-//           <td>${sale.sellerName}</td>
-//           <td>${sale.buyerName}</td>
-//           <td>${sale.price}</td>
-//         `;
-//         total += sale.price;
-//         summaryTable.classList.remove('hidden');
-//       table2.classList.remove('hidden');
-//       table3.classList.remove('hidden');
-//     });
-// });
-// });
 
 
 
@@ -160,20 +80,16 @@ const salesReportForm = document.querySelector('#salesReportForm');
       console.log(data);
       // Clear previous table data
       summaryTableBody.innerHTML = '';
-
+      top_buyers= data['Top_buyers'];
+      top_products= data['Top_products'];
+      total_earnings=data['total_earnings'];
       // Populate summary table and calculate total earnings
-      let total = 0;
-      data.forEach(sale => {
+      top_buyers.forEach(sale => {
         const row = summaryTableBody.insertRow();
         row.innerHTML = `
-          <td>${sale.productName}</td>
-          <td>${sale.category}</td>
-          <td>${sale.subcategory}</td>
-          <td>${sale.sellerName}</td>
-          <td>${sale.buyerName}</td>
-          <td>${sale.price}</td>
+          <td>${sale.buyer_email_id}</td>
+          <td>${sale.amount}</td>
         `;
-        total += sale.price;
         summaryTable.classList.remove('hidden');
       });
     })

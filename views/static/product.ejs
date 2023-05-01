@@ -24,13 +24,16 @@
               <% if (product.result.active_flag === 1) { %>
               <button id="bid-button" class="bid">Bid</button>
               <% } %>
-            <!-- <button id="bid-button" class="bid">Bid</button> -->
             <button class="set-alert" onclick="openModal()">Set Alert</button>
           </div>
         </div>
       </div>
 
       
+      <h3 style="text-align: center;">Similar Items</h3>
+      <div id="product-list"></div>
+
+
 
 
       <div class="modal" id="bid-modal">
@@ -77,7 +80,7 @@
       
 
   <script>// Get the modal
-  
+   if (`<%= product.result.active_flag %>` === 1) { 
     var modal = document.getElementById("bid-modal");
     var bidBtn = document.getElementById("bid-button");
     var closeBtn = document.querySelector(".close");
@@ -92,7 +95,7 @@
         modal.style.display = "none";
       }
     }
-
+  }
 
 
     function openModal() {
@@ -122,7 +125,10 @@
   });
 
 
-  //Place Bid button
+  // Place Bid button
+
+  if (`<%= product.result.active_flag %>` === 1) { 
+  
 const placeBidButton = document.getElementById('placeBidButton');
 placeBidButton.addEventListener('click', () => {
 const amount = document.getElementById("bid-amount").value;
@@ -188,4 +194,38 @@ fetch('/api/placeAutoBid', {
   // Handle errors
 });
 });
+
+  }
+
+
+
+const productList = document.getElementById("product-list");
+const urlParams = new URLSearchParams(window.location.search);
+const productId = urlParams.get('productId');
+fetch(`/api/similarItems/${productId}`)
+.then(response => response.json())
+    .then(data => {
+    // Send request to API to fetch products
+    // Clear the product list
+    productList.innerHTML = "";
+    console.log(data);
+    // Create product items for each product
+    data.forEach(product => {
+      
+      const productItem = document.createElement("div");
+      productItem.classList.add("product");
+      productItem.innerHTML = `
+        <div class="product-image">
+          <img src="${product.image_url}" alt="Product Image">
+        </div>
+        <div class="product-info">
+          <h2 class="product-title"><a href="/api/product?productId=${product.product_id}">${product.product_name}</a></h2>
+          <p>Brand: ${product.brand} <br> Color: ${product.colour} <br> Size: ${product.size} 
+          </p>
+        </div>
+      `;
+      productList.appendChild(productItem);
+    });
+  }); 
+
     </script>

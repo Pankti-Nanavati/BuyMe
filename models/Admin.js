@@ -57,9 +57,9 @@ const Admin = {
   },
   getSalesReport: async (date1, date2) => {
     const queryString1 = 'Select SUM(amount) as total from sales WHERE sale_timestamp <= ? and sale_timestamp >= ?;';
-    const queryString2 = 'Select product_id, SUM(amount) as item_earnings from sales WHERE sale_timestamp <= ? and sale_timestamp >= ? group by buyer_email_id order by item_earnings DESC limit 5;';
+    const queryString2 = 'Select product_id, SUM(amount) as item_earnings from sales WHERE sale_timestamp <= ? and sale_timestamp >= ? group by product_id order by item_earnings DESC limit 5;';
     const queryString3 = 'Select buyer_email_id, SUM(amount) as user_earnings from sales WHERE sale_timestamp <= ? and sale_timestamp >= ? group by buyer_email_id order by user_earnings DESC limit 5;';
-    const queryString4 = 'Select product_id, SUM(amount) as item_earnings from sales WHERE sale_timestamp <= ? and sale_timestamp >= ? group by buyer_email_id order by item_earnings DESC';
+    const queryString4 = 'Select product_id, SUM(amount) as item_earnings from sales WHERE sale_timestamp <= ? and sale_timestamp >= ? group by product_id order by item_earnings DESC';
     const queryString5 = 'Select buyer_email_id, SUM(amount) as user_earnings from sales WHERE sale_timestamp <= ? and sale_timestamp >= ? group by buyer_email_id order by user_earnings DESC';
     const queryString6 = 'Select P.subcategory_id, SUM(S.amount) as category_earnings from sales S inner join product P on P.product_id = S.product_id WHERE S.sale_timestamp <= ? and S.sale_timestamp >= ? group by P.subcategory_id order by category_earnings DESC';
     try{
