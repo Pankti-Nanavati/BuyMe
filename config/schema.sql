@@ -146,7 +146,7 @@ CREATE TABLE `auction` (
   `increment_amount` float DEFAULT NULL,
   `minimum_price` float DEFAULT NULL,
   `initial_price` float DEFAULT NULL,
-  `has_winner` tinyint(1) DEFAULT '0',
+  `has_winner` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`auction_id`),
   KEY `email_id` (`email_id`),
   KEY `product_id` (`product_id`),
