@@ -11,7 +11,7 @@ const runAutoBid = async () => {
             //fetching the highest bid
             const currentBidQuery=  'select email_id, amount from bm_auction_system.bid where bidding_timestamp IN (select MAX(bidding_timestamp) from bid where auction_id = ?);'
             const [bidRows] = await db.execute(currentBidQuery, [rows[a].auction_id]);
-            const currentBid = bidRows[0].amount;
+            var currentBid = bidRows[0].amount;
             const currentWinner = bidRows[0].email_id;
             //fetching autobid users
             const checkAutoBid = 'SELECT `email_id`, `increment`, `upper_limit` FROM `bm_auction_system`.`autobid` where auction_id = ?;';
@@ -39,7 +39,7 @@ const runAutoBid = async () => {
             //fetching manual bidders
             const checkManualBid = 'Select B.email_id from `bm_auction_system`.`autobid` A inner join `bm_auction_system`.`bid` B on A.email_id != B.email_id;';
             const [manualbids] = await db.execute(checkManualBid, [rows[a].auction_id]);
-            for(let j=0; j< manualbids.length; j++){
+            for(let j = 0; j < manualbids.length; j++){
                 const currentUserBidQuery=  'select amount from bm_auction_system.bid where bidding_timestamp IN (select MAX(bidding_timestamp) from bid where email_id = ? and auction_id = ?);'
                 const [userBidRows] = await db.execute(currentUserBidQuery, [manualbids[j].email_id, rows[a].auction_id]);
                 const currentUserBid = userBidRows[0].amount;
@@ -69,16 +69,6 @@ const runAutoBid = async () => {
     catch(err){
         console.log(err);
     }
-    // fetch all auctions
-        
-        // foreach auction fetch all bidders 
-            // filter autobidders & update their bids based on highest bid amount
-
-        // Fetch the new highest bid
-        
-        // Notify manual bidders if the current highest bid is greater than their bidding amount
-        
-
 };
 
 
