@@ -34,7 +34,7 @@
               <a class="nav-link dropdown-toggle" id="notification-link" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Notification <i class="bi bi-bell"></i>
               </a>
-              <ul class="dropdown-menu" id="notification-dropdown"></ul>
+              <ul class="dropdown-menu" id="notification-dropdown" style="width: 250px; overflow-y: auto;" ></ul>
             </li>
           <li class="nav-item">
             <a class="nav-link" href="/api/profile">Profile</a>
@@ -98,8 +98,8 @@ const notificationDropdown = document.getElementById("notification-dropdown");
 notificationLink.addEventListener("click", async () => {
   // Send request to API to fetch notifications
   const response = await fetch("/api/notifications");
-  const notifications = await response.json();
-
+  // const notifications = await response.json();
+  notifications=[{message:"hahahaha hahahah hahaha hahah haha hahah hahah"}, {message:"hahahaha hahahah hahaha hahah haha hahah hahah"}];
   // Clear the dropdown menu
   notificationDropdown.innerHTML = "";
   if (notifications.length === 0) {
@@ -113,6 +113,8 @@ notificationLink.addEventListener("click", async () => {
     notifications.forEach(notification => {
     const listItem = document.createElement("li");
     listItem.classList.add("dropdown-item");
+    listItem.style.whiteSpace = "normal";
+    listItem.style.wordWrap = "break-word";
     listItem.textContent = notification.message;
     notificationDropdown.appendChild(listItem);
   });

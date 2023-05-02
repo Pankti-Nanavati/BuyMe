@@ -1,4 +1,4 @@
-.dropdown-menu {
+/* .dropdown-menu {
   max-height: 200px;
   overflow-y: auto;
   background-color: #ffffff;
@@ -16,7 +16,11 @@
 
 .dropdown-menu li:hover {
   background-color: #f8f9fa;
+} */
+.dropdown-item:not(:last-child) {
+  border-bottom: 1px solid #ccc;
 }
+
   .navbar-nav .nav-link:hover {
     background-color: transparent !important;
   }
