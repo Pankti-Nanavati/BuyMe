@@ -207,7 +207,7 @@ CREATE TABLE `alert` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 /* Password for admin, user, customerRep is test@123*/
-
+-- Admin password is 'test@123'
 INSERT INTO `admin` VALUES ('admin@rutgers.edu','$2b$10$C6RNlN7vrW7H1kMQAUvTCeZvuytftdqbBIEnKJiUJfoTSnLMLWnb6');
 
 INSERT INTO `category` VALUES (1,'shoes');

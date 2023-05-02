@@ -79,6 +79,7 @@
                 <th>Product Name</th>
                 <th>Time</th>
                 <th>Price</th>
+                <th>Delete</th>
               </tr>
             </thead>
             <tbody id="bidTableBody">
@@ -172,6 +173,7 @@ function fetchAuctions() {
   fetch(`/api/auctionHistory`)
     .then(response => response.json())
     .then(data => {
+      console.log(data);
       // Clear previous table data
       auctionTableBody.innerHTML = '';
       if (data.length === 0) {
@@ -237,9 +239,9 @@ fetch(`/api/bidHistory`)
         const row = bidTableBody.insertRow();
         row.innerHTML = `
           <td>${bid.product_name}</td>
-          <td>${bid.time}</td>
-          <td>${bid.initial_price}</td>
-          <td><i class="bi bi-trash clickable" data-id="${bid.product_id}"></i></td>
+          <td>${bid.bidding_timestamp}</td>
+          <td>${bid.amount}</td>
+          <td><i class="bi bi-trash clickable" data-id="${bid.bid_id}"></i></td>
         `;
         var table = document.getElementById("bidTable");
         table.classList.remove("hidden");
@@ -249,6 +251,7 @@ fetch(`/api/bidHistory`)
           icon.addEventListener('click', () => {
             const queryType='Delete a Bid';
             const value= icon.getAttribute('data-id');
+            console.log(value);
             fetch('/api/raiseQuery', {
               method: 'POST',
               body: JSON.stringify({queryType, value}),

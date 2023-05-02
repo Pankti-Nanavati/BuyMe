@@ -40,7 +40,7 @@ const Auction = {
           const updateQuery = 'UPDATE bm_auction_system.alert SET send_notification_flag = 1 where email_id = ?;';
           const [updateRes] = await db.execute(updateQuery, [alerts[i].email_id]);
           console.log(updateRes);
-          const message = "";
+          var message = "";
           message = message.concat("The product you were waiting for-", product_name, "is available!");
           const notifQuery = 'Insert into `bm_auction_system`.`notifications` (email_id, message) VALUES (?,?);';
           const [notifs] = await db.execute(notifQuery, [alerts[i].email_id, message]);
