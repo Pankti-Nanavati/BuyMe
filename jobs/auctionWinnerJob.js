@@ -10,7 +10,7 @@ const runAuctionWinnerJob = async () => {
         console.log('Ended auctions', endedAuctions);
         if(endedAuctions.length != 0){
             for(let i = 0; i < endedAuctions.length; i++){
-                const highestBidQuery = 'Select MAX(amount) as amount, email_id, bidding_timestamp from `bm_auction_system`.`bid` where auction_id = ? group by email_id, bidding_timestamp;';
+                const highestBidQuery = 'Select amount, email_id, bidding_timestamp from `bm_auction_system`.`bid` where auction_id = ? order by amount DESC limit 1;';
                 const [highestBid] = await db.execute(highestBidQuery, [endedAuctions[i].auction_id]);
                 console.log('highestbid', highestBid);
                 console.log(highestBid.length > 0 && endedAuctions[i].minimum_price <= highestBid[0].amount);

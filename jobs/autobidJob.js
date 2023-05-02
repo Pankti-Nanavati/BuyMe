@@ -90,7 +90,7 @@ const runAutoBid = async () => {
 };
 
 
-cron.schedule('*/5 * * * *', () => {
+cron.schedule('*/1 * * * *', () => {
   // call job
   runAutoBid();      
   console.log('Running the job every 5 minutes');
