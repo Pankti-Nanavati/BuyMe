@@ -98,8 +98,7 @@ const notificationDropdown = document.getElementById("notification-dropdown");
 notificationLink.addEventListener("click", async () => {
   // Send request to API to fetch notifications
   const response = await fetch("/api/notifications");
-  // const notifications = await response.json();
-  notifications=[{message:"hahahaha hahahah hahaha hahah haha hahah hahah"}, {message:"hahahaha hahahah hahaha hahah haha hahah hahah"}];
+  const notifications = await response.json();
   // Clear the dropdown menu
   notificationDropdown.innerHTML = "";
   if (notifications.length === 0) {
