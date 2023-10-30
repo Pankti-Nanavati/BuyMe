@@ -1,0 +1,91 @@
+/* .dropdown-menu {
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: #ffffff;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  padding: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.dropdown-menu li {
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+}
+
+.dropdown-menu li:hover {
+  background-color: #f8f9fa;
+} */
+.dropdown-item:not(:last-child) {
+  border-bottom: 1px solid #ccc;
+}
+
+  .navbar-nav .nav-link:hover {
+    background-color: transparent !important;
+  }
+  .product {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 20px auto;
+    max-width: 1200px;
+    padding: 20px;
+    border: 1px solid #ccc;
+  }
+  .product-image {
+    margin-right: 20px;
+  }
+  
+  .product-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .product-description {
+    margin-bottom: 20px;
+  }
+  .product-image img {
+    width: 250px; /* Replace with desired width */
+    height: auto;
+  }
+
+  main {
+    margin-top: 50px; /* adjust the spacing as needed */
+    text-align: center;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 50%;
+    margin: auto;
+  }
+  
+  th, td {
+    text-align: center;
+    padding: 8px;
+    border: 1px solid black; /* add border to cells */
+  }
+  
+  th {
+    background-color: #f2f2f2;
+  }
+  
+  tfoot td {
+    font-weight: bold;
+  }
+  
+  .hidden {
+    display: none;
+  }
+  
+  .heading-container {
+    text-align: center;
+  }
+  
+  .heading {
+    margin: 0;
+  }
+
+
+  

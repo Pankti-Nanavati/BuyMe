@@ -1,0 +1,45 @@
+main {
+    margin-top: 50px; /* adjust the spacing as needed */
+    text-align: center;
+  }
+
+  /* table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  th, td {
+    text-align: left;
+    padding: 8px;
+  }
+  
+  th {
+    background-color: #f2f2f2;
+  }
+  
+  tfoot td {
+    font-weight: bold;
+  } */
+  .hidden {
+    display: none;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 50%;
+    margin: auto;
+  }
+  
+  th, td {
+    text-align: center;
+    padding: 8px;
+    border: 1px solid black; /* add border to cells */
+  }
+  
+  th {
+    background-color: #f2f2f2;
+  }
+  
+  tfoot td {
+    font-weight: bold;
+  }

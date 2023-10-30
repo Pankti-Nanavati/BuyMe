@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="../css/homepage.css">
+  <!-- <script src="homepage.js"></script> -->
+  <!-- Required CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Required JavaScript -->
+  <script src="../scripts/jquery.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+  
+  
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/api/homepage">Hi <%= user_name %></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="/api/sell">Sell</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="open-modal">Alert</a>
+          </li>
+            <li class="nav-item">
+              <!-- <a class="nav-link" id="notification-link" data-toggle="dropdown" data-target="#notification-dropdown">Notification</a>
+              <ul class="dropdown-menu" id="notification-dropdown"></ul> -->
+              <a class="nav-link dropdown-toggle" id="notification-link" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Notification <i class="bi bi-bell"></i>
+              </a>
+              <ul class="dropdown-menu" id="notification-dropdown" style="width: 250px; overflow-y: auto;" ></ul>
+            </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/api/profile">Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/api/logout">Logout</a>
+          </li>
+        </ul>
+      </div>       
+    </div>
+  </nav>
+
+
+
+  <div class="modal fade" id="amodal" tabindex="-1" role="dialog" aria-labelledby="alert-modal-label" aria-hidden="true" >
+    <div class="modal-dialog modal-dialog-centered " role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button> -->
+          <h3 >Alerts</h3>
+        </div>
+        <div class="modal-body" style="width: auto">
+          <div id="alert-container"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</body>
+</html>
+<script>
+function openAlertModal() {
+  $.get("/api/alert", function(data) {
+    console.log(data);
+    var alerts = data.alerts;
+    var alertContainer = $("#alert-container");
+    alertContainer.empty();
+    for (var i = 0; i < alerts.length; i++) {
+      var alert = alerts[i];
+      var alertDiv = $("<div>");
+      alertDiv.addClass("alert");
+      alertDiv.addClass("alert-info");
+      alertDiv.text(alert.product_name + " - " + alert.colour + " - " + alert.size);
+      alertContainer.append(alertDiv);
+    }
+  });
+  $("#amodal").modal("show");
+}
+
+$(document).ready(function() {
+  $("#open-modal").click(openAlertModal);
+});
+
+
+
+
+const notificationLink = document.getElementById("notification-link");
+const notificationDropdown = document.getElementById("notification-dropdown");
+notificationLink.addEventListener("click", async () => {
+  // Send request to API to fetch notifications
+  const response = await fetch("/api/notifications");
+  const notifications = await response.json();
+  // Clear the dropdown menu
+  notificationDropdown.innerHTML = "";
+  if (notifications.length === 0) {
+    const listItem = document.createElement("li");
+    listItem.classList.add("dropdown-item");
+    listItem.textContent = "No Notifications";
+    notificationDropdown.appendChild(listItem);
+  }
+  // Create dropdown menu items for each notification
+  else{
+    notifications.forEach(notification => {
+    const listItem = document.createElement("li");
+    listItem.classList.add("dropdown-item");
+    listItem.style.whiteSpace = "normal";
+    listItem.style.wordWrap = "break-word";
+    listItem.textContent = notification.message;
+    notificationDropdown.appendChild(listItem);
+  });
+}
+  // Show the dropdown menu
+  notificationDropdown.classList.add("show");
+});
+document.addEventListener("click", event => {
+  if (!notificationDropdown.contains(event.target)) {
+    notificationDropdown.classList.remove("show");
+  }
+});
+
+ 
+
+
+
+</script>

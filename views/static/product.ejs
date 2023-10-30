@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="../css/product.css">
+    <!-- Required CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Required JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+
+  </head>
+  <body>
+    
+    <%- include('navbar') %>
+          
+
+    <div class="product">
+        <div class="product-image">
+          <img src="product-image/<%= product.result.img %>" alt="Product Image">
+        </div>
+        <div class="product-info">
+          <h2 class="product-title"><%= product.result.product_name %></h2>Description: <%= product.result.description %> <br> Brand: <%= product.result.brand %> <br> Color: <%= product.result.colour %> <br> Size: <%= product.result.size %> <br> Price: $<%= product.result.price%> <% if (product.result.active_flag === 1) { if (product.currentBid === 0) { %> <br> Current Bid: $<%= product.result.price %> <% } else{ %><br> Current Bid: $<%= product.currentBid %> <% }} %></p>
+            <div class="product-buttons">
+              <% if (product.result.active_flag === 1) { %>
+              <button id="bid-button" class="bid">Bid</button>
+              <% } %>
+            <button class="set-alert" onclick="openModal()">Set Alert</button>
+          </div>
+        </div>
+      </div>
+
+      
+      <h3 style="text-align: center;">Similar Items</h3>
+      <div id="product-list"></div>
+
+
+
+
+      <div class="modal" id="bid-modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2>Place Your Bid</h2>
+            <span class="close">&times;</span>
+          </div>
+            <div class="bid-form">
+              <label for="bid-amount" style="margin-top: 25px;">Your Bid Amount ($)</label>
+              <input type="text" id="bid-amount" name="bid-amount">
+            </div>
+            <button class="place-bid-btn" style="margin-top: 15px;" id="placeBidButton">Place Bid</button>
+            <div class="or-divider">
+              <p class="or"><span>OR</span></p>
+            </div>
+            <div class="auto-bid-form">
+              <h5>Auto-Bid</h3>
+              <p>Set a maximum bid and we'll automatically bid for you up to that amount.</p>
+              <div class="auto-bid-fields">
+                <label for="auto-bid-increment">Bid Increment ($):</label>
+                <input type="text" id="auto-bid-increment" name="auto-bid-increment" style="margin-left:20px">
+                <label for="auto-bid-max" style="padding-top:20px">Max Bid Amount ($):</label>
+                <input type="text" id="auto-bid-max" name="auto-bid-max">
+              </div>
+            </div>
+            <button class="placeAuto-bid-btn" style="margin-top: 15px;" id="autoBidButton">Place Auto Bid</button>
+          </div>
+        </div>
+
+      <div id="alert-modal" class="alertmodal">
+        <div class="alertmodal-content">
+          <span class="close" onclick="closeModal()">&times;</span>
+          <h3>Set Alert</h3>
+          <form id="alert-form">
+            <label for="color">Color:</label>
+            <input type="text" id="color" name="color"><br><br>
+            <label for="size">Size:</label>
+            <input type="text" id="size" name="size" style="margin-left:10px"><br><br>
+            <button type="submit" id="submit-btn">Submit</button>
+          </form>
+        </div>
+      </div>
+      
+
+  <script>// Get the modal
+ 
+    var modal = document.getElementById("bid-modal");
+    var bidBtn = document.getElementById("bid-button");
+    var closeBtn = document.querySelector(".close");
+    if (bidBtn) {
+    bidBtn.onclick = function() {
+      modal.style.display = "block";
+    }}
+    closeBtn.onclick = function() {
+      modal.style.display = "none";
+    }
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+  
+
+
+    function openModal() {
+    document.getElementById("alert-modal").style.display = "block";
+  }
+  function closeModal() {
+    document.getElementById("alert-modal").style.display = "none";
+  }
+  const form = document.getElementById('alert-form');
+  const submitBtn = document.getElementById('submit-btn');
+  submitBtn.addEventListener('click', (event) => {
+    event.preventDefault(); // Prevents the form from submitting normally
+    const color = document.getElementById('color').value;
+    const size = document.getElementById('size').value;
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('productId');
+    console.log(color, size, productId);
+    // Make an API request to the server with the color and size data
+    fetch('/api/alert', {
+      method: 'POST',
+      body: JSON.stringify({ color, size, productId }),
+      headers: { 'Content-Type': 'application/json' }
+    })
+    .then(response => response.json())
+    .then(data => window.location.href = '/api/product?productId=' + productId)
+    .catch(error => console.error(error));
+  });
+
+
+  // Place Bid button
+
+  // if (`<%= product.result.active_flag %>` === 1) { 
+  
+const placeBidButton = document.getElementById('placeBidButton');
+placeBidButton.addEventListener('click', () => {
+const amount = document.getElementById("bid-amount").value;
+const product_id = `<%= product.result.product_id %>`;
+const auction_id = `<%= product.result.auction_id %>`;
+console.log(product_id, auction_id);
+fetch('/api/placeBid', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    product_id,
+    auction_id,
+    amount
+  })
+})
+.then(response => {
+  if (response.ok) {
+    // Bid was successfully posted to the API
+    // Close the modal and stay on the same page
+    window.location.href = '/api/product?productId=' + productId;
+    document.getElementById("bid-modal").style.display = "none";
+    
+  } else if (response.status === 400) {
+    // Handle "Bid amount must be greater than current bid" error
+    alert('Bid amount must be greater than current bid');
+  } else {
+    // Handle errors
+  }
+})
+.catch(error => {
+  // Handle errors
+});
+});
+
+//autobid
+const autoBidButton = document.getElementById('autoBidButton');
+autoBidButton.addEventListener('click', () => {
+const  increment_amount= document.getElementById("auto-bid-increment").value;
+const upper_limit = document.getElementById("auto-bid-max").value;
+const auction_id = `<%= product.result.auction_id %>`;
+console.log(increment_amount, upper_limit, auction_id);
+fetch('/api/placeAutoBid', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    auction_id,
+    increment_amount,
+    upper_limit
+  })
+})
+.then(response => {
+  if (response.ok) {
+    // Bid was successfully posted to the API
+    // Close the modal and stay on the same page
+    document.getElementById("bid-modal").style.display = "none";
+  } else {
+    // Handle errors
+  }
+})
+.catch(error => {
+  // Handle errors
+});
+});
+
+  // }
+
+
+
+const productList = document.getElementById("product-list");
+const urlParams = new URLSearchParams(window.location.search);
+const productId = urlParams.get('productId');
+fetch(`/api/similarItems/${productId}`)
+.then(response => response.json())
+    .then(data => {
+    // Send request to API to fetch products
+    // Clear the product list
+    productList.innerHTML = "";
+    console.log(data);
+    // Create product items for each product
+    data.forEach(product => {
+      console.log('printing', product); 
+      const productItem = document.createElement("div");
+      productItem.classList.add("product");
+      productItem.innerHTML = `
+        <div class="product-image">
+          <img src="product-image/${product.img}" alt="Product Image">
+        </div>
+        <div class="product-info">
+          <h2 class="product-title"><a href="/api/product?productId=${product.product_id}">${product.product_name}</a></h2>
+          <p>Description: ${product.brand} <br> Brand: ${product.brand} 
+          </p>
+        </div>
+      `;
+      productList.appendChild(productItem);
+    });
+  }); 
+
+    </script>

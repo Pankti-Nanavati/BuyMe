@@ -1,0 +1,6 @@
+.hidden {
+    display: none;
+  }
+  .container {
+    margin: 0 20px; /* set 20px margins on the left and right */
+  }

@@ -1,36 +1,49 @@
-Code / Environment Setup: 
+# Buy-Me App Setup Guide
 
-- Download / Clone the repository: git clone git@github.com:vamsi-bulusu/Buy-Me.git 
+## Installation
+- Download or clone the repository using the following command: `git clone git@github.com:vamsi-bulusu/Buy-Me.git`
+- Install NodeJS library from https://nodejs.org/en/download
+- Install Dependencies using `npm install`
 
-- Install NodeJS library: https://nodejs.org/en/download
+## Database Setup
+- Run the schema migration by executing the schema.sql file located in the config folder.
 
-Install Dependencies: npm install
+## Environment Variables
+- Set the following environment variables in a `.env` file:
+  - `DB_HOST`: The database host
+  - `DB_USER`: The database username
+  - `DB_PASSWORD`: The database password
+  - `DB_DATABASE`: The database name
+  - `DB_PORT`: The database port
+  - `USER_PORT`: The port for the NodeJS app
+  - `SECRET_KEY`: The secret key
+  - `ADMIN_SECRET_KEY`: The admin secret key
+  - `CUSTOMER_SECRET_KEY`: The customer secret key
 
-Database / Schema migration :  migrate the schema.sql file placed in the config folder.
+## Running the App
+- To run the Admin app, execute `npm run admin`
+- To run the Customer app, execute `npm run customer`
+- To run the User app, execute `npm run develop`
 
-Setup .env variables:
-- DB_HOST = '<HOST>'
-- DB_USER = '<USER_NAME>'
-- DB_PASSWORD = '<PASS>'
-- DB_DATABASE = '<DB_NAME>'
-- DB_PORT = '<DB_PORT>'
-- PORT = '<NODE_PORT>'
-- SECRET_KEY = '<SECRET_KEY>'
+## URLs
+- Login URL: http://localhost:PORT/api/login
+- Admin URL: http://localhost:PORT/api/admin/login
+- Customer URL: http://localhost:PORT/api/customerRep/login
 
-To run express server: npm run develop
-
-URL to Login page : http://localhost:PORT/api/login
+## ERD
+<img src="./views/assets/Buy-Me-Erd.png">
 
 
-Routes for your convenience:
-- API Documentation
-    * GET - /api/login - login page
-    * POST - /api/login - Home page
-    * GET - /api/register -> register page
-    * POST - /api/register -> login page
 
-- Test
-  * create new user - '/api/register' 
-  * login           - '/api/login' 
+## ROLES
 
+- Darshee Machhar - Worked on SQL Queries and Database Design
+- Pankti Nanvati - Worked on Frontend development
+- Naga Vamsi Krishna - Worked on configuring routes and app infra
+
+
+## Admin Credentials:
+
+- email: admin@rutgers.edu
+- password: test@123
 

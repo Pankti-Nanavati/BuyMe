@@ -1,0 +1,22 @@
+#query-container {
+    max-width: 800px;
+    margin: 0 auto;
+    /* display: flex; */
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .query {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+  }
+  .hidden {
+    display: none;
+  }
+
+   /* .card {
+    max-width: 800px;
+  } */

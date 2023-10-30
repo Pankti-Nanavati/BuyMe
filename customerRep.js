@@ -2,8 +2,6 @@ const express =  require('express');
 
 const app = express();
 
-const cors = require('cors');
-
 const routes = require('./routes')
 
 const morgan = require('morgan');
@@ -12,37 +10,29 @@ const session = require('express-session')
 
 const sessionStore = require('./config/sessionStore');
 
-const userPassport = require('./config/passportUserConfig');
-
-// Require Cron Job
-require('./jobs/autobidJob');
-require('./jobs/auctionWinnerJob');
+const customerRepPassport = require('./config/passportCRConfig');
 
 require('dotenv').config();
 
-const PORT = process.env.USER_PORT;
-
+const PORT = process.env.CUSTOMER_PORT;
 
 // For Logging
 app.use(morgan('dev'))
 
-const userSessionConfig = {
-    name: 'user-session',
-    secret: process.env.SECRET_KEY,
+const customerRepSessionConfig = {
+    name: 'customer-session',
+    secret: process.env.CUSTOMER_SECRET_KEY,
     store: sessionStore,
     resave: false,
     saveUninitialized: false,
     cookie: {
       maxAge: 3600000, // 3600000 1 hour in milliseconds. The expiration time of the cookie to set it as a persistent cookie.
-      sameSite: true
+      sameSite: true,
     },
 };
 
-app.use(cors());
-
 // Creating Session
-app.use(session(userSessionConfig));
-
+app.use(session(customerRepSessionConfig));
 
 // parse Json data
 app.use(express.json());
@@ -53,20 +43,15 @@ app.use(express.urlencoded({ extended: true }));
 // Serve static Files
 app.use(express.static(__dirname + '/views'));
 
-
 // Set View Engine
 app.set('view engine', 'ejs');
 
 
-// Initialize Passport for user
-
-app.use(userPassport.initialize());
-app.use(userPassport.session());
-
+// Initialize Passport for admin
+app.use(customerRepPassport.initialize());
+app.use(customerRepPassport.session());
 
 // Setting Routes
 app.use(routes);
 
-app.listen(PORT, console.log("Server started at port: " + PORT));
-
-
+app.listen(PORT, console.log("Customer Server started at port: " + PORT));
